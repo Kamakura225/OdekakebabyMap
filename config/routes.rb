@@ -1,6 +1,13 @@
 Rails.application.routes.draw do
   # Devise用のルーティング（ユーザー用）
-  devise_for :users
+  devise_for :users, controllers: {
+  sessions: 'public/sessions'
+}
+
+# ゲストログイン用のルート
+  devise_scope :user do
+    post 'users/guest_sign_in', to: 'public/sessions#guest_sign_in'
+  end
 
   # ユーザー用（public）ルーティング
     namespace :public do
@@ -25,7 +32,7 @@ Rails.application.routes.draw do
     end
 
   # トップページのルーティング
-  root 'public/places#index'  # トップページは施設・公園一覧に設定
+  root 'public/homes#top'  # トップページは施設・公園一覧に設定
 
 
 end

@@ -5,62 +5,34 @@
   }
 </style>
 
-<header>
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="container flex-column">
-      
-      <!-- 上段: ナビゲーションメニュー -->
-      <div class="d-flex w-100 justify-content-between align-items-center">
-        <!-- ロゴ -->
-        <%= link_to root_path, class: "navbar-brand" do %>
-          <%= image_tag "ながのケーキロゴ1.png", alt: "Logo", width: 100 %>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container">
+    <%= link_to "👶 子育て応援マップ", root_path, class: "navbar-brand fw-bold" %>
+
+    <div class="collapse navbar-collapse justify-content-end">
+      <ul class="navbar-nav">
+        <% if user_signed_in? %>
+          <li class="nav-item">
+            <span class="nav-link">ようこそ、<%= current_user.nickname %>さん</span>
+          </li>
+          <li class="nav-item">
+            <%= link_to 'マイページ', edit_user_registration_path, class: "nav-link" %>
+          </li>
+          <li class="nav-item">
+            <%= link_to 'ログアウト', destroy_user_session_path, method: :delete, class: "nav-link" %>
+          </li>
+        <% else %>
+          <li class="nav-item">
+            <%= link_to 'サインアップ', new_user_registration_path, class: "nav-link" %>
+          </li>
+          <li class="nav-item">
+            <%= link_to 'サインイン', new_user_session_path, class: "nav-link" %>
+          </li>
+          <li class="nav-item">
+            <%= button_to 'ゲストログイン', users_guest_sign_in_path, method: :post, class: "btn btn-outline-primary ms-2" %>
+          </li>
         <% end %>
-        <% if customer_signed_in? %>
-          <div class="me-3">
-            <strong>こんにちは！<%= current_customer.last_name %>さん</strong>
-          </div>
-        <% end %>
-
-        <!-- メニュー開閉ボタン（小画面用） -->
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <!-- ナビゲーションメニュー -->
-        <div class="collapse navbar-collapse justify-content-end" id="navbarNavDropdown">
-          <ul class="navbar-nav">
-            
-            <% if customer_signed_in? %>
-              <li class="nav-item"><%= link_to "マイページ", my_page_path, class: "nav-link text-dark" %></li>
-              <li class="nav-item"><%= link_to "商品一覧", items_path, class: "nav-link text-dark" %></li>
-              <li class="nav-item"><%= link_to "ショッピングカート", cart_items_path, class: "nav-link text-dark" %></li>
-              <li class="nav-item"><%= link_to "ログアウト", destroy_customer_session_path, method: :delete, class: "nav-link text-dark" %></li>
-
-            <% elsif admin_signed_in? %>
-              <li class="nav-item"><%= link_to "商品一覧", admin_items_path, class: "nav-link text-dark" %></li>
-              <li class="nav-item"><%= link_to "会員一覧", admin_customers_path, class: "nav-link text-dark" %></li>
-              <li class="nav-item"><%= link_to "注文履歴一覧", admin_root_path, class: "nav-link text-dark" %></li>
-              <li class="nav-item"><%= link_to "ジャンル一覧", admin_genres_path, class: "nav-link text-dark" %></li>
-              <li class="nav-item"><%= link_to "ログアウト", destroy_admin_session_path, method: :delete, class: "nav-link text-dark" %></li>
-
-            <% else %>
-              <li class="nav-item"><%= link_to "About", about_path, class: "nav-link text-dark" %></li>
-              <li class="nav-item"><%= link_to "商品一覧", items_path, class: "nav-link text-dark" %></li>
-              <li class="nav-item"><%= link_to "新規会員登録", new_customer_registration_path, class: "nav-link text-dark" %></li>
-              <li class="nav-item"><%= link_to "ログイン", new_customer_session_path, class: "nav-link text-dark" %></li>
-            <% end %>
-          </ul>
-        </div>
-      </div>
-
-      <!-- 下段: 右寄せの検索フォーム -->
-      <div class="w-100 d-flex justify-content-end mt-2">
-        <%= form_with url: "#", method: :get, local: true, class: "d-flex" do |f| %>
-          <%= f.text_field :q, placeholder: "商品名で検索", class: "form-control form-control-sm w-auto me-2" %>
-          <%= f.submit "検索", class: "btn btn-outline-dark btn-sm" %>
-        <% end %>
-      </div>
-
+      </ul>
     </div>
-  </nav>
-</header>
+  </div>
+</nav>

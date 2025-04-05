@@ -21,6 +21,10 @@ class User < ApplicationRecord
   end
 
   def active_for_authentication?
-    super && (self.is_customer_status == true)
+    super && (self.is_active == true)
+  end
+
+  def guest_user?
+    email == 'guest@example.com'
   end
 end
