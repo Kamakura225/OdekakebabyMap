@@ -8,6 +8,7 @@ class User < ApplicationRecord
   has_many :comments, dependent: :destroy
   has_many :likes, dependent: :destroy
   has_many :bookmarks, dependent: :destroy
+  has_many :bookmarked_places, through: :bookmarks, source: :place
   
 
 
@@ -26,5 +27,9 @@ class User < ApplicationRecord
 
   def guest_user?
     email == 'guest@example.com'
+  end
+
+  def inactive_message
+    !withdrawal ? super : :withdrawn_account
   end
 end

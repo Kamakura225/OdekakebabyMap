@@ -1,0 +1,2 @@
+module Sdmin::UsersHelper
+end

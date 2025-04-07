@@ -24,13 +24,18 @@ class Public::SessionsController < Devise::SessionsController
   # def configure_sign_in_params
   #   devise_parameter_sanitizer.permit(:sign_in, keys: [:attribute])
   # end
+  GUEST_USER_EMAIL = "guest@example.com"
   def guest_sign_in
-    user = User.find_or_create_by!(email: 'guest@example.com') do |u|
+    user = User.find_or_create_by!(email: GUEST_USER_EMAIL) do |u|
       u.password = SecureRandom.urlsafe_base64
       u.nickname = 'ゲストユーザー'
     end
 
     sign_in user
     redirect_to public_places_path, notice: 'ゲストユーザーとしてログインしました。'
+  end
+
+  def guest_user?
+    email == GUEST_USER_EMAIL
   end
 end

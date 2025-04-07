@@ -1,6 +1,10 @@
 class Public::BookmarksController < ApplicationController
   before_action :authenticate_user!
 
+  def index
+    @bookmarked_places = current_user.bookmarked_places.includes(:category)
+  end
+
   def create
     @place = Place.find(params[:place_id])
     @bookmark = @place.bookmarks.build(user: current_user)

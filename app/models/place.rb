@@ -1,8 +1,11 @@
 class Place < ApplicationRecord
   belongs_to :user
+  
   has_many :comments, dependent: :destroy
   has_many :likes, dependent: :destroy
   has_many :bookmarks, dependent: :destroy
+  has_many :bookmarked_users, through: :bookmarks, source: :user
+
   has_many_attached :images
 
   enum category: { park: 0, facility: 1 } # 公園か施設かの分類

@@ -9,19 +9,35 @@
   <div class="container">
     <%= link_to "👶 子育て応援マップ", root_path, class: "navbar-brand fw-bold" %>
 
-    <div class="collapse navbar-collapse justify-content-end">
+  <div class="collapse navbar-collapse justify-content-end">
       <ul class="navbar-nav">
         <% if user_signed_in? %>
-          <li class="nav-item">
-            <span class="nav-link">ようこそ、<%= current_user.nickname %>さん</span>
-          </li>
-          <li class="nav-item">
-            <%= link_to 'マイページ', edit_user_registration_path, class: "nav-link" %>
-          </li>
-          <li class="nav-item">
-            <%= link_to 'ログアウト', destroy_user_session_path, method: :delete, class: "nav-link" %>
-          </li>
+          <% if current_user.guest_user? %>
+            <!-- ゲストログイン中 -->
+            <li class="nav-item">
+              <%= link_to 'サインアップ', new_user_registration_path, class: "nav-link" %>
+            </li>
+            <li class="nav-item">
+              <%= link_to 'サインイン', new_user_session_path, class: "nav-link" %>
+            </li>
+            <li class="nav-item">
+              <%= link_to 'ログアウト', destroy_user_session_path, method: :delete, class: "nav-link" %>
+            </li>
+          <% else %>
+            <!-- 通常ログイン中 -->
+            <li class="nav-item">
+              <%= link_to 'お気に入り一覧', public_bookmarks_path, class: "nav-link" %>
+            </li>
+            <li class="nav-item">
+              <%= link_to 'マイページ', public_user_path(current_user), class: "nav-link" %>
+            </li>
+            
+            <li class="nav-item">
+              <%= link_to 'ログアウト', destroy_user_session_path, method: :delete, class: "nav-link" %>
+            </li>
+          <% end %>
         <% else %>
+          <!-- 未ログイン -->
           <li class="nav-item">
             <%= link_to 'サインアップ', new_user_registration_path, class: "nav-link" %>
           </li>
