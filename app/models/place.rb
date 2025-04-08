@@ -15,6 +15,9 @@ class Place < ApplicationRecord
 
   validates :name, :address, :latitude, :longitude, presence: true
 
+  geocoded_by :address
+  after_validation :geocode
+
   # 緯度と経度のカラムを追加するためのマイグレーション
   # t.float :latitude
   # t.float :longitude
