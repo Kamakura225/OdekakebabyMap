@@ -1,0 +1,41 @@
+<h2>施設・公園の投稿</h2>
+<!--エラー  -->
+<% if @place.errors.any? %>
+  <div class="alert alert-danger">
+    <h4>以下のエラーがあります：</h4>
+    <ul>
+      <% @place.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+
+<%= form_with(model: @place, local: true, html: { multipart: true }, url: public_places_path) do |f| %>
+  <%= f.label :name %>
+  <%= f.text_field :name %><br>
+
+  <%= f.label :category %>
+  <%= f.select :category, Place.categories.keys.map { |c| [c.humanize, c] } %><br>
+
+  <p>地図から場所を選んでください</p>
+  <div id="map" style="height: 300px; width: 100%; margin-bottom: 1rem;"></div>
+
+  <%= f.hidden_field :latitude, id: "place_latitude" %>
+  <%= f.hidden_field :longitude, id: "place_longitude" %>
+  <%= f.hidden_field :address, id: "place_address" %>
+
+  <% [:nursery, :diaper, :kids_toilet, :stroller, :playground, :shade, :bench, :elevator, :parking].each do |attr| %>
+    <%= f.label attr %>
+    <%= f.check_box attr %><br>
+  <% end %>
+
+  <%= f.label :photos %>
+  <%= f.file_field :photos, multiple: true %><br>
+
+  <%= f.submit "投稿する" %>
+<% end %>
+
+<%= javascript_pack_tag 'place_map', 'data-turbolinks-track': 'reload' %>
+
+<!--<script src="https://maps.googleapis.com/maps/api/js?key=<%= ENV['Geocoding_API_Key'] %>&callback=initMap"></script>-->

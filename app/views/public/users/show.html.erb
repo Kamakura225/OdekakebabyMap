@@ -1,0 +1,74 @@
+<div class="container mt-5">
+
+  <!-- マイページヘッダー -->
+  <div class="text-center mb-4">
+    <h1 class="fw-bold"><%= @user.nickname %>さんのマイページ</h1>
+  </div>
+
+  <!-- プロフィールカード -->
+  <div class="card mb-4 shadow-sm border-0 bg-light">
+    <div class="card-body">
+      <h5 class="card-title">👤 プロフィール情報</h5>
+      <p class="mb-1">ニックネーム：<strong><%= @user.nickname %></strong></p>
+      <p class="mb-3">メールアドレス：<strong><%= @user.email %></strong></p>
+      <%= link_to "プロフィール編集", edit_public_user_path(@user), class: "btn btn-outline-primary btn-sm" %>
+      <%= button_to "退会する", withdraw_public_user_path(@user), method: :patch,
+                    data: { confirm: "本当に退会しますか？" },
+                    class: "btn btn-outline-danger btn-sm ms-2" %>
+    </div>
+  </div>
+
+  <!-- お気に入り施設 -->
+  <div class="card mb-4 shadow-sm border-0">
+    <div class="card-header bg-primary text-white">
+      📌 お気に入り施設一覧
+    </div>
+    <ul class="list-group list-group-flush">
+      <% @bookmarked_places.each do |place| %>
+        <li class="list-group-item">
+          <%= link_to place.name, place_path(place), class: "text-decoration-none" %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+
+  <!-- コメント履歴 -->
+  <div class="card mb-4 shadow-sm border-0">
+    <div class="card-header bg-success text-white">
+      💬 コメント履歴
+    </div>
+    <ul class="list-group list-group-flush">
+      <% @comments.each do |comment| %>
+        <li class="list-group-item">
+          <div>
+            <strong>
+              <%= link_to comment.place.name, place_path(comment.place), class: "text-decoration-none" %>
+            </strong>
+          </div>
+          <div><%= comment.content %></div>
+          <small class="text-muted"><%= l(comment.created_at, format: :short) %></small>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+
+  <!-- いいね履歴 -->
+  <div class="card mb-5 shadow-sm border-0">
+    <div class="card-header bg-warning text-dark">
+      👍 いいね履歴
+    </div>
+    <ul class="list-group list-group-flush">
+      <% @likes.each do |like| %>
+        <li class="list-group-item">
+          <% if like.likeable_type == "Place" %>
+            施設：<%= link_to like.likeable.name, place_path(like.likeable), class: "text-decoration-none" %>
+          <% elsif like.likeable_type == "Comment" %>
+            コメント：<%= truncate(like.likeable.content, length: 30) %><br>
+            （投稿先：<%= link_to like.likeable.place.name, place_path(like.likeable.place), class: "text-decoration-none" %>）
+          <% end %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+
+</div>

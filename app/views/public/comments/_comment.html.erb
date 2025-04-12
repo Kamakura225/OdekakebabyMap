@@ -1,0 +1,9 @@
+<div class="card mb-2">
+  <div class="card-body">
+    <h5 class="card-title"><%= comment.user.nickname %></h5>
+    <p class="card-text"><%= comment.body %></p>
+    <% if comment.rating.present? %>
+      <p class="card-text">評価: <%= comment.rating %> / 5</p>
+    <% end %>
+  </div>
+</div>

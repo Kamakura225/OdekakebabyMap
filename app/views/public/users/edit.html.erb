@@ -1,0 +1,21 @@
+<h3 class="mb-4">ユーザー情報の編集</h3>
+
+<div class="card shadow-sm">
+  <div class="card-body">
+    <%= form_with model: @user, url: public_user_path(@user), local: true do |f| %>
+      <div class="mb-3">
+        <%= f.label :nickname, class: "form-label" %>
+        <%= f.text_field :nickname, class: "form-control" %>
+      </div>
+
+      <div class="mb-3">
+        <%= f.label :email, class: "form-label" %>
+        <%= f.email_field :email, class: "form-control" %>
+      </div>
+
+      <div class="text-end">
+        <%= f.submit "更新する", class: "btn btn-primary" %>
+      </div>
+    <% end %>
+  </div>
+</div>
