@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2025_04_04_032250) do
+ActiveRecord::Schema.define(version: 2025_04_12_035448) do
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -67,6 +67,7 @@ ActiveRecord::Schema.define(version: 2025_04_04_032250) do
     t.integer "place_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "rating"
     t.index ["place_id"], name: "index_comments_on_place_id"
     t.index ["user_id"], name: "index_comments_on_user_id"
   end
@@ -83,7 +84,9 @@ ActiveRecord::Schema.define(version: 2025_04_04_032250) do
     t.integer "likeable_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "place_id", null: false
     t.index ["likeable_type", "likeable_id"], name: "index_likes_on_likeable"
+    t.index ["place_id"], name: "index_likes_on_place_id"
     t.index ["user_id"], name: "index_likes_on_user_id"
   end
 
@@ -105,6 +108,16 @@ ActiveRecord::Schema.define(version: 2025_04_04_032250) do
     t.integer "user_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.boolean "nursery"
+    t.boolean "diaper"
+    t.boolean "kids_toilet"
+    t.boolean "stroller"
+    t.boolean "playground"
+    t.boolean "shade"
+    t.boolean "bench"
+    t.boolean "elevator"
+    t.boolean "parking"
+    t.integer "status"
     t.index ["user_id"], name: "index_places_on_user_id"
   end
 
@@ -128,6 +141,7 @@ ActiveRecord::Schema.define(version: 2025_04_04_032250) do
   add_foreign_key "bookmarks", "users"
   add_foreign_key "comments", "places"
   add_foreign_key "comments", "users"
+  add_foreign_key "likes", "places"
   add_foreign_key "likes", "users"
   add_foreign_key "place_features", "features"
   add_foreign_key "place_features", "places"

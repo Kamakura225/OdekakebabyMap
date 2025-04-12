@@ -1,0 +1,4 @@
+$("#comments").append("<%= j render(@comment) %>");
+$("#new_comment")[0].reset();  // フォーム全体をリセット（body だけでなく rating もリセットされる）
+$("#comment_body").val('');
+$("#comment_rating").val('');

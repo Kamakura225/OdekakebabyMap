@@ -23,6 +23,7 @@ devise_for :admin, skip: [:registrations], controllers: {
         patch :withdraw, on: :member
       end
       resources :bookmarks, only: [:index, :create, :destroy]
+      
       resources :places do
         resources :comments, only: [:create, :destroy]
         resources :likes, only: [:create, :destroy]        
@@ -38,8 +39,11 @@ devise_for :admin, skip: [:registrations], controllers: {
   # 管理者用（admin）ルーティング
     namespace :admin do
       resources :places, only: [:index, :show, :destroy] do
+        member do
+          patch :update_status  # ステータス更新
         # 投稿の承認や削除が必要な場合に追加
         # resources :approvals, only: [:update] # 例：承認用
+        end
       end
       resources :users, only: [:index, :show] do
         member do

@@ -92,6 +92,8 @@ GEM
     dotenv-rails (3.1.7)
       dotenv (= 3.1.7)
       railties (>= 6.1)
+    enum_help (0.0.19)
+      activesupport (>= 3.0.0)
     erubi (1.13.1)
     ffi (1.17.1)
     ffi (1.17.1-arm64-darwin)
@@ -264,6 +266,7 @@ DEPENDENCIES
   capybara (>= 3.26)
   devise
   dotenv-rails
+  enum_help
   geocoder
   jbuilder (~> 2.7)
   listen (~> 3.3)

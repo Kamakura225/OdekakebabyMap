@@ -1,2 +1,5 @@
-<h1>Admin::Places#show</h1>
-<p>Find me in app/views/admin/places/show.html.erb</p>
+<%= form_with(model: @place, url: update_status_admin_place_path(@place), method: :patch) do |f| %>
+  <%= f.label :status, "ステータス" %>
+  <%= f.select :status, Place.statuses.keys.map { |status| [status.humanize, status] }, { selected: @place.status } %>
+  <%= f.submit "ステータス更新" %>
+<% end %>

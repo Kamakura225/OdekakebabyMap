@@ -15,6 +15,15 @@ class Admin::PlacesController < ApplicationController
     redirect_to admin_places_path, notice: '施設・公園が削除されました！'
   end
 
+  def update_status
+    @place = Place.find(params[:id])
+    if @place.update(status: params[:status])
+      redirect_to admin_place_path(@place), notice: 'ステータスが更新されました。'
+    else
+      redirect_to admin_place_path(@place), alert: 'ステータスの更新に失敗しました。'
+    end
+  end
+
   private
 
   def authenticate_admin!
