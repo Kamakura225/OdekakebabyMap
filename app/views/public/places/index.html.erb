@@ -54,11 +54,13 @@
 <script>
   let markers = [];
 
+  // 地図上にマーカーを表示する関数  
   function renderMarkers(map, places) {
-    // すでにあるマーカーを全削除
+    // すでにあるマーカーを削除
     markers.forEach(marker => marker.setMap(null));
     markers = [];
 
+    // 各施設ごとにマーカーを作成
     places.forEach(place => {
       const marker = new google.maps.Marker({
         position: { lat: place.latitude, lng: place.longitude },
@@ -66,6 +68,7 @@
         title: place.name
       });
 
+      // マーカーをクリックしたら詳細情報を表示
       marker.addListener("click", () => {
         document.getElementById("place-photo").src = place.main_image_url || '/no_image.jpg';
         document.getElementById("place-name").textContent = place.name;
@@ -78,25 +81,23 @@
     });
   }
 
+  // placesデータはRailsから受け取る
+  const places = <%= raw @places.to_json(
+    only: [:id, :name, :latitude, :longitude, :category, :nursery],
+    methods: [:main_image_url, :comments_count, :likes_count, :facility_summary, :place_path]
+  ) %>;
+
+  // Google Map 初期化関数
   window.initMap = function() {
     const map = new google.maps.Map(document.getElementById("map"), {
       center: { lat: 35.681236, lng: 139.767125 },
       zoom: 12,
     });
 
-    const places = <%= raw @places.to_json(only: [:id, :name, :latitude, :longitude, :category, :nursery], 
-                  methods: [:main_image_url, :comments_count, :likes_count, :facility_summary, :place_path]) %>;
-
-    places.forEach(place => {
-      const marker = new google.maps.Marker({
-        position: { lat: place.latitude, lng: place.longitude },
-        map: map,
-        title: place.name
-      });
-    });
-
+    // 最初にすべての施設を表示
     renderMarkers(map, places);
 
+    // フィルター処理
     $("#filter-form input").on("change", function () {
       const filterNursery = $("#filter_nursery").prop("checked");
       const filterPark = $("#filter_category_park").prop("checked");
@@ -110,5 +111,5 @@
       renderMarkers(map, filtered);
       document.getElementById("place-info-banner").style.display = "none";
     });
-  }
+  };
 </script>
