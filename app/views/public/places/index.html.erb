@@ -21,19 +21,26 @@
   <% end %>
 
   <!-- Google Map -->
-    <div id="map" style="width: 100%; height: 500px;" class="mb-4"></div>
+    <div id="map" style="width: 100%; height: 800px;" class="mb-4"></div>
 
     <!-- 投稿一覧 -->
 <h3>投稿された施設・公園</h3>
 <ul>
-  <% @places.each do |place| %>
-    <li>
-      <strong><%= place.name %></strong><br>
-      カテゴリ: <%= place.category %><br>
-      住所: <%= place.address %><br>
-      <%= link_to '詳細', public_place_path(place) %>
-    </li>
-  <% end %>
+  <% if @places.present? %>
+  <h3>投稿された施設・公園</h3>
+  <ul>
+    <% @places.each do |place| %>
+      <li>
+        <strong><%= place.name %></strong><br>
+        カテゴリ: <%= place.category %><br>
+        住所: <%= place.address %><br>
+        <%= link_to '詳細', public_place_path(place) %>
+      </li>
+    <% end %>
+  </ul>
+<% else %>
+  <p>施設・公園の投稿がまだありません。</p>
+<% end %>
 
   <!-- ピンをクリックした時に表示するバナー -->
     <div id="place-info-banner" class="card shadow-sm fixed-bottom m-4" style="display: none; max-width: 600px;">
@@ -49,16 +56,17 @@
 
 
 <!-- Google Maps API -->
-
+<%= javascript_pack_tag 'place_index_map' %>
 
 <script>
   let markers = [];
-
+  // 地図上にマーカーを表示する関数
   function renderMarkers(map, places) {
-    // すでにあるマーカーを全削除
+    // すでにあるマーカーを削除
     markers.forEach(marker => marker.setMap(null));
     markers = [];
 
+    // 各施設ごとにマーカーを作成
     places.forEach(place => {
       const marker = new google.maps.Marker({
         position: { lat: place.latitude, lng: place.longitude },
@@ -66,6 +74,7 @@
         title: place.name
       });
 
+      // マーカーをクリックしたら詳細情報を表示
       marker.addListener("click", () => {
         document.getElementById("place-photo").src = place.main_image_url || '/no_image.jpg';
         document.getElementById("place-name").textContent = place.name;
@@ -78,37 +87,38 @@
     });
   }
 
+  // placesデータはRailsから受け取る
+  const places = <%= raw @places.to_json(
+    only: [:id, :name, :latitude, :longitude, :category, :nursery],
+    methods: [:main_image_url, :comments_count, :likes_count, :facility_summary, :place_path]
+  ) %>;
+
+  // Google Map 初期化関数
   window.initMap = function() {
     const map = new google.maps.Map(document.getElementById("map"), {
       center: { lat: 35.681236, lng: 139.767125 },
-      zoom: 12,
+      zoom: 15,
     });
 
-    const places = <%= raw @places.to_json(only: [:id, :name, :latitude, :longitude, :category, :nursery], 
-                  methods: [:main_image_url, :comments_count, :likes_count, :facility_summary, :place_path]) %>;
-
-    places.forEach(place => {
-      const marker = new google.maps.Marker({
-        position: { lat: place.latitude, lng: place.longitude },
-        map: map,
-        title: place.name
-      });
-    });
-
+    // 最初にすべての施設を表示
     renderMarkers(map, places);
 
-    $("#filter-form input").on("change", function () {
-      const filterNursery = $("#filter_nursery").prop("checked");
-      const filterPark = $("#filter_category_park").prop("checked");
+    // フィルター処理
+$("#filter-form input").on("change", function () {
+  const filterNursery = $("#filter_nursery").prop("checked");
+  const filterPark = $("#filter_category_park").prop("checked");
 
-      const filtered = places.filter(place => {
-        if (filterNursery && !place.nursery) return false;
-        if (filterPark && place.category !== "park") return false;
-        return true;
-      });
+  // フィルタリング処理
+  const filtered = places.filter(place => {
+    if (filterNursery && !place.nursery) return false;
+    if (filterPark && place.category !== "park") return false;
+    return true;
+  });
 
-      renderMarkers(map, filtered);
-      document.getElementById("place-info-banner").style.display = "none";
+  // フィルター後のマーカーを地図に表示
+  renderMarkers(map, filtered);
+  // 情報バナーを非表示に
+  document.getElementById("place-info-banner").style.display = "none";
     });
-  }
+  };
 </script>

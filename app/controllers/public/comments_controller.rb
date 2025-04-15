@@ -3,16 +3,14 @@ class Public::CommentsController < ApplicationController
   before_action :set_place
 
   def create
-    @comment = @place.comments.build(comment_params)
-    @comment.user = current_user
+    @place = Place.find(params[:place_id])
+    @comment = current_user.comments.new(comment_params)
+    @comment.place_id = @place.id
     if @comment.save
-      # コメントが保存されたら、部分テンプレートで表示を更新
-      respond_to do |format|
-        format.html { redirect_to public_place_path(@place), notice: "コメントを投稿しました。" }
-        format.js
-      end
+      redirect_to place_path(@place), notice: "コメントを投稿しました"
     else
       @comments = @place.comments.includes(:user)
+      
       flash.now[:alert] = "コメントの投稿に失敗しました。"
       render 'public/places/show'
     end

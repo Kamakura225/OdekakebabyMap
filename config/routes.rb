@@ -26,7 +26,7 @@ devise_for :admin, skip: [:registrations], controllers: {
       
       resources :places do
         resources :comments, only: [:create, :destroy]
-        resources :likes, only: [:create, :destroy]        
+        resources :likes, only: [:create, :destroy]      
       end
     end
 
