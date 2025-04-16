@@ -19,7 +19,7 @@
   <%= f.select :category, Place.categories.keys.map { |c| [c.humanize, c] } %><br>
 
   <p>地図から場所を選んでください</p>
-  <div id="map" style="height: 300px; width: 100%; margin-bottom: 1rem;"></div>
+  <div id="map" style="height: 800px; width: 100%; margin-bottom: 1rem;"></div>
 
   <%= f.hidden_field :latitude, id: "place_latitude" %>
   <%= f.hidden_field :longitude, id: "place_longitude" %>

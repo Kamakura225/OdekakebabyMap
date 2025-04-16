@@ -4,10 +4,10 @@ class Public::CommentsController < ApplicationController
 
   def create
     @place = Place.find(params[:place_id])
-    @comment = current_user.comments.new(comment_params)
-    @comment.place_id = @place.id
+    @comment = @place.comments.new(comment_params)
+    @comment.user = current_user
     if @comment.save
-      redirect_to place_path(@place), notice: "コメントを投稿しました"
+      redirect_to public_place_path(@place), notice: "コメントを投稿しました"
     else
       @comments = @place.comments.includes(:user)
       
