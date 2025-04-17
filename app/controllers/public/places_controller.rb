@@ -3,20 +3,25 @@ class Public::PlacesController < ApplicationController
   before_action :set_place, only: [:show]
 
   def index
-    @places = Place.where(status: :approved).includes(:comments, :likes, photos_attachments: :photos_blobs) # 施設・公園の一覧
+    @places = Place.where(status: :approved).where.not(latitude: nil, longitude: nil)
+            .includes(:comments, :likes, photos_attachments: :photos_blobs)
   end
 
   def show
     @place = Place.find(params[:id]) # 施設・公園の詳細
-    @place.comments.build
+    # @place.comments.build
     @comments = @place.comments.includes(:user)
+    @comment = Comment.new
   end
 
+  # ゲストユーザーがアクセスできないアクションを制限
   def new
+    redirect_to public_places_path, alert: 'ゲストユーザーは施設の登録ができません' if guest_user?
     @place = Place.new
   end
 
   def create
+    redirect_to public_places_path, alert: 'ゲストユーザーは施設の登録ができません' if guest_user?
     @place = current_user.places.build(place_params)
     # @place.status = :pending # デフォルトは承認待ち
     @place.status = :approved
@@ -31,6 +36,7 @@ class Public::PlacesController < ApplicationController
 
   def edit
     @place = Place.find(params[:id])
+    redirect_to public_place_path(@place), alert: 'ゲストユーザーは施設の編集ができません' if guest_user?
   end
 
   def update

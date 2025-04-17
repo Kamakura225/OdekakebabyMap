@@ -2,14 +2,14 @@ class Place < ApplicationRecord
   belongs_to :user
   
   has_many :comments, dependent: :destroy
-  has_many :likes, dependent: :destroy
+  has_many :likes, as: :likeable, dependent: :destroy
   has_many :bookmarks, dependent: :destroy
   has_many :bookmarked_users, through: :bookmarks, source: :user
 
   has_many_attached :photos
 
   enum category: { park: 0, facility: 1 } # 公園か施設かの分類
-  enum status: { pending: 0, approved: 1 }
+  enum status: { pending: 0, approved: 1, rejected: 2 }
 
   # has_many :place_features, dependent: :destroy
   has_many :features, through: :place_features
@@ -42,12 +42,7 @@ class Place < ApplicationRecord
   end
 
   def facility_summary
-    facilities = []
-    facilities << "授乳室あり" if nursery
-    facilities << "おむつ交換台あり" if diaper
-    facilities << "遊具あり" if playground
-    facilities << "駐車場あり" if parking
-    facilities.join("・")
+    "#{category}（#{address}）"
   end
 
   def place_path

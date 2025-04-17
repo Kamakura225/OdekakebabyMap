@@ -1,5 +1,10 @@
 <class="container-fluid mt-4">
   <h1 class="mb-4">施設・公園一覧</h1>
+<!--検索-->
+  <div class="mb-3">
+    <input type="text" id="keyword-search" class="form-control" placeholder="キーワードで検索（例: 渋谷 授乳室）">
+    <button class="btn btn-outline-primary" id="search-btn">検索</button>
+  </div>
 
   <div class="mb-4">
     <form id="filter-form" class="row g-2 align-items-center">
@@ -11,6 +16,7 @@
         <input type="checkbox" id="filter_category_park" class="form-check-input">
         <label for="filter_category_park" class="form-check-label">公園のみ</label>
       </div>
+      
     </form>
   </div>
 
@@ -21,19 +27,7 @@
   <% end %>
 
   <!-- Google Map -->
-    <div id="map" style="width: 100%; height: 500px;" class="mb-4"></div>
-
-    <!-- 投稿一覧 -->
-<h3>投稿された施設・公園</h3>
-<ul>
-  <% @places.each do |place| %>
-    <li>
-      <strong><%= place.name %></strong><br>
-      カテゴリ: <%= place.category %><br>
-      住所: <%= place.address %><br>
-      <%= link_to '詳細', public_place_path(place) %>
-    </li>
-  <% end %>
+    <div id="map" style="width: 100%; height: 800px;" class="mb-4"></div>
 
   <!-- ピンをクリックした時に表示するバナー -->
     <div id="place-info-banner" class="card shadow-sm fixed-bottom m-4" style="display: none; max-width: 600px;">
@@ -44,71 +38,16 @@
       <p id="place-details" class="mb-0 small text-muted"></p>
       <a href="#" id="place-link" class="btn btn-sm btn-primary mt-2">詳細を見る</a>
     </div>
+
   </div>
 </div>
 
+<script>
+  window.places = <%= raw @places.to_json(
+    only: [:id, :name, :latitude, :longitude, :category, :nursery],
+    methods: [:main_image_url, :comments_count, :likes_count, :facility_summary, :place_path]
+  ) %>;  
+</script>
 
 <!-- Google Maps API -->
-
-
-<script>
-  let markers = [];
-
-  function renderMarkers(map, places) {
-    // すでにあるマーカーを全削除
-    markers.forEach(marker => marker.setMap(null));
-    markers = [];
-
-    places.forEach(place => {
-      const marker = new google.maps.Marker({
-        position: { lat: place.latitude, lng: place.longitude },
-        map: map,
-        title: place.name
-      });
-
-      marker.addListener("click", () => {
-        document.getElementById("place-photo").src = place.main_image_url || '/no_image.jpg';
-        document.getElementById("place-name").textContent = place.name;
-        document.getElementById("place-details").textContent = place.facility_summary;
-        document.getElementById("place-link").href = place.place_path;
-        document.getElementById("place-info-banner").style.display = "block";
-      });
-
-      markers.push(marker);
-    });
-  }
-
-  window.initMap = function() {
-    const map = new google.maps.Map(document.getElementById("map"), {
-      center: { lat: 35.681236, lng: 139.767125 },
-      zoom: 12,
-    });
-
-    const places = <%= raw @places.to_json(only: [:id, :name, :latitude, :longitude, :category, :nursery], 
-                  methods: [:main_image_url, :comments_count, :likes_count, :facility_summary, :place_path]) %>;
-
-    places.forEach(place => {
-      const marker = new google.maps.Marker({
-        position: { lat: place.latitude, lng: place.longitude },
-        map: map,
-        title: place.name
-      });
-    });
-
-    renderMarkers(map, places);
-
-    $("#filter-form input").on("change", function () {
-      const filterNursery = $("#filter_nursery").prop("checked");
-      const filterPark = $("#filter_category_park").prop("checked");
-
-      const filtered = places.filter(place => {
-        if (filterNursery && !place.nursery) return false;
-        if (filterPark && place.category !== "park") return false;
-        return true;
-      });
-
-      renderMarkers(map, filtered);
-      document.getElementById("place-info-banner").style.display = "none";
-    });
-  }
-</script>
+<%= javascript_pack_tag 'place_index_map' %>

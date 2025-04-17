@@ -19,14 +19,26 @@
   <%= f.select :category, Place.categories.keys.map { |c| [c.humanize, c] } %><br>
 
   <p>地図から場所を選んでください</p>
-  <div id="map" style="height: 300px; width: 100%; margin-bottom: 1rem;"></div>
+  <div id="map" style="height: 800px; width: 100%; margin-bottom: 1rem;"></div>
 
   <%= f.hidden_field :latitude, id: "place_latitude" %>
   <%= f.hidden_field :longitude, id: "place_longitude" %>
   <%= f.hidden_field :address, id: "place_address" %>
 
-  <% [:nursery, :diaper, :kids_toilet, :stroller, :playground, :shade, :bench, :elevator, :parking].each do |attr| %>
-    <%= f.label attr %>
+  <% facility_labels = {
+  nursery: "授乳室",
+  diaper: "おむつ交換台",
+  kids_toilet: "幼児用トイレ",
+  stroller: "ベビーカー対応",
+  playground: "遊具",
+  shade: "木陰",
+  bench: "ベンチ",
+  elevator: "エレベーター",
+  parking: "駐車場"
+  } %>
+
+  <% facility_labels.each do |attr, label_text| %>
+    <%= f.label attr, label_text %>
     <%= f.check_box attr %><br>
   <% end %>
 
@@ -36,6 +48,6 @@
   <%= f.submit "投稿する" %>
 <% end %>
 
-<%= javascript_pack_tag 'place_map', 'data-turbolinks-track': 'reload' %>
+<%= javascript_pack_tag 'place_new_map' %>
 
 <!--<script src="https://maps.googleapis.com/maps/api/js?key=<%= ENV['Geocoding_API_Key'] %>&callback=initMap"></script>-->
