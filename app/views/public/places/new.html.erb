@@ -48,6 +48,11 @@
   <%= f.submit "投稿する" %>
 <% end %>
 
+<script
+  async defer src="https://maps.googleapis.com/maps/api/js?key=<%= ENV['GOOGLE_MAPS_API_KEY'] %>&libraries=places&callback=initMap">
+</script>      
+
+
 <%= javascript_pack_tag 'place_new_map' %>
 
 <!--<script src="https://maps.googleapis.com/maps/api/js?key=<%= ENV['Geocoding_API_Key'] %>&callback=initMap"></script>-->

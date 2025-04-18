@@ -42,6 +42,10 @@
   </div>
 </div>
 
+<script
+  async defer src="https://maps.googleapis.com/maps/api/js?key=<%= ENV['GOOGLE_MAPS_API_KEY'] %>&libraries=places&callback=initMap">
+</script>      
+
 <script>
   window.places = <%= raw @places.to_json(
     only: [:id, :name, :latitude, :longitude, :category, :nursery],
@@ -49,5 +53,5 @@
   ) %>;  
 </script>
 
-<!-- Google Maps API -->
+
 <%= javascript_pack_tag 'place_index_map' %>

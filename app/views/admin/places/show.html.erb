@@ -1,5 +1,51 @@
-<%= form_with(model: @place, url: update_status_admin_place_path(@place), method: :patch) do |f| %>
-  <%= f.label :status, "ステータス" %>
-  <%= f.select :status, Place.statuses.keys.map { |status| [status.humanize, status] }, { selected: @place.status } %>
-  <%= f.submit "ステータス更新" %>
+<h1><%= @place.name %></h1>
+
+<p><strong>カテゴリ:</strong> <%= @place.category_i18n %></p>
+<p><strong>住所:</strong> <%= @place.address %></p>
+<p><strong>投稿者:</strong> <%= @place.user.nickname %>（ID: <%= @place.user.id %>）</p>
+<p><strong>ステータス:</strong> <%= @place.status_i18n %></p>
+
+<h2>設備情報</h2>
+<ul>
+  <li>授乳室: <%= @place.nursery ? 'あり' : 'なし' %></li>
+  <li>おむつ交換台: <%= @place.diaper ? 'あり' : 'なし' %></li>
+  <li>子供用トイレ: <%= @place.kids_toilet ? 'あり' : 'なし' %></li>
+  <li>ベビーカー対応: <%= @place.stroller ? 'あり' : 'なし' %></li>
+  <li>遊具: <%= @place.playground ? 'あり' : 'なし' %></li>
+  <li>木陰: <%= @place.shade ? 'あり' : 'なし' %></li>
+  <li>ベンチ: <%= @place.bench ? 'あり' : 'なし' %></li>
+  <li>エレベーター: <%= @place.elevator ? 'あり' : 'なし' %></li>
+  <li>駐車場: <%= @place.parking ? 'あり' : 'なし' %></li>
+  
+  <!-- 他も必要に応じて追加 -->
+</ul>
+
+<h2>写真</h2>
+<% if @place.photos.attached? %>
+  <% @place.photos.each do |photo| %>
+    <%= image_tag photo.variant(resize_to_limit: [300, 300]) %>
+  <% end %>
+<% else %>
+  <p>写真はまだ投稿されていません</p>
 <% end %>
+
+<h2>コメント一覧</h2>
+<% @comments.each do |comment| %>
+  <div class="border rounded p-2 mb-2">
+    <p><strong><%= comment.user.nickname %></strong> さん：</p>
+    <p><%= comment.content %></p>
+    <p><%= comment.created_at %></p>
+  </div>
+<% end %>
+
+<%= form_with model: [:admin, @place], method: :patch, local: true do |f| %>
+  <div class="form-group">
+    <label for="status">ステータス変更</label>
+    <%= f.select :status, Place.statuses.keys.map { |key| [Place.statuses_i18n[key], key] }, {}, class: "form-select" %>
+  </div>
+  <%= f.submit "更新", class: "btn btn-primary mt-2" %>
+<% end %>
+
+<div class="mt-4">  
+  <%= link_to '削除', admin_place_path(@place), method: :delete, data: { confirm: '本当に削除しますか？' }, class: "btn btn-danger" %>
+</div>

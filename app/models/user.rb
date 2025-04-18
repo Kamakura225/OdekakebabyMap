@@ -9,9 +9,8 @@ class User < ApplicationRecord
   has_many :likes, dependent: :destroy
   has_many :bookmarks, dependent: :destroy
   has_many :bookmarked_places, through: :bookmarks, source: :place
-  
 
-
+  has_one_attached :profile_image
   
   GUEST_USER_EMAIL = "guest@example.com"
   def self.guest

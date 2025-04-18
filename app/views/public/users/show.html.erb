@@ -9,12 +9,23 @@
   <div class="card mb-4 shadow-sm border-0 bg-light">
     <div class="card-body">
       <h5 class="card-title">👤 プロフィール情報</h5>
-      <p class="mb-1">ニックネーム：<strong><%= @user.nickname %></strong></p>
-      <p class="mb-3">メールアドレス：<strong><%= @user.email %></strong></p>
+
+      <div class="d-flex align-items-center mb-3">
+        <div class="me-3">
+          <% if @user.profile_image.attached? %>
+            <%= image_tag @user.profile_image.variant(resize_to_limit: [100, 100]), class: "rounded-circle" %>
+          <% else %>
+            <p class="text-muted">プロフィール画像未設定</p>
+          <% end %>
+        </div>
+
+      <div>
+        <p class="mb-1">ニックネーム：<strong><%= @user.nickname %></strong></p>
+        <p class="mb-3">メールアドレス：<strong><%= @user.email %></strong></p>
+      </div>
+      
       <%= link_to "プロフィール編集", edit_public_user_path(@user), class: "btn btn-outline-primary btn-sm" %>
-      <%= button_to "退会する", withdraw_public_user_path(@user), method: :patch,
-                    data: { confirm: "本当に退会しますか？" },
-                    class: "btn btn-outline-danger btn-sm ms-2" %>
+      <%= button_to "退会する", withdraw_public_user_path(@user), method: :patch, data: { confirm: "本当に退会しますか？" }, class: "btn btn-outline-danger btn-sm ms-2" %>
     </div>
   </div>
 
@@ -42,7 +53,7 @@
         <li class="list-group-item">
           <div>
             <strong>
-              <%= link_to comment.place.name, place_path(comment.place), class: "text-decoration-none" %>
+              <%= link_to comment.place.name, public_place_path(comment.place), class: "text-decoration-none" %>
             </strong>
           </div>
           <div><%= comment.content %></div>

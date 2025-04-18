@@ -1,2 +1,14 @@
-<h1>Admin::Places#index</h1>
-<p>Find me in app/views/admin/places/index.html.erb</p>
+<h3>投稿された施設・公園</h3>
+<ul>
+  <% @places.each do |place| %>
+    <li>
+      <strong><%= place.name %></strong><br>
+      カテゴリ: <%= place.category %><br>
+      住所: <%= place.address %><br>
+      ステータス: <%= place.status %>
+      <%= link_to '詳細', admin_place_path(place) %>
+    </li>
+  <% end %>
+</ul>
+
+

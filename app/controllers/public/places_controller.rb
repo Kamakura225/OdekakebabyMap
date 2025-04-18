@@ -23,8 +23,8 @@ class Public::PlacesController < ApplicationController
   def create
     redirect_to public_places_path, alert: 'ゲストユーザーは施設の登録ができません' if guest_user?
     @place = current_user.places.build(place_params)
-    # @place.status = :pending # デフォルトは承認待ち
-    @place.status = :approved
+    @place.status = :pending # デフォルトは承認待ち
+    # @place.status = :approved
 
     if @place.save
       redirect_to public_place_path(@place), notice: "施設を投稿しました（承認待ち）"
