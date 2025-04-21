@@ -10,8 +10,15 @@ class Public::PlacesController < ApplicationController
   def show
     @place = Place.find(params[:id]) # 施設・公園の詳細
     # @place.comments.build
-    @comments = @place.comments.includes(:user)
+    @comments = @place.comments.includes(:user, :likes)
     @comment = Comment.new
+
+    approved_comments = @place.comments.where.not(rating: nil)
+    @average_rating = if approved_comments.any?
+                        (approved_comments.average(:rating).round(1) rescue nil)
+                      else
+                        nil
+                      end
   end
 
   # ゲストユーザーがアクセスできないアクションを制限

@@ -1,0 +1,4 @@
+$("#comment-<%= @comment.id %>-likes").html("<%= j render 'public/likes/like_buttons', comment: @comment, place: @place %>");
+
+$("#like-count-<%= @comment.id %>").text("<%= @comment.likes.good.count %>");
+$("#dislike-count-<%= @comment.id %>").text("<%= @comment.likes.bad.count %>"); 

@@ -19,16 +19,19 @@ devise_for :admin, skip: [:registrations], controllers: {
 
   # ユーザー用（public）ルーティング
   namespace :public do
+
+    get 'ranks/top_users', to: 'ranks#top_users', as: 'top_users'
+
     resources :users, only: [:show, :edit, :update] do
-      patch :withdraw, on: :member  # 退会処理
+      patch :withdraw, on: :member  
     end
 
     resources :bookmarks, only: [:index, :create, :destroy]
-
   
     resources :places do
-      resources :comments, only: [:create, :destroy]
-      resources :likes, only: [:create, :destroy]
+      resources :comments, only: [:create, :destroy] do
+        resources :likes, only: [:create, :destroy]
+      end
     end
   end
 
@@ -36,7 +39,7 @@ devise_for :admin, skip: [:registrations], controllers: {
     namespace :admin do
       resources :places, only: [:index, :show, :edit, :update, :destroy]
       resources :users, only: [:index, :show, :edit, :update]
-      resources :comments, only: [:index, :destroy]  # ← ここが修正ポイント！
+      resources :comments, only: [:index, :destroy]  
     end
 
   # トップページのルーティング

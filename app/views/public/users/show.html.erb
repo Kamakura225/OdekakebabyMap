@@ -1,63 +1,59 @@
-<div class="container mt-5">
-
+<div class="container my-5">
   <!-- マイページヘッダー -->
-  <div class="text-center mb-4">
-    <h1 class="fw-bold"><%= @user.nickname %>さんのマイページ</h1>
+  <div class="text-center mb-5">
+    <h1 class="fw-bold display-5"><%= @user.nickname %>さんのマイページ</h1>
   </div>
 
   <!-- プロフィールカード -->
-  <div class="card mb-4 shadow-sm border-0 bg-light">
-    <div class="card-body">
-      <h5 class="card-title">👤 プロフィール情報</h5>
-
-      <div class="d-flex align-items-center mb-3">
-        <div class="me-3">
+  <div class="card mb-5 shadow-sm border-0">
+    <div class="card-body bg-light rounded-3">
+      <h5 class="card-title mb-4"><i class="fa-solid fa-user me-2"></i>プロフィール情報</h5>
+      <div class="d-flex flex-column flex-md-row align-items-center">
+        <div class="me-md-4 mb-3 mb-md-0">
           <% if @user.profile_image.attached? %>
-            <%= image_tag @user.profile_image.variant(resize_to_limit: [100, 100]), class: "rounded-circle" %>
+            <%= image_tag @user.profile_image.variant(resize_to_limit: [100, 100]), class: "rounded-circle border border-2" %>
           <% else %>
-            <p class="text-muted">プロフィール画像未設定</p>
+            <div class="text-muted">プロフィール画像未設定</div>
           <% end %>
         </div>
-
-      <div>
-        <p class="mb-1">ニックネーム：<strong><%= @user.nickname %></strong></p>
-        <p class="mb-3">メールアドレス：<strong><%= @user.email %></strong></p>
+        <div class="flex-grow-1">
+          <p class="mb-1">ニックネーム：<strong><%= @user.nickname %></strong></p>
+          <p class="mb-3">メールアドレス：<strong><%= @user.email %></strong></p>
+          <%= link_to "プロフィール編集", edit_public_user_path(@user), class: "btn btn-outline-primary btn-sm me-2" %>
+          <%= button_to "退会する", withdraw_public_user_path(@user), method: :patch, data: { confirm: "本当に退会しますか？" }, class: "btn btn-outline-danger btn-sm" %>
+        </div>
       </div>
-      
-      <%= link_to "プロフィール編集", edit_public_user_path(@user), class: "btn btn-outline-primary btn-sm" %>
-      <%= button_to "退会する", withdraw_public_user_path(@user), method: :patch, data: { confirm: "本当に退会しますか？" }, class: "btn btn-outline-danger btn-sm ms-2" %>
     </div>
   </div>
 
   <!-- お気に入り施設 -->
-  <div class="card mb-4 shadow-sm border-0">
-    <div class="card-header bg-primary text-white">
+  <div class="card mb-5 shadow-sm border-0">
+    <div class="card-header bg-primary text-white fw-bold">
       📌 お気に入り施設一覧
     </div>
     <ul class="list-group list-group-flush">
       <% @bookmarked_places.each do |place| %>
         <li class="list-group-item">
-          <%= link_to place.name, place_path(place), class: "text-decoration-none" %>
+          <i class="fa-solid fa-location-dot me-2 text-primary"></i>
+          <%= link_to place.name, public_place_path(place), class: "text-decoration-none fw-semibold" %>
         </li>
       <% end %>
     </ul>
   </div>
 
   <!-- コメント履歴 -->
-  <div class="card mb-4 shadow-sm border-0">
-    <div class="card-header bg-success text-white">
+  <div class="card mb-5 shadow-sm border-0">
+    <div class="card-header bg-success text-white fw-bold">
       💬 コメント履歴
     </div>
     <ul class="list-group list-group-flush">
       <% @comments.each do |comment| %>
         <li class="list-group-item">
-          <div>
-            <strong>
-              <%= link_to comment.place.name, public_place_path(comment.place), class: "text-decoration-none" %>
-            </strong>
+          <div class="fw-semibold">
+            <%= link_to comment.place.name, public_place_path(comment.place), class: "text-decoration-none" %>
           </div>
+          <div class="text-muted mb-1 small">投稿日時：<%= l(comment.created_at, format: :short) %></div>
           <div><%= comment.content %></div>
-          <small class="text-muted"><%= l(comment.created_at, format: :short) %></small>
         </li>
       <% end %>
     </ul>
@@ -65,21 +61,22 @@
 
   <!-- いいね履歴 -->
   <div class="card mb-5 shadow-sm border-0">
-    <div class="card-header bg-warning text-dark">
+    <div class="card-header bg-warning text-dark fw-bold">
       👍 いいね履歴
     </div>
     <ul class="list-group list-group-flush">
       <% @likes.each do |like| %>
         <li class="list-group-item">
           <% if like.likeable_type == "Place" %>
-            施設：<%= link_to like.likeable.name, place_path(like.likeable), class: "text-decoration-none" %>
+            <i class="fa-solid fa-thumbs-up me-2 text-warning"></i>
+            施設：<%= link_to like.likeable.name, public_place_path(like.likeable), class: "text-decoration-none fw-semibold" %>
           <% elsif like.likeable_type == "Comment" %>
+            <i class="fa-solid fa-comment me-2 text-success"></i>
             コメント：<%= truncate(like.likeable.content, length: 30) %><br>
-            （投稿先：<%= link_to like.likeable.place.name, place_path(like.likeable.place), class: "text-decoration-none" %>）
+            <small class="text-muted">（投稿先：<%= link_to like.likeable.place.name, public_place_path(like.likeable.place), class: "text-decoration-none" %>）</small>
           <% end %>
         </li>
       <% end %>
     </ul>
   </div>
-
 </div>

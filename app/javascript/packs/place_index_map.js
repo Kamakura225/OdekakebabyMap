@@ -78,3 +78,5 @@ function applyFilters(map) {
   // 情報バナーは一旦閉じる
   document.getElementById("place-info-banner").style.display = "none";
 }
+
+

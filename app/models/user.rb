@@ -31,4 +31,12 @@ class User < ApplicationRecord
   def inactive_message
     !withdrawal ? super : :withdrawn_account
   end
+
+  def total_good_likes
+    Comment.joins(:likes)
+           .where(user_id: self.id, likes: { likeable_type: 'Comment', reaction_type: Like.reaction_types[:good] })
+           .count
+  
+  end
+
 end

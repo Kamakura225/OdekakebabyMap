@@ -9,6 +9,9 @@ class Admin::UsersController < ApplicationController
     @user = User.find(params[:id])
     @comments = @user.comments.includes(:place).order(created_at: :desc)
     @places = @user.places.order(created_at: :desc)
+
+    @good_count = Like.where(likeable_type: "Comment", reaction_type: "good", likeable_id: Comment.where(user_id: @user.id)).count
+    @bad_count = Like.where(likeable_type: "Comment", reaction_type: "bad", likeable_id: Comment.where(user_id: @user.id)).count
   end
 
   def edit

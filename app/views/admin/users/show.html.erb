@@ -17,6 +17,9 @@
   <%= f.submit "更新する", class: "btn btn-primary" %>
 <% end %>
 
+<p>👍 もらったグッド数：<%= @good_count %></p>
+<p>👎 もらったバッド数：<%= @bad_count %></p>
+
 <h3>投稿したコメント一覧</h3>
 <% if @comments.any? %>
   <ul>

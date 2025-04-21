@@ -10,9 +10,18 @@
     <%= link_to root_path, class: "navbar-brand" do %>
       <%= image_tag "おでかけ.png", alt: "Logo", width: 100 %>
     <% end %>
+    <% if user_signed_in? %>
+          <div class="me-3">
+            <strong>こんにちは！<%= current_user.nickname %>さん</strong>
+          </div>
+        <% end %>
 
-  <div class="collapse navbar-collapse justify-content-end">
-      <ul class="navbar-nav">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ml-auto text-right w-100">
         
           <% if current_admin %>
             <!-- 管理者ログイン中 -->
@@ -55,8 +64,11 @@
                 <%= link_to 'マイページ', public_user_path(current_user), class: "nav-link" %>
               </li>            
               <li class="nav-item">
-                <%= link_to 'ログアウト', destroy_user_session_path, method: :delete, class: "nav-link" %>
+                <%= link_to '人気ユーザーランキング', public_top_users_path, class: 'nav-link' %>
               </li>
+              <li class="nav-item">
+                <%= link_to 'ログアウト', destroy_user_session_path, method: :delete, class: "btn btn-outline-primary ms-2" %>
+              </li>              
             <% end %>
           <% else %>
           <!-- 未ログイン -->
