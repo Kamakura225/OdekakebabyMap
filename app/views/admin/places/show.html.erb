@@ -1,51 +1,87 @@
-<h1><%= @place.name %></h1>
+<div class="container my-4">
 
-<p><strong>カテゴリ:</strong> <%= @place.category_i18n %></p>
-<p><strong>住所:</strong> <%= @place.address %></p>
-<p><strong>投稿者:</strong> <%= @place.user.nickname %>（ID: <%= @place.user.id %>）</p>
-<p><strong>ステータス:</strong> <%= @place.status_i18n %></p>
-
-<h2>設備情報</h2>
-<ul>
-  <li>授乳室: <%= @place.nursery ? 'あり' : 'なし' %></li>
-  <li>おむつ交換台: <%= @place.diaper ? 'あり' : 'なし' %></li>
-  <li>子供用トイレ: <%= @place.kids_toilet ? 'あり' : 'なし' %></li>
-  <li>ベビーカー対応: <%= @place.stroller ? 'あり' : 'なし' %></li>
-  <li>遊具: <%= @place.playground ? 'あり' : 'なし' %></li>
-  <li>木陰: <%= @place.shade ? 'あり' : 'なし' %></li>
-  <li>ベンチ: <%= @place.bench ? 'あり' : 'なし' %></li>
-  <li>エレベーター: <%= @place.elevator ? 'あり' : 'なし' %></li>
-  <li>駐車場: <%= @place.parking ? 'あり' : 'なし' %></li>
-  
-  <!-- 他も必要に応じて追加 -->
-</ul>
-
-<h2>写真</h2>
-<% if @place.photos.attached? %>
-  <% @place.photos.each do |photo| %>
-    <%= image_tag photo.variant(resize_to_limit: [300, 300]) %>
-  <% end %>
-<% else %>
-  <p>写真はまだ投稿されていません</p>
-<% end %>
-
-<h2>コメント一覧</h2>
-<% @comments.each do |comment| %>
-  <div class="border rounded p-2 mb-2">
-    <p><strong><%= comment.user.nickname %></strong> さん：</p>
-    <p><%= comment.content %></p>
-    <p><%= comment.created_at %></p>
+  <div class="card mb-4">
+    <div class="card-body">
+      <h1 class="card-title"><%= @place.name %></h1>
+      <p><strong>カテゴリ:</strong> <%= @place.category_i18n %></p>
+      <p><strong>住所:</strong> <%= @place.address %></p>
+      <p><strong>投稿者:</strong> <%= @place.user.nickname %>（ID: <%= @place.user.id %>）</p>
+      <p><strong>ステータス:</strong> <%= @place.status_i18n %></p>
+    </div>
   </div>
-<% end %>
 
-<%= form_with model: [:admin, @place], method: :patch, local: true do |f| %>
-  <div class="form-group">
-    <label for="status">ステータス変更</label>
-    <%= f.select :status, Place.statuses.keys.map { |key| [Place.statuses_i18n[key], key] }, {}, class: "form-select" %>
+  <div class="card mb-4">
+    <div class="card-header">
+      <h2 class="mb-0">設備情報</h2>
+    </div>
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item">授乳室: <%= @place.nursery ? 'あり' : 'なし' %></li>
+      <li class="list-group-item">おむつ交換台: <%= @place.diaper ? 'あり' : 'なし' %></li>
+      <li class="list-group-item">子供用トイレ: <%= @place.kids_toilet ? 'あり' : 'なし' %></li>
+      <li class="list-group-item">ベビーカー対応: <%= @place.stroller ? 'あり' : 'なし' %></li>
+      <li class="list-group-item">遊具: <%= @place.playground ? 'あり' : 'なし' %></li>
+      <li class="list-group-item">木陰: <%= @place.shade ? 'あり' : 'なし' %></li>
+      <li class="list-group-item">ベンチ: <%= @place.bench ? 'あり' : 'なし' %></li>
+      <li class="list-group-item">エレベーター: <%= @place.elevator ? 'あり' : 'なし' %></li>
+      <li class="list-group-item">駐車場: <%= @place.parking ? 'あり' : 'なし' %></li>
+    </ul>
   </div>
-  <%= f.submit "更新", class: "btn btn-primary mt-2" %>
-<% end %>
 
-<div class="mt-4">  
-  <%= link_to '削除', admin_place_path(@place), method: :delete, data: { confirm: '本当に削除しますか？' }, class: "btn btn-danger" %>
+  <div class="card mb-4">
+    <div class="card-header">
+      <h2 class="mb-0">写真</h2>
+    </div>
+    <div class="card-body d-flex flex-wrap gap-3">
+      <% if @place.photos.attached? %>
+        <% @place.photos.each do |photo| %>
+          <%= image_tag photo.variant(resize_to_limit: [300, 300]), class: "img-thumbnail" %>
+        <% end %>
+      <% else %>
+        <p>写真はまだ投稿されていません</p>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="card mb-4">
+    <div class="card-header">
+      <h2 class="mb-0">コメント一覧</h2>
+    </div>
+    <div class="card-body">
+      <% if @comments.any? %>
+        <% @comments.each do |comment| %>
+          <div class="border rounded p-3 mb-3">
+            <p><strong><%= comment.user.nickname %></strong> さん：</p>
+            <p><%= comment.content %></p>
+            <p class="text-muted"><%= comment.created_at.strftime('%Y年%m月%d日 %H:%M') %></p>
+
+            <div class="text-end">
+              <%= link_to '削除', admin_comment_path(comment), method: :delete, data: { confirm: 'このコメントを削除してもよろしいですか？' }, class: 'btn btn-sm btn-danger' %>
+            </div>
+          </div>
+        <% end %>
+      <% else %>
+        <p>コメントはまだありません</p>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="card mb-4">
+    <div class="card-header">
+      <h2 class="mb-0">ステータス変更</h2>
+    </div>
+    <div class="card-body">
+      <%= form_with model: [:admin, @place], method: :patch, local: true do |f| %>
+        <div class="mb-3">
+          <%= f.label :status, "ステータス", class: "form-label" %>
+          <%= f.select :status, Place.statuses.keys.map { |key| [Place.statuses_i18n[key], key] }, {}, class: "form-select" %>
+        </div>
+        <%= f.submit "更新", class: "btn btn-primary" %>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="text-end mt-4">
+    <%= link_to '削除', admin_place_path(@place), method: :delete, data: { confirm: '本当に削除しますか？' }, class: "btn btn-danger" %>
+  </div>
+
 </div>

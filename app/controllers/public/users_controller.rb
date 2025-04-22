@@ -1,7 +1,7 @@
 class Public::UsersController < ApplicationController
   before_action :authenticate_user!
-  
-  before_action :ensure_correct_user, only: [:edit, :update, :withdraw]
+  before_action :ensure_guest_user
+  before_action :ensure_correct_user, only: [:show, :edit, :update, :withdraw]
 
   def show
     @user = User.find(params[:id])
@@ -39,11 +39,9 @@ class Public::UsersController < ApplicationController
   def ensure_guest_user
     @user = User.find(params[:id])
     if @user.guest_user?
-      redirect_to user_path(current_user) , notice: "ゲストユーザーはプロフィール編集画面へ遷移できません。"
+      redirect_to user_path(current_user) , notice: "権限がありません。"
     end
-  end  
-
-  
+  end    
 
   def ensure_correct_user
     @user = User.find(params[:id])

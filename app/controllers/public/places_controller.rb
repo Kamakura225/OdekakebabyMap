@@ -1,6 +1,5 @@
 class Public::PlacesController < ApplicationController
-  before_action :authenticate_user!, only: [:new, :create, :edit, :update, :destroy] # ログインユーザーのみアクセス
-  before_action :set_place, only: [:show]
+  before_action :authenticate_user!
 
   def index
     @places = Place.where(status: :approved).where.not(latitude: nil, longitude: nil)

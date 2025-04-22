@@ -26,8 +26,6 @@
       </div>
     </div>
   </div>
-
-
   
   <!-- 施設名・カテゴリ・設備 -->
   <div class="row mb-4">
@@ -45,91 +43,87 @@
 
       <p><strong>カテゴリ:</strong> <%= @place.category_i18n %></p>
 
-      <div class="row">
-        <div class="col-12 col-md-4 mb-2">
-          <strong>授乳室:</strong>
-            <% if @place.nursery %>
-              <span class="text-success"><i class="fa-solid fa-check me-1"></i>あり</span>
-            <% else %>
-              <span class="text-secondary"><i class="fa-solid fa-xmark me-1"></i>なし</span>
-            <% end %>
-        </div>
+      <div class="col-12 col-md-4 mb-2">
+        <strong>授乳室:</strong>
+          <% if @place.nursery %>
+            <span class="text-success"><i class="fa-regular fa-circle me-1"></i>あり</span>
+          <% else %>
+            <span class="text-secondary"><i class="fa-solid fa-xmark me-1"></i>なし</span>
+          <% end %>
+      </div>
 
       <div class="row">
         <div class="col-12 col-md-4 mb-2">
           <strong>おむつ交換台:</strong>
             <% if @place.diaper %>
-              <span class="text-success"><i class="fa-solid fa-check me-1"></i>あり</span>
+              <span class="text-success"><i class="fa-regular fa-circle me-1"></i>あり</span>
             <% else %>
               <span class="text-secondary"><i class="fa-solid fa-xmark me-1"></i>なし</span>
             <% end %>
         </div>  
           
-        <div class="col-12 col-md-4 mb-2">
-          <strong>幼児トイレ:</strong>
-            <% if @place.kids_toilet %>
-              <span class="text-success"><i class="fa-solid fa-check me-1"></i>あり</span>
-            <% else %>
-              <span class="text-secondary"><i class="fa-solid fa-xmark me-1"></i>なし</span>
-            <% end %>
-        </div>
-
-        <div class="col-12 col-md-4 mb-2">
-          <strong>ベビーカー対応:</strong>
-            <% if @place.stroller %>
-              <span class="text-success"><i class="fa-solid fa-check me-1"></i>あり</span>
-            <% else %>
-              <span class="text-secondary"><i class="fa-solid fa-xmark me-1"></i>なし</span>
-            <% end %>
-        </div>
-
-        <div class="col-12 col-md-4 mb-2">
-          <strong>木陰:</strong>
-            <% if @place.shade %>
-              <span class="text-success"><i class="fa-solid fa-check me-1"></i>あり</span>
-            <% else %>
-              <span class="text-secondary"><i class="fa-solid fa-xmark me-1"></i>なし</span>
-            <% end %>
-        </div>
-
-        <div class="col-12 col-md-4 mb-2">
-          <strong>ベンチ:</strong>
-            <% if @place.bench %>
-              <span class="text-success"><i class="fa-solid fa-check me-1"></i>あり</span>
-            <% else %>
-              <span class="text-secondary"><i class="fa-solid fa-xmark me-1"></i>なし</span>
-            <% end %>
-        </div>
-
-        <div class="col-12 col-md-4 mb-2">
-          <strong>遊具:</strong>
-            <% if @place.playground %>
-              <span class="text-success"><i class="fa-solid fa-check me-1"></i>あり</span>
-            <% else %>
-              <span class="text-secondary"><i class="fa-solid fa-xmark me-1"></i>なし</span>
-            <% end %>
-        </div>
-
-        <div class="col-12 col-md-4 mb-2">
-          <strong>エレベーター:</strong>
-            <% if @place.elevator %>
-              <span class="text-success"><i class="fa-solid fa-check me-1"></i>あり</span>
-            <% else %>
-              <span class="text-secondary"><i class="fa-solid fa-xmark me-1"></i>なし</span>
-            <% end %>
-        </div>
-
-        <div class="col-12 col-md-4 mb-2">
-          <strong>駐車場:</strong>
-            <% if @place.parking %>
-              <span class="text-success"><i class="fa-solid fa-check me-1"></i>あり</span>
-            <% else %>
-              <span class="text-secondary"><i class="fa-solid fa-xmark me-1"></i>なし</span>
-            <% end %>
-        </div>
-
-        
+      <div class="col-12 col-md-4 mb-2">
+        <strong>幼児トイレ:</strong>
+          <% if @place.kids_toilet %>
+            <span class="text-success"><i class="fa-regular fa-circle me-1"></i>あり</span>
+          <% else %>
+            <span class="text-secondary"><i class="fa-solid fa-xmark me-1"></i>なし</span>
+          <% end %>
       </div>
+
+      <div class="col-12 col-md-4 mb-2">
+        <strong>ベビーカー対応:</strong>
+          <% if @place.stroller %>
+            <span class="text-success"><i class="fa-regular fa-circle me-1"></i>あり</span>
+          <% else %>
+            <span class="text-secondary"><i class="fa-solid fa-xmark me-1"></i>なし</span>
+          <% end %>
+      </div>
+
+      <div class="col-12 col-md-4 mb-2">
+        <strong>木陰:</strong>
+          <% if @place.shade %>
+            <span class="text-success"><i class="fa-regular fa-circle me-1"></i>あり</span>
+          <% else %>
+            <span class="text-secondary"><i class="fa-solid fa-xmark me-1"></i>なし</span>
+          <% end %>
+      </div>
+
+      <div class="col-12 col-md-4 mb-2">
+        <strong>ベンチ:</strong>
+          <% if @place.bench %>
+            <span class="text-success"><i class="fa-regular fa-circle me-1"></i>あり</span>
+          <% else %>
+            <span class="text-secondary"><i class="fa-solid fa-xmark me-1"></i>なし</span>
+          <% end %>
+      </div>
+
+      <div class="col-12 col-md-4 mb-2">
+        <strong>遊具:</strong>
+          <% if @place.playground %>
+            <span class="text-success"><i class="fa-regular fa-circle me-1"></i>あり</span>
+          <% else %>
+            <span class="text-secondary"><i class="fa-solid fa-xmark me-1"></i>なし</span>
+          <% end %>
+      </div>
+
+      <div class="col-12 col-md-4 mb-2">
+        <strong>エレベーター:</strong>
+          <% if @place.elevator %>
+            <span class="text-success"><i class="fa-regular fa-circle me-1"></i>あり</span>
+          <% else %>
+            <span class="text-secondary"><i class="fa-solid fa-xmark me-1"></i>なし</span>
+          <% end %>
+      </div>
+
+      <div class="col-12 col-md-4 mb-2">
+        <strong>駐車場:</strong>
+          <% if @place.parking %>
+            <span class="text-success"><i class="fa-regular fa-circle me-1"></i>あり</span>
+          <% else %>
+            <span class="text-secondary"><i class="fa-solid fa-xmark me-1"></i>なし</span>
+          <% end %>
+      </div>        
     </div>
   </div>
 
@@ -152,10 +146,14 @@
           </div>
           <div class="text-end ms-3">
             <div class="rating mb-1" data-score="<%= comment.rating %>"></div>
-            <span class="badge bg-light text-dark me-2">
-              <i class="fa-solid fa-thumbs-up me-1"></i>
-              <span id="like-count-<%= comment.id %>"><%= comment.likes.good.count %></span>
-            </span>
+              <span class="badge bg-light text-dark me-2">
+                <i class="fa-solid fa-thumbs-up me-1"></i>
+                <span id="like-count-<%= comment.id %>"><%= comment.likes.good.count %></span>
+              </span>
+              <span class="badge bg-light text-dark me-2">
+                <i class="fa-solid fa-thumbs-down me-1"></i>
+                <!--<span id="dislike-count-<%= comment.id %>"><%= comment.likes.bad.count %></span>悪戯防止のため非表示-->
+              </span>
           </div>
         </div>
       </div>
@@ -222,7 +220,6 @@
   if (target) {
     target.innerHTML = '';
     const score = parseFloat(target.dataset.score || 0);
-
     raty(target, {
       number: 5,
       starSize: 24,      
@@ -238,17 +235,13 @@
     });
   }
   
-  // 表示用
-  
-  
+  // 表示用  
   document.querySelectorAll(".rating").forEach((elem) => {
     elem.innerHTML = '';
     const score = parseFloat(elem.dataset.score || 0);
-
     raty(elem, {
       score: score,
-      readOnly: true, // コメント表示は読取専用
-      
+      readOnly: true, // コメント表示は読取専用      
       starOn: '/assets/raty/star-on.png',
       starOff: '/assets/raty/star-off.png',
       starHalf: '/assets/raty/star-half.png',
