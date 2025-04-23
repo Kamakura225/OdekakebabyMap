@@ -69,14 +69,12 @@
         <li class="list-group-item">
           <% elsif like.likeable_type == "Comment" %>
             （投稿先：<%= link_to like.likeable.place.name, place_path(like.likeable.place), class: "text-decoration-none" %>）
-=======
             <i class="fa-solid fa-thumbs-up me-2 text-warning"></i>
             施設：<%= link_to like.likeable.name, public_place_path(like.likeable), class: "text-decoration-none fw-semibold" %>
           <% elsif like.likeable_type == "Comment" %>
             <i class="fa-solid fa-comment me-2 text-success"></i>
             コメント：<%= truncate(like.likeable.content, length: 30) %><br>
             <small class="text-muted">（投稿先：<%= link_to like.likeable.place.name, public_place_path(like.likeable.place), class: "text-decoration-none" %>）</small>
->>>>>>> develop
           <% end %>
         </li>
       <% end %>

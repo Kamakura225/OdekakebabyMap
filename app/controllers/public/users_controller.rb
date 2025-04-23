@@ -1,18 +1,10 @@
 class Public::UsersController < ApplicationController
   before_action :authenticate_user!
-<<<<<<< HEAD
-  before_action :set_user, only: [:show, :edit, :update, :withdraw]
-  before_action :ensure_correct_user, only: [:edit, :update, :withdraw]
-
-  def show
-    # @user = set_user でセット済み
-=======
   before_action :ensure_guest_user
   before_action :ensure_correct_user, only: [:show, :edit, :update, :withdraw]
 
   def show
     @user = User.find(params[:id])
->>>>>>> develop
     @bookmarked_places = @user.bookmarked_places
     @comments = @user.comments.includes(:place).order(created_at: :desc)
     @likes = @user.likes.includes(:likeable).order(created_at: :desc)
@@ -23,10 +15,7 @@ class Public::UsersController < ApplicationController
   end
 
   def update
-<<<<<<< HEAD
-=======
     @user = User.find(params[:id])
->>>>>>> develop
     if @user.update(user_params)
       redirect_to public_user_path(@user), notice: "ユーザー情報を更新しました"
     else
