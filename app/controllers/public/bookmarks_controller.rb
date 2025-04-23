@@ -15,6 +15,6 @@ class Public::BookmarksController < ApplicationController
     @place = Place.find(params[:place_id])
     @bookmark = current_user.bookmarks.find_by(place: @place)
     @bookmark.destroy if @bookmark
-    redirect_to public_place_path(@place)
+    redirect_to public_place_path(@place) 
   end 
 end
