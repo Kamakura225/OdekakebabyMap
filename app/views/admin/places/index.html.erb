@@ -1,2 +1,23 @@
-<h1>Admin::Places#index</h1>
-<p>Find me in app/views/admin/places/index.html.erb</p>
+<h3 class="mb-4">🏞 投稿された施設・公園一覧</h3>
+
+<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+  <% @places.each do |place| %>
+    <div class="col">
+      <div class="card shadow-sm h-100">
+        <div class="card-body">
+          <h5 class="card-title"><%= place.name %></h5>
+          <p class="card-text mb-1"><strong>カテゴリ:</strong> <%= place.category_i18n %></p>
+          <p class="card-text mb-1"><strong>住所:</strong> <%= place.address %></p>
+          <p class="card-text mb-2"><strong>ステータス:</strong> 
+            <span class="badge <%= place.status == 'approved' ? 'bg-success text-white' : 'bg-danger text-white' %>">
+              <%= place.status_i18n %>
+            </span>
+          </p>
+          <%= link_to '▶ 詳細を見る', admin_place_path(place), class: "btn btn-outline-primary btn-sm" %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+

@@ -1,10 +1,18 @@
 class Public::UsersController < ApplicationController
   before_action :authenticate_user!
+<<<<<<< HEAD
   before_action :set_user, only: [:show, :edit, :update, :withdraw]
   before_action :ensure_correct_user, only: [:edit, :update, :withdraw]
 
   def show
     # @user = set_user でセット済み
+=======
+  before_action :ensure_guest_user
+  before_action :ensure_correct_user, only: [:show, :edit, :update, :withdraw]
+
+  def show
+    @user = User.find(params[:id])
+>>>>>>> develop
     @bookmarked_places = @user.bookmarked_places
     @comments = @user.comments.includes(:place).order(created_at: :desc)
     @likes = @user.likes.includes(:likeable).order(created_at: :desc)
@@ -15,6 +23,10 @@ class Public::UsersController < ApplicationController
   end
 
   def update
+<<<<<<< HEAD
+=======
+    @user = User.find(params[:id])
+>>>>>>> develop
     if @user.update(user_params)
       redirect_to public_user_path(@user), notice: "ユーザー情報を更新しました"
     else
@@ -23,9 +35,14 @@ class Public::UsersController < ApplicationController
   end
 
   def withdraw
+    @user = User.find(params[:id])
     @user.update(is_active: false)
     sign_out @user
     redirect_to root_path, notice: "退会処理が完了しました"
+  end
+
+  def top_users
+    @top_users = User.all.sort_by(&:total_good_likes).reverse.take(10)
   end
 
   private
@@ -33,20 +50,17 @@ class Public::UsersController < ApplicationController
   def ensure_guest_user
     @user = User.find(params[:id])
     if @user.guest_user?
-      redirect_to user_path(current_user) , notice: "ゲストユーザーはプロフィール編集画面へ遷移できません。"
+      redirect_to user_path(current_user) , notice: "権限がありません。"
     end
-  end  
-
-  def set_user
-    @user = User.find(params[:id])
-  end
+  end    
 
   def ensure_correct_user
+    @user = User.find(params[:id])
     redirect_to root_path, alert: "権限がありません" unless @user == current_user
   end
 
   def user_params
-    params.require(:user).permit(:nickname, :email)
+    params.require(:user).permit(:nickname, :email, :profile_image)
   end
 
 end

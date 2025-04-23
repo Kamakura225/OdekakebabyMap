@@ -7,47 +7,81 @@
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <div class="container">
-    <%= link_to "👶 子育て応援マップ", root_path, class: "navbar-brand fw-bold" %>
-
-  <div class="collapse navbar-collapse justify-content-end">
-      <ul class="navbar-nav">
-        <% if user_signed_in? %>
-          <% if current_user.guest_user? %>
-            <!-- ゲストログイン中 -->
-            <li class="nav-item">
-              <%= link_to 'サインアップ', new_user_registration_path, class: "nav-link" %>
-            </li>
-            <li class="nav-item">
-              <%= link_to 'サインイン', new_user_session_path, class: "nav-link" %>
-            </li>
-            <li class="nav-item">
-              <%= link_to 'ログアウト', destroy_user_session_path, method: :delete, class: "nav-link" %>
-            </li>
-          <% else %>
-            <!-- 通常ログイン中 -->
-            <li class="nav-item">
-              <%= link_to 'お気に入り一覧', public_bookmarks_path, class: "nav-link" %>
-            </li>
-            <li class="nav-item">
-              <%= link_to 'マイページ', public_user_path(current_user), class: "nav-link" %>
-            </li>
-            
-            <li class="nav-item">
-              <%= link_to 'ログアウト', destroy_user_session_path, method: :delete, class: "nav-link" %>
-            </li>
-          <% end %>
-        <% else %>
-          <!-- 未ログイン -->
-          <li class="nav-item">
-            <%= link_to 'サインアップ', new_user_registration_path, class: "nav-link" %>
-          </li>
-          <li class="nav-item">
-            <%= link_to 'サインイン', new_user_session_path, class: "nav-link" %>
-          </li>
-          <li class="nav-item">
-            <%= button_to 'ゲストログイン', users_guest_sign_in_path, method: :post, class: "btn btn-outline-primary ms-2" %>
-          </li>
+    <%= link_to root_path, class: "navbar-brand" do %>
+      <%= image_tag "おでかけ.png", alt: "Logo", width: 100 %>
+    <% end %>
+    <% if user_signed_in? %>
+          <div class="me-3">
+            <strong>こんにちは！<%= current_user.nickname %>さん</strong>
+          </div>
         <% end %>
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ml-auto text-right w-100">
+        
+          <% if current_admin %>
+            <!-- 管理者ログイン中 -->
+            <li class="nav-item">
+              <%= link_to 'ユーザー一覧', admin_users_path, class: "nav-link" %>
+            </li>
+            <li class="nav-item">
+              <%= link_to '施設一覧', admin_places_path, class: "nav-link" %>
+            </li>
+            <li class="nav-item">
+              <%= link_to 'コメント一覧', admin_comments_path, class: "nav-link" %>
+            </li>
+            <li class="nav-item">
+              <%= link_to 'ログアウト', destroy_user_session_path, method: :delete, class: "nav-link", data: { turbo: false } %>
+            </li>
+          <% elsif user_signed_in? %>
+            <% if current_user.guest_user? %>
+            <!-- ゲストログイン中 -->
+              <li class="nav-item">
+                <%= link_to '施設一覧', public_places_path, class: "nav-link" %>
+              </li>
+              <li class="nav-item">
+                <%= link_to 'サインアップ', new_user_registration_path, class: "nav-link" %>
+              </li>
+              <li class="nav-item">
+                <%= link_to 'サインイン', new_user_session_path, class: "nav-link" %>
+              </li>
+              <li class="nav-item">
+                <%= link_to 'ログアウト', destroy_user_session_path, method: :delete, class: "nav-link" %>
+              </li>
+            <% else %>
+            <!-- 通常ログイン中 -->
+              <li class="nav-item">
+                <%= link_to '施設一覧', public_places_path, class: "nav-link" %>
+              </li>
+              <li class="nav-item">
+                <%= link_to 'お気に入り一覧', public_bookmarks_path, class: "nav-link" %>
+              </li>
+              <li class="nav-item">
+                <%= link_to 'マイページ', public_user_path(current_user), class: "nav-link" %>
+              </li>            
+              <li class="nav-item">
+                <%= link_to '人気ユーザーランキング', public_top_users_path, class: 'nav-link' %>
+              </li>
+              <li class="nav-item">
+                <%= link_to 'ログアウト', destroy_user_session_path, method: :delete, class: "btn btn-outline-primary ms-2" %>
+              </li>              
+            <% end %>
+          <% else %>
+          <!-- 未ログイン -->
+              <li class="nav-item">
+                <%= link_to 'サインアップ', new_user_registration_path, class: "nav-link" %>
+              </li>
+              <li class="nav-item">
+                <%= link_to 'サインイン', new_user_session_path, class: "nav-link" %>
+              </li>
+              <li class="nav-item">
+                <%= button_to 'ゲストログイン', users_guest_sign_in_path, method: :post, class: "btn btn-outline-primary ms-2" %>
+              </li>
+          <% end %>
       </ul>
     </div>
   </div>

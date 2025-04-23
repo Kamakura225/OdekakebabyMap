@@ -3,18 +3,30 @@ class Public::LikesController < ApplicationController
 
   def create
     @place = Place.find(params[:place_id])
-    @like = @place.likes.build(user: current_user)
+    @comment = @place.comments.find(params[:comment_id])
+
+    @like = @comment.likes.find_or_initialize_by(user: current_user)
+    @like.reaction_type = params[:reaction_type]
+
     if @like.save
-      redirect_to public_place_path(@place), notice: 'いいねしました！'
+      respond_to do |format|
+        format.js # create.js.erb
+      end
     else
-      render 'public/places/show'
+      Rails.logger.info "LIKE SAVE FAILED: #{@like.errors.full_messages}"
+      head :unprocessable_entity
     end
   end
-
+  
   def destroy
-    @like = Like.find(params[:id])
-    @place = @like.likeable
-    @like.destroy
-    redirect_to public_place_path(@place), notice: 'いいねを取り消しました！'
+    @place = Place.find(params[:place_id])
+    @comment = @place.comments.find(params[:comment_id])
+
+    @like = @comment.likes.find_or_initialize_by(user: current_user)
+    @like.destroy if @like
+
+    respond_to do |format|
+      format.js # destroy.js.erb
+    end
   end
 end

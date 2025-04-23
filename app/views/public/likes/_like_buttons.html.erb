@@ -1,0 +1,29 @@
+<div id="comment-<%= comment.id %>-likes" class="d-flex gap-2">　
+  <% like = comment.likes.find_by(user: current_user) %>
+
+  <!-- 👍 GOOD -->
+  <% if like&.reaction_type == "good" %>
+    <%= button_to public_place_comment_like_path(place, comment, like), method: :delete, remote: true,
+                  class: "btn btn-outline-success btn-sm d-flex align-items-center gap-1" do %>
+      <i class="fa-solid fa-thumbs-up"></i> いいね解除
+    <% end %>
+  <% else %>
+    <%= button_to public_place_comment_likes_path(place, comment, reaction_type: :good), method: :post, remote: true,
+                  class: "btn btn-success btn-sm d-flex align-items-center gap-1" do %>
+      <i class="fa-regular fa-thumbs-up"></i> いいね
+    <% end %>
+  <% end %>
+
+  <!-- 👎 BAD -->
+  <% if like&.reaction_type == "bad" %>
+    <%= button_to public_place_comment_like_path(place, comment, like), method: :delete, remote: true,
+                  class: "btn btn-outline-danger btn-sm d-flex align-items-center gap-1" do %>
+      <i class="fa-solid fa-thumbs-down"></i> あかん解除
+    <% end %>
+  <% else %>
+    <%= button_to public_place_comment_likes_path(place, comment, reaction_type: :bad), method: :post, remote: true,
+                  class: "btn btn-danger btn-sm d-flex align-items-center gap-1" do %>
+      <i class="fa-regular fa-thumbs-down"></i> あかん
+    <% end %>
+  <% end %>
+</div>

@@ -18,38 +18,28 @@ devise_for :admin, skip: [:registrations], controllers: {
   end
 
   # ユーザー用（public）ルーティング
-    namespace :public do
-      resources :users, only: [:show, :edit, :update] do
-        patch :withdraw, on: :member
-      end
-      resources :bookmarks, only: [:index, :create, :destroy]
-      
-      resources :places do
-        resources :comments, only: [:create, :destroy]
-        resources :likes, only: [:create, :destroy]        
-      end
+  namespace :public do
+
+    get 'ranks/top_users', to: 'ranks#top_users', as: 'top_users'
+    resources :bookmarks, only: [:index]
+    
+    resources :users, only: [:show, :edit, :update] do
+      patch :withdraw, on: :member  
     end
 
-    resources :users, only: [:show, :edit, :update] do
-      member do
-        patch :withdraw  # PATCH /users/:id/withdraw
+    resources :places do
+      resources :bookmarks, only: [:create, :destroy]
+      resources :comments, only: [:create, :destroy] do
+        resources :likes, only: [:create, :destroy]
       end
     end
+  end
 
   # 管理者用（admin）ルーティング
     namespace :admin do
-      resources :places, only: [:index, :show, :destroy] do
-        member do
-          patch :update_status  # ステータス更新
-        # 投稿の承認や削除が必要な場合に追加
-        # resources :approvals, only: [:update] # 例：承認用
-        end
-      end
-      resources :users, only: [:index, :show] do
-        member do
-          patch :freeze  # ユーザーの凍結
-        end
-      end
+      resources :places, only: [:index, :show, :edit, :update, :destroy]
+      resources :users, only: [:index, :show, :edit, :update]
+      resources :comments, only: [:index, :destroy]  
     end
 
   # トップページのルーティング
