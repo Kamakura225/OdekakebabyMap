@@ -161,30 +161,32 @@
   <% end %>
 
   <!-- コメント投稿フォーム -->
-  <div class="card shadow-sm w-100">
-    <div class="card-body">
-      <h5 class="mb-3">コメントを投稿する</h5>
-      <%= form_with(model: [:public, @place, @comment], local: true) do |f| %>
-        <div class="mb-3">
-          <%= f.label :content, "コメント", class: "form-label" %>
-          <%= f.text_area :content, rows: 3, class: "form-control" %>
-        </div>
+    <div class="card shadow-sm w-100">
+      <div class="card-body">
+        <h5 class="mb-3">コメントを投稿する</h5>
+        <%= form_with(model: [:public, @place, @comment], local: true) do |f| %>
+          <div class="mb-3">
+            <%= f.label :content, "コメント", class: "form-label" %>
+            <%= f.text_area :content, rows: 3, class: "form-control" %>
+          </div>
 
-        <div class="mb-3">
-          <label class="form-label">評価</label>
-          <div id="star-rating" data-score="<%= @comment.rating || 0 %>"></div>
-          <%= f.hidden_field :rating, id: "rating" %>
-        </div>
+          <div class="mb-3">
+            <label class="form-label">評価</label>
+            <div id="star-rating" data-score="<%= @comment.rating || 0 %>"></div>
+            <%= f.hidden_field :rating, id: "rating" %>
+          </div>
 
-        <%= f.submit "投稿する", class: "btn btn-outline-success px-4" %>
-      <% end %>
+          <%= f.submit "投稿する", class: "btn btn-outline-success px-4" %>
+        <% end %>
+      </div>
     </div>
-  </div>
-<% end %>
-
 <!-- ブックマーク -->
-        
-
+    <% if current_user.bookmarked_places.include?(@place) %>
+      <%= button_to 'ブックマーク解除', public_place_bookmark_path(@place), method: :delete, class: 'btn btn-outline-danger' %>
+    <% else %>
+      <%= button_to 'ブックマーク', public_place_bookmarks_path(@place), method: :post, class: 'btn btn-outline-primary' %>
+    <% end %>
+<% end %>
 
 <!-- 住所・地図 -->
   <div class="row mt-4">

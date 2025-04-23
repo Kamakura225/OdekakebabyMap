@@ -21,14 +21,14 @@ devise_for :admin, skip: [:registrations], controllers: {
   namespace :public do
 
     get 'ranks/top_users', to: 'ranks#top_users', as: 'top_users'
-
+    resources :bookmarks, only: [:index]
+    
     resources :users, only: [:show, :edit, :update] do
       patch :withdraw, on: :member  
     end
 
-    resources :bookmarks, only: [:index, :create, :destroy]
-  
     resources :places do
+      resources :bookmarks, only: [:create, :destroy]
       resources :comments, only: [:create, :destroy] do
         resources :likes, only: [:create, :destroy]
       end
