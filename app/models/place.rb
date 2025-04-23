@@ -21,10 +21,7 @@ class Place < ApplicationRecord
   geocoded_by :address
   after_validation :geocode
 
-  # 緯度と経度のカラムを追加するためのマイグレーション
-  # t.float :latitude
-  # t.float :longitude
-
+ 
   def main_image_url
     if photos.attached?
       Rails.application.routes.url_helpers.rails_blob_url(photos.first, only_path: true)
