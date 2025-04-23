@@ -1,0 +1,50 @@
+<h2 class="mb-4">ユーザーコメント一覧</h2>
+
+<div class="mb-3">
+  <%= link_to "👍 いいね順", admin_comments_path(sort: 'good'), class: "btn btn-outline-primary btn-sm me-2" %>
+  <%= link_to "👎 よくない順", admin_comments_path(sort: 'bad'), class: "btn btn-outline-secondary btn-sm me-2" %>
+  <%= link_to "🕒 新着順", admin_comments_path, class: "btn btn-outline-dark btn-sm" %>
+</div>
+
+<table class="table table-hover align-middle table-bordered">
+  <thead class="table-light">
+    <tr>
+      <th>投稿者</th>
+      <th>コメント内容</th>
+      <th>対象施設</th>
+      <th>評価・リアクション</th>
+      <th>投稿日</th>
+      <th>操作</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @comments.each do |comment| %>
+      <tr>
+        <td><%= comment.user.nickname %></td>
+        <td><%= simple_format(comment.content) %></td>
+        <td><%= link_to comment.place.name, admin_place_path(comment.place), class: "text-decoration-none" %></td>
+        <td>
+          <div class="d-flex flex-column align-items-start">
+            <div class="rating mb-1" data-score="<%= comment.rating %>"></div>
+            <div>
+              <span class="badge bg-success me-1">
+                <i class="fa-solid fa-thumbs-up me-1"></i>
+                <span id="like-count-<%= comment.id %>"><%= comment.likes.good.count %></span>
+              </span>
+              <span class="badge bg-danger">
+                <i class="fa-solid fa-thumbs-down me-1"></i>
+                <span id="dislike-count-<%= comment.id %>"><%= comment.likes.bad.count %></span>
+              </span>
+            </div>
+          </div>
+        </td>
+        <td><%= l(comment.created_at, format: :short) %></td>
+        <td>
+          <%= link_to '削除', admin_comment_path(comment), method: :delete,
+                data: { confirm: '本当に削除しますか？' },
+                class: 'btn btn-sm btn-outline-danger' %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

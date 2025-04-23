@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2025_04_14_050847) do
+ActiveRecord::Schema.define(version: 2025_04_21_045336) do
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -63,7 +63,7 @@ ActiveRecord::Schema.define(version: 2025_04_14_050847) do
 
   create_table "comments", force: :cascade do |t|
     t.text "content", null: false
-    t.integer "rating"
+    t.float "rating"
     t.integer "user_id", null: false
     t.integer "place_id", null: false
     t.datetime "created_at", precision: 6, null: false
@@ -82,6 +82,7 @@ ActiveRecord::Schema.define(version: 2025_04_14_050847) do
     t.integer "user_id", null: false
     t.string "likeable_type", null: false
     t.integer "likeable_id", null: false
+    t.integer "reaction_type"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["likeable_type", "likeable_id"], name: "index_likes_on_likeable"

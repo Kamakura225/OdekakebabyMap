@@ -9,9 +9,8 @@ class User < ApplicationRecord
   has_many :likes, dependent: :destroy
   has_many :bookmarks, dependent: :destroy
   has_many :bookmarked_places, through: :bookmarks, source: :place
-  
 
-
+  has_one_attached :profile_image
   
   GUEST_USER_EMAIL = "guest@example.com"
   def self.guest
@@ -32,4 +31,12 @@ class User < ApplicationRecord
   def inactive_message
     !withdrawal ? super : :withdrawn_account
   end
+
+  def total_good_likes
+    Comment.joins(:likes)
+           .where(user_id: self.id, likes: { likeable_type: 'Comment', reaction_type: Like.reaction_types[:good] })
+           .count
+  
+  end
+
 end

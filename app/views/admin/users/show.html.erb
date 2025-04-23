@@ -1,2 +1,52 @@
-<h1>Admin::Users#show</h1>
-<p>Find me in app/views/admin/users/show.html.erb</p>
+<h2><%= @user.nickname %> さんの詳細</h2>
+
+<p>メールアドレス: <%= @user.email %></p>
+<p>現在の状態: <%= @user.is_active ? '有効' : '凍結中' %></p>
+
+<%= form_with model: @user, url: admin_user_path(@user), method: :patch, local: true do |f| %>
+  <div class="mb-3">
+    <strong>ニックネーム：</strong>
+    <%= @user.nickname %>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :is_active, "アカウント状態" %>
+    <%= f.select :is_active, [["有効", true], ["凍結", false]], {}, class: "form-select" %>
+  </div>
+
+  <%= f.submit "更新する", class: "btn btn-primary" %>
+<% end %>
+
+<p>👍 もらったグッド数：<%= @good_count %></p>
+<p>👎 もらったバッド数：<%= @bad_count %></p>
+
+<h3>投稿したコメント一覧</h3>
+<% if @comments.any? %>
+  <ul>
+    <% @comments.each do |comment| %>
+      <li>
+        <strong><%= comment.place.name %></strong>（<%= link_to "施設ページへ", admin_place_path(comment.place) %>）<br>
+        「<%= comment.content %>」<br>
+        <small><%= comment.created_at.strftime("%Y年%m月%d日 %H:%M") %></small>
+      </li>
+    <% end %>
+  </ul>
+<% else %>
+  <p>コメントはまだありません。</p>
+<% end %>
+
+<hr>
+
+<h3>投稿した施設一覧</h3>
+<% if @places.any? %>
+  <ul>
+    <% @places.each do |place| %>
+      <li>
+        <%= link_to place.name, admin_place_path(place) %>
+        （<%= place.category == "park" ? "公園" : "施設" %>）
+      </li>
+    <% end %>
+  </ul>
+<% else %>
+  <p>施設の投稿はまだありません。</p>
+<% end %>

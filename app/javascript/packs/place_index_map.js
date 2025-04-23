@@ -1,6 +1,7 @@
 console.log("place_index_map.js loaded!");
 
 window.initMap = function () {
+  
   const map = new google.maps.Map(document.getElementById("map"), {
     center: { lat: 35.681236, lng: 139.767125 },
     zoom: 15,
@@ -78,3 +79,4 @@ function applyFilters(map) {
   // 情報バナーは一旦閉じる
   document.getElementById("place-info-banner").style.display = "none";
 }
+

@@ -7,6 +7,7 @@ class Admin::PlacesController < ApplicationController
 
   def show
     @place = Place.find(params[:id]) # 施設・公園の詳細
+    @comments = @place.comments.includes(:user).order(created_at: :desc)
   end
 
   def destroy
@@ -15,18 +16,19 @@ class Admin::PlacesController < ApplicationController
     redirect_to admin_places_path, notice: '施設・公園が削除されました！'
   end
 
-  def update_status
+  def update
     @place = Place.find(params[:id])
-    if @place.update(status: params[:status])
-      redirect_to admin_place_path(@place), notice: 'ステータスが更新されました。'
+    if @place.update(place_params)
+      redirect_to admin_place_path(@place), notice: 'ステータスを更新しました。'
     else
-      redirect_to admin_place_path(@place), alert: 'ステータスの更新に失敗しました。'
+      flash.now[:alert] = 'ステータスの更新に失敗しました。'
+      render :show
     end
   end
 
   private
 
-  def authenticate_admin!
-    redirect_to root_path, alert: '管理者以外アクセスできません' unless current_user.admin?
+  def place_params
+    params.require(:place).permit(:status)
   end
 end

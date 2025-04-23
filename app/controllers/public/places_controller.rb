@@ -1,6 +1,5 @@
 class Public::PlacesController < ApplicationController
-  before_action :authenticate_user!, only: [:new, :create, :edit, :update, :destroy] # ログインユーザーのみアクセス
-  before_action :set_place, only: [:show]
+  before_action :authenticate_user!
 
   def index
     @places = Place.where(status: :approved).where.not(latitude: nil, longitude: nil)
@@ -10,8 +9,15 @@ class Public::PlacesController < ApplicationController
   def show
     @place = Place.find(params[:id]) # 施設・公園の詳細
     # @place.comments.build
-    @comments = @place.comments.includes(:user)
+    @comments = @place.comments.includes(:user, :likes)
     @comment = Comment.new
+
+    approved_comments = @place.comments.where.not(rating: nil)
+    @average_rating = if approved_comments.any?
+                        (approved_comments.average(:rating).round(1) rescue nil)
+                      else
+                        nil
+                      end
   end
 
   # ゲストユーザーがアクセスできないアクションを制限
@@ -23,8 +29,8 @@ class Public::PlacesController < ApplicationController
   def create
     redirect_to public_places_path, alert: 'ゲストユーザーは施設の登録ができません' if guest_user?
     @place = current_user.places.build(place_params)
-    # @place.status = :pending # デフォルトは承認待ち
-    @place.status = :approved
+    @place.status = :pending # デフォルトは承認待ち
+    # @place.status = :approved
 
     if @place.save
       redirect_to public_place_path(@place), notice: "施設を投稿しました（承認待ち）"

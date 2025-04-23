@@ -2,23 +2,19 @@ class Public::BookmarksController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @bookmarked_places = current_user.bookmarked_places.includes(:category)
+    @bookmarked_places = current_user.bookmarked_places.includes(:bookmarks)
   end
 
   def create
     @place = Place.find(params[:place_id])
-    @bookmark = @place.bookmarks.build(user: current_user)
-    if @bookmark.save
-      redirect_to public_place_path(@place), notice: 'ブックマークしました！'
-    else
-      render 'public/places/show'
-    end
+    @bookmark = current_user.bookmarks.create(place: @place)
+    redirect_to public_place_path(@place)
   end
 
   def destroy
-    @bookmark = Bookmark.find(params[:id])
-    @place = @bookmark.place
-    @bookmark.destroy
-    redirect_to public_place_path(@place), notice: 'ブックマークを解除しました！'
+    @place = Place.find(params[:place_id])
+    @bookmark = current_user.bookmarks.find_by(place: @place)
+    @bookmark.destroy if @bookmark
+    redirect_to public_place_path(@place)
   end
 end
