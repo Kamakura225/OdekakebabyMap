@@ -1,58 +1,80 @@
-<h2>施設・公園の投稿</h2>
-<!--エラー  -->
-<% if @place.errors.any? %>
-  <div class="alert alert-danger">
-    <h4>以下のエラーがあります：</h4>
-    <ul>
-      <% @place.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
+<div class="container my-5">
+  <div class="card shadow border-0">
+    <div class="card-header bg-primary text-white">
+      <h2 class="mb-0"><i class="fa-solid fa-pen-to-square me-2"></i>施設・公園の投稿</h2>
+    </div>
+    <div class="card-body">
+
+      <!-- エラー表示 -->
+      <% if @place.errors.any? %>
+        <div class="alert alert-danger">
+          <h4 class="alert-heading">以下のエラーがあります：</h4>
+          <ul class="mb-0">
+            <% @place.errors.full_messages.each do |msg| %>
+              <li><%= msg %></li>
+            <% end %>
+          </ul>
+        </div>
       <% end %>
-    </ul>
+
+      <%= form_with(model: @place, local: true, html: { multipart: true }, url: public_places_path) do |f| %>
+        <div class="mb-3">
+          <%= f.label :name, "施設・公園名", class: "form-label" %>
+          <%= f.text_field :name, class: "form-control" %>
+        </div>
+
+        <div class="mb-3">
+          <%= f.label :category, "カテゴリ", class: "form-label" %>
+          <%= f.select :category, Place.categories.keys.map { |k| [I18n.t("enums.place.category.#{k}"), k] }, {}, class: "form-select" %>
+        </div>
+
+        <div class="mb-4">
+          <p class="fw-bold">地図から場所を選んでください</p>
+          <div id="map" style="height: 600px; width: 100%; margin-bottom: 1rem;" class="border rounded"></div>
+          <%= f.hidden_field :latitude, id: "place_latitude" %>
+          <%= f.hidden_field :longitude, id: "place_longitude" %>
+          <%= f.hidden_field :address, id: "place_address" %>
+        </div>
+        <% facility_labels = {
+          nursery: "授乳室",
+          diaper: "おむつ交換台",
+          kids_toilet: "幼児用トイレ",
+          stroller: "ベビーカー対応",
+          playground: "遊具",
+          shade: "木陰",
+          bench: "ベンチ",
+          elevator: "エレベーター",
+          parking: "駐車場"
+        } %>
+        <div class="mb-3">
+          <p class="fw-bold"> 設備情報</p>
+          <div class="row">
+            <% facility_labels.each do |attr, label_text| %>
+              <div class="col-6 col-md-4 mb-2">
+                <div class="form-check">
+                  <%= f.check_box attr, class: "form-check-input" %>
+                  <%= f.label attr, label_text, class: "form-check-label" %>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        </div>
+
+        <div class="mb-4">
+          <%= f.label :photos, "写真をアップロード", class: "form-label" %>
+          <%= f.file_field :photos, multiple: true %>
+        </div>
+
+        <div class="text-end">
+          <%= f.submit "投稿する", class: "btn btn-success" %>
+        </div>
+      <% end %>
+
+    </div>
   </div>
-<% end %>
+</div>
 
-<%= form_with(model: @place, local: true, html: { multipart: true }, url: public_places_path) do |f| %>
-  <%= f.label :name %>
-  <%= f.text_field :name %><br>
+<%= javascript_pack_tag 'place_new_map', defer: true %>
+<!-- Google Maps API 読み込み -->
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=<%= ENV['GOOGLE_MAPS_API_KEY'] %>&callback=initMap"></script>
 
-  <%= f.label :category %>
-  <%= f.select :category, Place.categories.keys.map { |c| [c.humanize, c] } %><br>
-
-  <p>地図から場所を選んでください</p>
-  <div id="map" style="height: 800px; width: 100%; margin-bottom: 1rem;"></div>
-
-  <%= f.hidden_field :latitude, id: "place_latitude" %>
-  <%= f.hidden_field :longitude, id: "place_longitude" %>
-  <%= f.hidden_field :address, id: "place_address" %>
-
-  <% facility_labels = {
-  nursery: "授乳室",
-  diaper: "おむつ交換台",
-  kids_toilet: "幼児用トイレ",
-  stroller: "ベビーカー対応",
-  playground: "遊具",
-  shade: "木陰",
-  bench: "ベンチ",
-  elevator: "エレベーター",
-  parking: "駐車場"
-  } %>
-
-  <% facility_labels.each do |attr, label_text| %>
-    <%= f.label attr, label_text %>
-    <%= f.check_box attr %><br>
-  <% end %>
-
-  <%= f.label :photos %>
-  <%= f.file_field :photos, multiple: true %><br>
-
-  <%= f.submit "投稿する" %>
-<% end %>
-
-<script
-  async defer src="https://maps.googleapis.com/maps/api/js?key=<%= ENV['GOOGLE_MAPS_API_KEY'] %>&callback=initMap">
-</script>      
-
-
-<%= javascript_pack_tag 'place_new_map' %>
-
-<!--<script src="https://maps.googleapis.com/maps/api/js?key=<%= ENV['Geocoding_API_Key'] %>&callback=initMap"></script>-->
