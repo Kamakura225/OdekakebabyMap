@@ -5,6 +5,8 @@ class Place < ApplicationRecord
   has_many :likes, as: :likeable, dependent: :destroy
   has_many :bookmarks, dependent: :destroy
   has_many :bookmarked_users, through: :bookmarks, source: :user
+  has_many :place_tags, dependent: :destroy
+  has_many :tags, through: :place_tags
 
   has_many_attached :photos
 
@@ -16,12 +18,10 @@ class Place < ApplicationRecord
   
 
   validates :name, :address, :latitude, :longitude, presence: true
-  validates :nursery, :diaper, :kids_toilet, :stroller, :playground, :shade, :bench, 
-            :elevator, :parking, inclusion: { in: [true, false] }
   geocoded_by :address
   after_validation :geocode
 
- 
+
   def main_image_url
     if photos.attached?
       Rails.application.routes.url_helpers.rails_blob_url(photos.first, only_path: true)

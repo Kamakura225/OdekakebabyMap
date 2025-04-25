@@ -5,7 +5,7 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
-Admin.create!(email: ENV['Admin_Email']) do |admin|
+Admin.find_or_create_by!(email: ENV['Admin_Email']) do |admin|
     admin.password = ENV['Admin_Password']
     admin.password_confirmation = ENV['Admin_Password']
 end
@@ -18,26 +18,13 @@ user = User.find_or_create_by!(email: "user1@example.com") do |u|
     u.is_active = true
 end
 
-# 施設データ作成
-25.times do |n|
-    latitude = Faker::Address.latitude.to_f
-    longitude = Faker::Address.longitude.to_f
-    Place.create!(
-        name: "Example Place #{n + 1}",
-        address: Faker::Address.full_address,
-        category: [0, 1].sample, # 例: 0が施設, 1が公園
-        latitude: latitude,
-        longitude: longitude,
-        nursery: [true, false].sample,
-        diaper: [true, false].sample,
-        kids_toilet: [true, false].sample,
-        stroller: [true, false].sample,
-        playground: [true, false].sample,
-        shade: [true, false].sample,
-        bench: [true, false].sample,
-        elevator: [true, false].sample,
-        parking: [true, false].sample,
-        status: 1, # 例: 公開/非公開/保留 などに対応
-        user: user
-    )
+
+
+tag_names = [
+    "授乳室", "おむつ交換台", "幼児トイレ", "ベビーカー対応", "遊具",
+    "木陰", "ベンチ", "エレベータ", "駐車場"
+]
+
+tag_names.each do |name| 
+    Tag.find_or_create_by!(name: name)
 end

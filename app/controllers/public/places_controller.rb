@@ -2,13 +2,24 @@ class Public::PlacesController < ApplicationController
   before_action :authenticate_user!
 
   def index
+    # フィルターを適用する場合
     @places = Place.where(status: :approved).where.not(latitude: nil, longitude: nil)
-            .includes(:comments, :likes, photos_attachments: :photos_blobs)
+
+    # フィルター条件を適用
+    if params[:tag].present?
+      @places = @places.joins(:tags).where(tags: { name: params[:tag] })
+    end
+
+    @places = @places.includes(:comments, :likes, photos_attachments: :photos_blobs)
+
+    respond_to do |format|
+      format.html # 通常のレスポンス
+      format.json # JSONレスポンス
+    end
   end
 
   def show
     @place = Place.find(params[:id]) # 施設・公園の詳細
-    # @place.comments.build
     @comments = @place.comments.includes(:user, :likes)
     @comment = Comment.new
 
@@ -30,8 +41,7 @@ class Public::PlacesController < ApplicationController
     redirect_to public_places_path, alert: 'ゲストユーザーは施設の登録ができません' if guest_user?
     @place = current_user.places.build(place_params)
     @place.status = :pending # デフォルトは承認待ち
-    # @place.status = :approved
-
+    
     if @place.save
       redirect_to public_place_path(@place), notice: "施設を投稿しました（承認待ち）"
     else
@@ -70,13 +80,7 @@ class Public::PlacesController < ApplicationController
   def place_params
     params.require(:place).permit(
       :name, :category, :address, :latitude, :longitude,
-      :nursery, :diaper, :kids_toilet, :stroller, :playground,
-      :shade, :bench, :elevator, :parking, :status,
-      photos: []
+      :status, photos: [], tag_ids: []
     )
-  end
-
-  def set_place
-    @place = Place.find(params[:id])
-  end
+  end  
 end

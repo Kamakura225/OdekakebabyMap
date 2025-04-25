@@ -11,8 +11,6 @@ window.initMap = function () {
 
 let markers = [];
 
-
-
 function setupFilter(map) {
   const $ = window.jQuery;
 
@@ -87,11 +85,11 @@ function applyFilters(map) {
   if (filteredPlaces.length > 0) {
     const first = filteredPlaces[0];
     map.setCenter({ lat: first.latitude, lng: first.longitude });
-   map.setZoom(16); // 少し拡大
+    map.setZoom(16); 
   } else {
    // マーカーは消しても地図は初期状態に戻す
-   map.setCenter({ lat: 35.681236, lng: 139.767125 }); // 東京駅など
-   map.setZoom(15); // 初期ズーム
+    map.setCenter({ lat: 35.681236, lng: 139.767125 }); 
+    map.setZoom(15); 
     alert("一致する施設が見つかりませんでした");
   }
 
@@ -100,8 +98,8 @@ document.getElementById("place-info-banner").style.display = "none";
 }
 
 function renderMarkers(map, places) {
-markers.forEach(marker => marker.setMap(null)); // 既存のマーカーをクリア
-markers = []; // markers配列をリセット
+markers.forEach(marker => marker.setMap(null)); 
+markers = []; 
 
 places.forEach(place => {
   const marker = new google.maps.Marker({
