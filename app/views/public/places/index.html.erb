@@ -68,11 +68,11 @@
 
 <script>
   let map;
-  let markers = []; // 投稿マーカーをまとめる配列
+  let markers = []; 
   let geocoder;
 
   function initMap() {
-    const center = { lat: 35.681236, lng: 139.767125 }; // 東京駅初期位置
+    const center = { lat: 35.681236, lng: 139.767125 }; 
 
     map = new google.maps.Map(document.getElementById("map"), {
       zoom: 14,
@@ -130,15 +130,15 @@
     document.getElementById("filterPark").addEventListener("change", applyFilters);
   }
 
-  // 住所から地図を移動させるだけ（マーカー作らない！）
+  // 住所から地図を移動させるだけ
   function codeAddress() {
     const addressInput = document.getElementById("address").value;
 
     geocoder.geocode({ address: addressInput }, function (results, status) {
       if (status === "OK") {
         const position = results[0].geometry.location;
-        map.setCenter(position); // 住所に合わせて地図だけ動かす
-        map.setZoom(15); // ちょっと拡大
+        map.setCenter(position); 
+        map.setZoom(15); 
       } else {
         alert("住所が見つかりませんでした: " + status);
       }

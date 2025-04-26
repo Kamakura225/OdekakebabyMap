@@ -99,7 +99,7 @@
     const addressInput = document.getElementById('address').value;
     geocoder.geocode({ address: addressInput }, function (results, status) {
       if (status === 'OK') {
-        if (aft && marker) marker.setMap(null); // 古いマーカーを削除
+        if (aft && marker) marker.setMap(null); 
 
         const position = results[0].geometry.location;
         map.setCenter(position);
