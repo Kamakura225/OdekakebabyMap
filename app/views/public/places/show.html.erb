@@ -4,20 +4,34 @@
       <div class="card shadow-sm mb-4">
         <div class="card-body p-0">
           <% if @place.photos.attached? %>
-            <div id="placePhotos" class="carousel slide" data-bs-ride="carousel">
+            <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+              <!-- インジケーター -->
+              <ol class="carousel-indicators">
+                <% @place.photos.each_with_index do |photo, index| %>
+                  <li data-target="#carouselExampleIndicators" data-slide-to="<%= index %>" class="<%= 'active' if index == 0 %>"></li>
+                <% end %>
+              </ol>
+
+              <!-- カルーセル本体 -->
               <div class="carousel-inner rounded">
                 <% @place.photos.each_with_index do |photo, index| %>
                   <div class="carousel-item <%= 'active' if index == 0 %>">
-                    <%= image_tag photo, class: 'd-block w-25 rounded', alt: '施設の写真' %>
+                    <%= image_tag photo, class: 'd-block w-100 rounded', alt: '施設の写真' %>
                   </div>
                 <% end %>
               </div>
-              <button class="carousel-control-prev" type="button" data-bs-target="#placePhotos" data-bs-slide="prev">
+
+              <!-- 前のスライドへのボタン -->
+              <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-              </button>
-              <button class="carousel-control-next" type="button" data-bs-target="#placePhotos" data-bs-slide="next">
+                <span class="sr-only">Previous</span>
+              </a>
+
+              <!-- 次のスライドへのボタン -->
+              <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
                 <span class="carousel-control-next-icon" aria-hidden="true"></span>
-              </button>
+                <span class="sr-only">Next</span>
+              </a>
             </div>
           <% else %>
             <p class="text-muted m-3">写真はまだ投稿されていません。</p>
@@ -141,57 +155,70 @@
   <% if user_signed_in? && !guest_user? && @place.approved? %>
   <% @comments.each do |comment| %>
     <div class="card mb-3 shadow-sm w-100">
-      <div class="card-body" style="background-color: #fff5f7;">
-        <div class="d-flex justify-content-between flex-wrap">
+      <div class="card-body" style="background-color: #f8f9fa;">
+        
+        <!-- コメントの上部（ユーザー名、画像、投稿日時） -->
+        <div class="d-flex align-items-center">
+          <!-- ユーザー画像 -->
+          <div class="me-3">
+            <% if @user && @user.profile_image.attached? %>
+              <%= image_tag @user.profile_image.variant(resize_to_limit: [50, 50]), class: "rounded-circle border border-2" %>
+            <% else %>
+              <%= image_tag "no_image.jpg", size: "50x50", class: "rounded-circle border border-2" %>
+            <% end %>
+          </div>
+          <!-- ユーザー名と投稿日時 -->
           <div>
-            <h6 class="text-muted">
-              <i class="fa-solid fa-user"></i> <%= comment.user.nickname %>
+            <h6 class="text-muted d-flex align-items-center">
+              <%= comment.user.nickname %>
             </h6>
-            <p><%= comment.content %></p>
-
-            <%= render 'public/likes/like_buttons', comment: comment, place: @place %>
-
-            <div class="text-muted small mt-2">
+            <div class="text-muted small">
               <%= l(comment.created_at, format: :short) %>
             </div>
           </div>
-          <div class="text-end ms-3">
-            <div class="rating mb-1" data-score="<%= comment.rating %>"></div>
-              <span class="badge bg-light text-dark me-2">
-                <i class="fa-solid fa-thumbs-up me-1"></i>
-                <span id="like-count-<%= comment.id %>"><%= comment.likes.good.count %></span>
-              </span>
-              <span class="badge bg-light text-dark me-2">
-                <i class="fa-solid fa-thumbs-down me-1"></i>
-                <!--<span id="dislike-count-<%= comment.id %>"><%= comment.likes.bad.count %></span>悪戯防止のため非表示-->
-              </span>
-          </div>
         </div>
+
+        <!-- 星評価 -->
+        <div class="rating ml-5 mb-2" data-score="<%= comment.rating %>"></div>
+
+        <!-- コメント内容 -->
+        <p class="text-dark"><%= comment.content %></p>
+
+        <!-- いいね（good）・あかん（bad）ボタンとカウント -->
+        <div class="d-flex justify-content-start">
+          <div>
+            <%= render 'public/likes/like_buttons', comment: comment, place: @place %>
+          </div>
+          
+          <!-- カウント表示 -->
+          
+        </div>
+        
       </div>
     </div>
   <% end %>
 
   <!-- コメント投稿フォーム -->
-    <div class="card shadow-sm w-100">
-      <div class="card-body">
-        <h5 class="mb-3">コメントを投稿する</h5>
-        <%= form_with(model: [:public, @place, @comment], local: true) do |f| %>
-          <div class="mb-3">
-            <%= f.label :content, "コメント", class: "form-label" %>
-            <%= f.text_area :content, rows: 3, class: "form-control" %>
-          </div>
+  <div class="card shadow-sm w-100">
+    <div class="card-body">
+      <h5 class="mb-3">コメントを投稿する</h5>
+      <%= form_with(model: [:public, @place, @comment], local: true) do |f| %>
+        <div class="mb-3">
+          <%= f.label :content, "コメント", class: "form-label" %>
+          <%= f.text_area :content, rows: 3, class: "form-control" %>
+        </div>
 
-          <div class="mb-3">
-            <label class="form-label">評価</label>
-            <div id="star-rating" data-score="<%= @comment.rating || 0 %>"></div>
-            <%= f.hidden_field :rating, id: "rating" %>
-          </div>
+        <div class="mb-3">
+          <label class="form-label">評価</label>
+          <div id="star-rating" data-score="<%= @comment.rating || 0 %>"></div>
+          <%= f.hidden_field :rating, id: "rating" %>
+        </div>
 
-          <%= f.submit "投稿する", class: "btn btn-outline-success px-4" %>
-        <% end %>
-      </div>
+        <%= f.submit "投稿する", class: "btn btn-outline-success px-4" %>
+      <% end %>
     </div>
-  <% end %>
+  </div>
+<% end %>
 
 <!-- 住所・地図 -->
   <div class="row mt-4">
@@ -207,10 +234,10 @@
 </div>
       
 <!-- 編集ボタン（ログインユーザーのみ） -->
-  <% if user_signed_in? %>
-  <%= link_to "編集リクエストを送る", new_public_place_place_edit_request_path(@place), class: "btn btn-primary" %>
-<% else %>
-  <p>ログインしていないと、編集リクエストは送信できません。</p>
+  <% if user_signed_in? && !guest_user? && @place.approved? %>
+    <%= link_to "編集リクエストを送る", new_public_place_place_edit_request_path(@place), class: "btn btn-primary" %>
+  <% else %>
+  <p>非会員でのログインか投稿承認前なので、編集リクエストは送信できません。</p>
 <% end %>
 
 </div>

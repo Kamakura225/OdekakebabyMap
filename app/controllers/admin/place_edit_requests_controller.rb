@@ -7,6 +7,7 @@ class Admin::PlaceEditRequestsController < ApplicationController
 
   def show
     @place_edit_request = PlaceEditRequest.find(params[:id])
+    @place = @place_edit_request.place
   end
 
   def update

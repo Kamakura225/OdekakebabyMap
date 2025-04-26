@@ -1,48 +1,57 @@
-<h1><%= @place.name %> の編集リクエスト</h1>
+<h1 class="mb-4"><%= @place.name %> の編集リクエスト</h1>
 
 <%= form_with model: @place_edit_request, url: public_place_place_edit_requests_path(@place), local: true do |f| %>
-  <div class="form-group">
-    <%= f.label :name, "施設名" %>
-    <%= f.text_field :name, class: "form-control", value: @place.name %>
-  </div>
+  <div class="card shadow-sm mb-4">
+    <div class="card-body">
+      <div class="form-group mb-3">
+        <%= f.label :name, "施設名", class: "form-label" %>
+        <%= f.text_field :name, class: "form-control", value: @place.name, placeholder: "施設名を入力" %>
+      </div>
 
-  <div class="form-group">
-    <%= f.label :address, "住所" %>
-    <%= f.text_field :address, class: "form-control", value: @place.address %>
-  </div>
+      <div class="form-group mb-3">
+        <%= f.label :address, "住所", class: "form-label" %>
+        <%= f.text_field :address, class: "form-control", value: @place.address, placeholder: "住所を入力" %>
+      </div>
 
-  <div class="form-group">
-    <%= f.label :photos, "施設画像" %>
-    <%= f.file_field :photos, class: "form-control", multiple: true %>
-  </div>
+      <div class="form-group mt-5 mb-3">
+        <%= f.label :photos, "施設画像", class: "form-label" %>
+        <%= f.file_field :photos, multiple: true %>
+      </div>
 
-  <% facility_labels = {
-  'nursery' => '授乳室',
-  'diaper' => 'おむつ交換台',
-  'kids_toilet' => '幼児トイレ',
-  'stroller' => 'ベビーカー対応',
-  'playground' => '遊具',
-  'shade' => '木陰',
-  'bench' => 'ベンチ',
-  'elevator' => 'エレベーター',
-  'parking' => '駐車場'
-} %>
+      <% facility_labels = {
+      'nursery' => '授乳室',
+      'diaper' => 'おむつ交換台',
+      'kids_toilet' => '幼児トイレ',
+      'stroller' => 'ベビーカー対応',
+      'playground' => '遊具',
+      'shade' => '木陰',
+      'bench' => 'ベンチ',
+      'elevator' => 'エレベーター',
+      'parking' => '駐車場'
+      } %>
 
-<div class="mb-3">
-  <p class="fw-bold">設備情報</p>
-  <div class="row">
-    <% facility_labels.each do |attr, label_text| %>
-      <div class="col-6 col-md-4 mb-2">
-        <div class="form-check">
-          <%= f.check_box attr, class: "form-check-input", checked: @place.send(attr) %>
-          <%= f.label attr, label_text, class: "form-check-label" %>
+      <div class="mb-4">
+        <p class="fw-bold">設備情報</p>
+        <div class="row">
+          <% facility_labels.each do |attr, label_text| %>
+            <div class="col-6 col-md-4 mb-3">
+              <div class="form-check">
+                <%= f.check_box attr, class: "form-check-input" %>
+                <%= f.label attr, label_text, class: "form-check-label" %>
+              </div>
+            </div>
+          <% end %>
         </div>
       </div>
-    <% end %>
-  </div>
-</div>
 
-  <%= f.submit "編集リクエストを送信", class: "btn btn-primary" %>
+      <div class="d-flex justify-content-center">
+        <%= f.submit "編集リクエストを送信", class: "btn btn-primary w-50 gradient-btn" %>
+      </div>
+    </div>
+  </div>
+
 <% end %>
 
-<%= link_to "キャンセル", public_places_path, class: "btn btn-secondary" %>
+<div class="d-flex justify-content-center mb-5">
+  <%= link_to "キャンセル", public_places_path, class: "btn btn-secondary w-50" %>
+</div>

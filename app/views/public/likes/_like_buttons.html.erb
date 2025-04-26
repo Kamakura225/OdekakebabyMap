@@ -1,29 +1,35 @@
-<div id="comment-<%= comment.id %>-likes" class="d-flex gap-2">　
+<div id="comment-<%= comment.id %>-likes" class="d-flex gap-2">
   <% like = comment.likes.find_by(user: current_user) %>
 
-  <!-- 👍 GOOD -->
+  <!-- GOOD -->
   <% if like&.reaction_type == "good" %>
-    <%= button_to public_place_comment_like_path(place, comment, like), method: :delete, remote: true,
-                  class: "btn btn-outline-success btn-sm d-flex align-items-center gap-1" do %>
-      <i class="fa-solid fa-thumbs-up"></i> いいね解除
-    <% end %>
-  <% else %>
-    <%= button_to public_place_comment_likes_path(place, comment, reaction_type: :good), method: :post, remote: true,
-                  class: "btn btn-success btn-sm d-flex align-items-center gap-1" do %>
-      <i class="fa-regular fa-thumbs-up"></i> いいね
-    <% end %>
+  <%= button_to public_place_comment_like_path(place, comment, like), method: :delete, remote: true,
+                class: "btn btn-outline-success btn-lg d-flex align-items-center " do %>
+    <i class="fa-solid fa-thumbs-up"></i> 
+    <span class="ml-3" style="font-size: 0.75rem;">
+      <%= comment.likes.good.count %>
+    </span>
   <% end %>
+<% else %>
+  <%= button_to public_place_comment_likes_path(place, comment, reaction_type: :good), method: :post, remote: true,
+                class: "btn btn-success btn-lg d-flex align-items-center " do %>
+    <i class="fa-regular fa-thumbs-up"></i> 
+    <span class="ml-3" style="font-size: 0.75rem;">
+      <%= comment.likes.good.count %>
+    </span>
+  <% end %>
+<% end %>
 
-  <!-- 👎 BAD -->
+  <!-- BAD -->
   <% if like&.reaction_type == "bad" %>
     <%= button_to public_place_comment_like_path(place, comment, like), method: :delete, remote: true,
-                  class: "btn btn-outline-danger btn-sm d-flex align-items-center gap-1" do %>
-      <i class="fa-solid fa-thumbs-down"></i> あかん解除
+                  class: "btn btn-outline-danger btn-lg d-flex align-items-center gap-1" do %>
+      <i class="fa-solid fa-thumbs-down"></i> 
     <% end %>
   <% else %>
     <%= button_to public_place_comment_likes_path(place, comment, reaction_type: :bad), method: :post, remote: true,
-                  class: "btn btn-danger btn-sm d-flex align-items-center gap-1" do %>
-      <i class="fa-regular fa-thumbs-down"></i> あかん
+                  class: "btn btn-danger btn-lg d-flex align-items-center gap-1" do %>
+      <i class="fa-regular fa-thumbs-down"></i> 
     <% end %>
   <% end %>
 </div>
