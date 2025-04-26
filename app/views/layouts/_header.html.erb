@@ -8,10 +8,10 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <div class="container">
     <%= link_to root_path, class: "navbar-brand" do %>
-      <%= image_tag "おでかけ.png", alt: "Logo", width: 100 %>
+      <%= image_tag "odekake.png", alt: "Logo", width: 100 %>
     <% end %>
     <% if user_signed_in? %>
-          <div class="me-3">
+          <div class="me-3 ml-5">
             <strong>こんにちは！<%= current_user.nickname %>さん</strong>
           </div>
         <% end %>
@@ -21,7 +21,7 @@
     </button>
 
     <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav ml-auto text-right w-100">
+      <ul class="navbar-nav ml-auto">
         
           <% if current_admin %>
             <!-- 管理者ログイン中 -->
@@ -33,6 +33,9 @@
             </li>
             <li class="nav-item">
               <%= link_to 'コメント一覧', admin_comments_path, class: "nav-link" %>
+            </li>
+            <li class="nav-item">
+              <%= link_to '編集リクエスト一覧', admin_place_edit_requests_path, class: "nav-link" %>
             </li>
             <li class="nav-item">
               <%= link_to 'ログアウト', destroy_user_session_path, method: :delete, class: "nav-link", data: { turbo: false } %>

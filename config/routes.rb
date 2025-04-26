@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  
   # 顧客用
 # URL /customers/sign_in ...
 devise_for :users, controllers: {
@@ -29,6 +30,7 @@ devise_for :admin, skip: [:registrations], controllers: {
 
     resources :places do
       resources :bookmarks, only: [:create, :destroy]
+      resources :place_edit_requests, only: [:create, :new]
       resources :comments, only: [:create, :destroy] do
         resources :likes, only: [:create, :destroy]
       end
@@ -37,9 +39,10 @@ devise_for :admin, skip: [:registrations], controllers: {
 
   # 管理者用（admin）ルーティング
     namespace :admin do
-      resources :places, only: [:index, :show, :edit, :update, :destroy]
+      resources :places, only: [:index, :show, :edit, :update, :destroy]      
       resources :users, only: [:index, :show, :edit, :update]
       resources :comments, only: [:index, :destroy]  
+      resources :place_edit_requests, only: [:index, :show, :update]
     end
 
   # トップページのルーティング

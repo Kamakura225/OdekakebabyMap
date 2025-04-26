@@ -19,6 +19,12 @@ import 'swiper/swiper-bundle.css';
 import "../stylesheets/application"; 
 
 Rails.start()
+
+document.addEventListener('turbolinks:load', () => {
+  Rails.start()
+})
+
+
 Turbolinks.start()
 ActiveStorage.start()
 

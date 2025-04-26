@@ -1,0 +1,127 @@
+<h2 class="mb-4">編集リクエスト詳細</h2>
+
+<div class="mb-3">
+  <strong>施設名：</strong>
+  <%= link_to @place_edit_request.place.name, admin_place_path(@place_edit_request.place) %>
+</div>
+
+<div class="mb-3">
+  <strong>リクエストユーザー：</strong>
+  <%= @place_edit_request.user.nickname %>
+</div>
+
+<div class="mb-3">
+  <strong>住所：</strong>
+  <%= @place_edit_request.place.address %>
+</div>
+
+      <div class="row">
+        <div class="col-12 col-md-4 mb-2">
+          <strong>授乳室:</strong>
+            <% if @place_edit_request.place.nursery %>
+              <span class="text-success"><i class="fa-regular fa-circle me-1"></i>あり</span>
+            <% else %>
+              <span class="text-secondary"><i class="fa-solid fa-xmark me-1"></i>なし</span>
+            <% end %>
+        </div>
+      
+        <div class="col-12 col-md-4 mb-2">
+          <strong>おむつ交換台:</strong>
+            <% if @place_edit_request.place.diaper %>
+              <span class="text-success"><i class="fa-regular fa-circle me-1"></i>あり</span>
+            <% else %>
+              <span class="text-secondary"><i class="fa-solid fa-xmark me-1"></i>なし</span>
+            <% end %>
+        </div>  
+          
+      <div class="col-12 col-md-4 mb-2">
+        <strong>幼児トイレ:</strong>
+          <% if @place_edit_request.place.kids_toilet %>
+            <span class="text-success"><i class="fa-regular fa-circle me-1"></i>あり</span>
+          <% else %>
+            <span class="text-secondary"><i class="fa-solid fa-xmark me-1"></i>なし</span>
+          <% end %>
+      </div>
+
+      <div class="col-12 col-md-4 mb-2">
+        <strong>ベビーカー対応:</strong>
+          <% if @place_edit_request.place.stroller %>
+            <span class="text-success"><i class="fa-regular fa-circle me-1"></i>あり</span>
+          <% else %>
+            <span class="text-secondary"><i class="fa-solid fa-xmark me-1"></i>なし</span>
+          <% end %>
+      </div>
+
+      <div class="col-12 col-md-4 mb-2">
+        <strong>木陰:</strong>
+          <% if @place_edit_request.place.shade %>
+            <span class="text-success"><i class="fa-regular fa-circle me-1"></i>あり</span>
+          <% else %>
+            <span class="text-secondary"><i class="fa-solid fa-xmark me-1"></i>なし</span>
+          <% end %>
+      </div>
+
+      <div class="col-12 col-md-4 mb-2">
+        <strong>ベンチ:</strong>
+          <% if @place_edit_request.place.bench %>
+            <span class="text-success"><i class="fa-regular fa-circle me-1"></i>あり</span>
+          <% else %>
+            <span class="text-secondary"><i class="fa-solid fa-xmark me-1"></i>なし</span>
+          <% end %>
+      </div>
+
+      <div class="col-12 col-md-4 mb-2">
+        <strong>遊具:</strong>
+          <% if @place_edit_request.place.playground %>
+            <span class="text-success"><i class="fa-regular fa-circle me-1"></i>あり</span>
+          <% else %>
+            <span class="text-secondary"><i class="fa-solid fa-xmark me-1"></i>なし</span>
+          <% end %>
+      </div>
+
+      <div class="col-12 col-md-4 mb-2">
+        <strong>エレベーター:</strong>
+          <% if @place_edit_request.place.elevator %>
+            <span class="text-success"><i class="fa-regular fa-circle me-1"></i>あり</span>
+          <% else %>
+            <span class="text-secondary"><i class="fa-solid fa-xmark me-1"></i>なし</span>
+          <% end %>
+      </div>
+
+      <div class="col-12 col-md-4 mb-2">
+        <strong>駐車場:</strong>
+          <% if @place_edit_request.place.parking %>
+            <span class="text-success"><i class="fa-regular fa-circle me-1"></i>あり</span>
+          <% else %>
+            <span class="text-secondary"><i class="fa-solid fa-xmark me-1"></i>なし</span>
+          <% end %>
+      </div>        
+    </div>
+  </div>
+</div>
+
+<% if @place_edit_request.photos.attached? %>
+  <div class="mb-3">
+    <strong>画像：</strong><br>
+    <% @place_edit_request.photos.each do |image| %>
+      <%= image_tag image, class: "img-thumbnail me-2 mb-2" %>
+    <% end %>
+  </div>
+<% end %>
+
+<% if @place_edit_request.pending? %>
+  <%= form_with url: admin_place_edit_request_path(@place_edit_request), method: :patch, local: true do |f| %>
+    <div class="d-flex gap-2">
+      <%= f.hidden_field :status, value: :approved %>
+      <%= f.submit '承認', class: "btn btn-success" %>
+    <% end %>
+
+    <%= form_with url: admin_place_edit_request_path(@place_edit_request), method: :patch, local: true do |f| %>
+      <%= f.hidden_field :status, value: :rejected %>
+      <%= f.submit '却下', class: "btn btn-danger" %>
+    <% end %>
+<% else %>
+  <div class="alert alert-info mt-3">
+    このリクエストはすでに <strong><%= @place_edit_request.status_i18n %></strong> されています。
+  </div>
+<% end %>

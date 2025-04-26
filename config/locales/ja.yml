@@ -8,6 +8,11 @@ ja:
         pending: "承認待ち"
         approved: "承認済み"
         rejected: "却下"
+    place_edit_request:
+      status:
+        pending: "承認待ち"
+        approved: "承認済み"
+        rejected: "却下"
   activerecord:
     errors:
       messages:

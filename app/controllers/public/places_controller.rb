@@ -4,17 +4,27 @@ class Public::PlacesController < ApplicationController
   def index
     # フィルターを適用する場合
     @places = Place.where(status: :approved).where.not(latitude: nil, longitude: nil)
-
-    # フィルター条件を適用
-    if params[:tag].present?
-      @places = @places.joins(:tags).where(tags: { name: params[:tag] })
+  
+    # カテゴリフィルター
+    categories = []
+    categories << "park" if params[:category_park].present?
+    categories << "facility" if params[:category_facility].present?
+    @places = @places.where(category: categories) if categories.any?
+  
+    # 設備条件（booleanカラム）
+    [:nursery, :diaper, :kids_toilet, :stroller, :playground, :shade, :bench, :elevator, :parking].each do |key|
+      @places = @places.where(key => true) if params[key].present?
     end
-
-    @places = @places.includes(:comments, :likes, photos_attachments: :photos_blobs)
-
+  
+    # コメント、いいね、写真をインクルード（Eager Loading）
+    @places = @places.includes(:comments, :likes, photos_attachments: :blob)
+  
     respond_to do |format|
-      format.html # 通常のレスポンス
-      format.json # JSONレスポンス
+      format.html
+      format.json { render json: @places.as_json(
+        only: [:id, :name, :latitude, :longitude, :category],
+        methods: [:place_path, :photo_urls] # `photo_urls` メソッドを追加
+      ) }
     end
   end
 
@@ -50,37 +60,16 @@ class Public::PlacesController < ApplicationController
     end
   end
 
-  def edit
-    @place = Place.find(params[:id])
-    redirect_to public_place_path(@place), alert: 'ゲストユーザーは施設の編集ができません' if guest_user?
-  end
-
-  def update
-    @place = Place.find(params[:id])
-    if @place.update(place_params)
-      redirect_to public_place_path(@place), notice: '施設・公園が更新されました！'
-    else
-      render :new
-    end
-  end
-
-  def destroy
-    @place = Place.find(params[:id])
-    
-    if @place.user == current_user
-      @place.destroy
-      redirect_to public_places_path, notice: '施設・公園が削除されました！'
-    else
-      redirect_to public_place_path(@place), alert: '削除権限がありません'
-    end
-  end
+  
 
   private
 
   def place_params
     params.require(:place).permit(
-      :name, :category, :address, :latitude, :longitude,
-      :status, photos: [], tag_ids: []
+      :name, :address, :latitude, :longitude, :category, :status,
+      :nursery, :diaper, :kids_toilet, :stroller,
+      :playground, :shade, :bench, :elevator, :parking,
+      photos: [], tag_ids: []
     )
   end  
 end

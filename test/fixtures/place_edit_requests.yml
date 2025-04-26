@@ -1,0 +1,35 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user: one
+  place: one
+  name: MyString
+  address: MyString
+  description: MyText
+  nursery: false
+  diaper: false
+  kids_toilet: false
+  stroller: false
+  playground: false
+  shade: false
+  bench: false
+  elevator: false
+  parking: false
+  status: 1
+
+two:
+  user: two
+  place: two
+  name: MyString
+  address: MyString
+  description: MyText
+  nursery: false
+  diaper: false
+  kids_toilet: false
+  stroller: false
+  playground: false
+  shade: false
+  bench: false
+  elevator: false
+  parking: false
+  status: 1

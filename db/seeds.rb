@@ -5,13 +5,13 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
-Admin.find_or_create_by!(email: ENV['Admin_Email']) do |admin|
+Admin.find_or_create_by(email: ENV['Admin_Email']) do |admin|
     admin.password = ENV['Admin_Password']
     admin.password_confirmation = ENV['Admin_Password']
 end
 
 # サンプルユーザー作成
-user = User.find_or_create_by!(email: "user1@example.com") do |u|
+User.find_or_create_by(email: "user1@example.com") do |u|
     u.password = "password1"
     u.password_confirmation = "password1"
     u.nickname = "とら"

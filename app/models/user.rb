@@ -9,6 +9,7 @@ class User < ApplicationRecord
   has_many :likes, dependent: :destroy
   has_many :bookmarks, dependent: :destroy
   has_many :bookmarked_places, through: :bookmarks, source: :place
+  has_many :place_edit_requests, dependent: :destroy
 
   has_one_attached :profile_image
   

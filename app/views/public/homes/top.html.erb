@@ -1,15 +1,66 @@
 <div class="text-center">
-  <h1 class="mb-4">ようこそ！ベイビーおでかけマップへ</h1>
+  <h1 class="mb-4">ようこそ！おでかけベイビーマップへ</h1>
   <p class="lead">
     全国の子育て支援施設や公園を<br>
-    マップ上で探せて、授乳室や遊具情報を確認できます！
+    マップ上で探せて、授乳室や遊具情報を確認できます！<br>
+    まずはゲストログインで使ってみてね！！
   </p>
 
-  <ul class="list-group list-group-flush my-4">
-    <li class="list-group-item">🔍 設備ごとに絞り込み検索</li>
-    <li class="list-group-item">📷 写真やレビューで現地の様子がわかる</li>
-    <li class="list-group-item">🗺 Google Mapで施設の場所を確認</li>
-  </ul>
+  <div class="row row-cols-1 row-cols-md-3 g-4 my-4 ">
+  <div class="col mt-3">
+    <div class="card h-100 shadow-sm text-center">
+      <%= image_tag "Top/検索用の虫眼鏡アイコン素材.png", class: "card-img-top mx-auto d-block mt-4 mb-2", style: "height: 50px; width: auto;"%>
+      <div class="card-body">
+        <p class="card-text mb-3">設備ごとに絞り込み検索</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="col mt-3">
+    <div class="card h-100 shadow-sm text-center">
+      <%= image_tag "Top/カメラアイコン8.png", class: "card-img-top mx-auto d-block mt-4 mb-2", style: "height: 50px; width: auto;" %>
+      <div class="card-body">
+        <p class="card-text mb-3"> 写真やレビューで現地の様子がわかる</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="col mt-3">
+    <div class="card h-100 shadow-sm text-center">
+      <%= image_tag "Top/地図＆マーカーアイコン2.png", class: "card-img-top mx-auto d-block mt-4 mb-2", style: "height: 50px; width: auto;" %>
+      <div class="card-body">
+        <p class="card-text mb-3"> Google Mapで施設の場所を確認</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="col mt-3">
+    <div class="card h-100 shadow-sm text-center">
+      <%= image_tag "Top/吹き出しのアイコン15.png", class: "card-img-top mx-auto d-block mt-4 mb-2", style: "height: 50px; width: auto;" %>
+      <div class="card-body">
+        <p class="card-text mb-3"> 施設に対してコメントや評価をしてみよう</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="col mt-3">
+    <div class="card h-100 shadow-sm text-center">
+      <%= image_tag "Top/ブックマークのアイコン素材5.png", class: "card-img-top mx-auto d-block mt-4 mb-2", style: "height: 50px; width: auto;" %>
+      <div class="card-body">
+        <p class="card-text mb-3"> お気に入りの施設を登録して使いやすく！</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="col mt-3">
+    <div class="card h-100 shadow-sm text-center">
+      <%= image_tag "Top/イイネの手のフリーアイコン.png", class: "card-img-top mx-auto d-block mt-4 mb-2", style: "height: 50px; width: auto;" %>
+      <div class="card-body">
+        <p class="card-text mb-3"> 参考になったコメントに良いねをしてあげて！</p>
+      </div>
+    </div>
+  </div>
+</div>
 
   <%= link_to '施設・公園を探す', public_places_path, class: "btn btn-primary btn-lg" %>
 </div>

@@ -1,2 +1,6 @@
 @use '~bootstrap/scss/bootstrap';
 
+.carousel-inner img {
+  width: 100%;
+  height: 400px;
+}

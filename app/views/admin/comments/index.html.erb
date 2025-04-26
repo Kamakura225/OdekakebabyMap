@@ -48,3 +48,23 @@
     <% end %>
   </tbody>
 </table>
+
+<script>
+  document.addEventListener("turbolinks:load", () => {
+  const target = document.getElementById("star-rating");  
+  
+  // 表示用  
+  document.querySelectorAll(".rating").forEach((elem) => {
+    elem.innerHTML = '';
+    const score = parseFloat(elem.dataset.score || 0);
+    raty(elem, {
+      score: score,
+      readOnly: true, // コメント表示は読取専用      
+      starOn: '/assets/raty/star-on.png',
+      starOff: '/assets/raty/star-off.png',
+      starHalf: '/assets/raty/star-half.png',
+      halfShow: true,
+    });
+  });
+});
+</script>

@@ -1,75 +1,152 @@
-<class="container-fluid mt-4">
-  <h1 class="mb-4">施設・公園一覧</h1>
-<!--検索-->
-  <div class="card p-4 mb-4 shadow-sm">
-  <div class="row g-2 align-items-center">
-    <div class="col-md-8">
-      <input type="text" id="keyword-search" class="form-control" placeholder="キーワードで検索（例: 渋谷 授乳室）">
-    </div>
-    <div class="col-md-4 text-end">
-      <button class="btn btn-primary w-100" id="search-btn">検索</button>
+<div class="container-fluid mt-4">
+  <h1 class="mb-4 text-center fw-bold">施設・公園一覧</h1>
+
+  <!-- 検索バー -->
+  <div class="card mb-4 shadow-sm">
+    <div class="card-body">
+      <h5 class="card-title">住所から検索</h5>
+      <div class="input-group">
+        <%= text_field_tag :address, "東京駅", class: "form-control", id: "address", placeholder: "例）東京駅" %>
+        <button type="button" class="btn btn-outline-primary" onclick="codeAddress()">検索</button>
+      </div>
     </div>
   </div>
-</div>
 
-<div class="card p-4 mb-4 shadow-sm">
-  <form id="filter-form" class="row g-3">
-    <% filters = {
-      "filter_category_park" => "公園のみ",
-      "filter_category_facility" => "施設のみ",
-      "filter_nursery" => "授乳室あり",
-      "filter_diaper" => "おむつ交換台あり",
-      "filter_kidstoilet" => "幼児用トイレあり",
-      "filter_stroller" => "ベビーカー対応",
-      "filter_playground" => "遊具あり",
-      "filter_shade" => "木陰あり",
-      "filter_bench" => "ベンチあり",
-      "filter_elevator" => "エレベーターあり",
-      "filter_parking" => "駐車場あり"
-    } %>
-
-    <% filters.each do |id, label| %>
-      <div class="col-6 col-md-3">
-        <div class="form-check">
-          <input type="checkbox" id="<%= id %>" class="form-check-input">
-          <label for="<%= id %>" class="form-check-label"><%= label %></label>
+  <!-- フィルター -->
+  <div class="card mb-4 shadow-sm">
+    <div class="card-body">
+      <h5 class="card-title">条件で絞り込む</h5>
+      <%= form_with url: public_places_path, method: :get, local: true do %>
+        <div class="mb-3">
+          <label class="form-label fw-bold">カテゴリ</label>
+          <div class="form-check">
+            <%= check_box_tag :category_park, "park", params[:category_park].present?, class: "form-check-input", id: "category_park" %>
+            <%= label_tag :category_park, "公園", class: "form-check-label" %>
+          </div>
+          <div class="form-check">
+            <%= check_box_tag :category_facility, "facility", params[:category_facility].present?, class: "form-check-input", id: "category_facility" %>
+            <%= label_tag :category_facility, "施設", class: "form-check-label" %>
+          </div>
         </div>
-      </div>
-    <% end %>
-  </form>
-</div>
 
-  <% if user_signed_in? %>
-    <div class="text-end mb-4">
-      <%= link_to '施設・公園を新規登録する', new_public_place_path, class: 'btn btn-success' %>
+        <div class="mb-3">
+          <label class="form-label fw-bold">設備</label>
+          <div class="row">
+            <% [
+              [:nursery, "授乳室"], [:diaper, "おむつ交換台"], [:kids_toilet, "幼児トイレ"],
+              [:stroller, "ベビーカーOK"], [:playground, "遊具"], [:shade, "木陰"],
+              [:bench, "ベンチ"], [:elevator, "エレベーター"], [:parking, "駐車場"]
+            ].each do |key, label| %>
+              <div class="col-6 col-md-4">
+                <div class="form-check">
+                  <%= check_box_tag key, "true", params[key].present?, class: "form-check-input", id: key %>
+                  <%= label_tag key, label, class: "form-check-label" %>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        </div>
+
+        <div class="text-center">
+          <%= submit_tag "検索", class: "btn btn-primary px-5" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  
+</div>
+<!-- 地図 -->
+  <div id="map" style="height: 600px;"></div>
+
+  <% if user_signed_in? && !(current_user.guest_user?) %>
+    <div class="text-center mt-4 mb-4">
+      <%= link_to '施設・公園を新規登録する', new_public_place_path, class: 'btn btn-success btn-lg' %>
     </div>
   <% end %>
 
-  <!-- Google Map -->
-<div id="map" class="rounded shadow-sm mb-4" style="width: 100%; height: 800px;"></div>
-
-<!-- ピンをクリックした時に表示するバナー -->
-<div id="place-info-banner" class="card shadow-lg fixed-bottom m-4 border-primary" style="display: none; max-width: 600px; z-index: 1000;">
-  <div class="card-body d-flex align-items-center">
-    <img id="place-photo" src="" alt="施設写真" class="me-3 rounded" style="width: 100px; height: 100px; object-fit: cover;">
-    <div>
-      <h5 id="place-name" class="mb-1 fw-bold"></h5>
-      <p id="place-details" class="mb-1 small text-muted"></p>
-      <a href="#" id="place-link" class="btn btn-sm btn-outline-primary mt-2">詳細を見る</a>
-    </div>
-  </div>
-</div>
-
-<%= javascript_pack_tag 'place_index_map', defer: true %>
-  <script
-    async defer src="https://maps.googleapis.com/maps/api/js?key=<%= ENV['GOOGLE_MAPS_API_KEY'] %>&libraries=places&callback=initMap">
-  </script>      
-
 
 <script>
-  window.places = <%= raw @places.to_json(
-    only: [:id, :name, :latitude, :longitude, :category, :nursery],
-    methods: [:main_image_url, :comments_count, :likes_count, :facility_summary, :place_path]
-  ) %>;  
+  let map;
+  let markers = []; // 投稿マーカーをまとめる配列
+  let geocoder;
+
+  function initMap() {
+    const center = { lat: 35.681236, lng: 139.767125 }; // 東京駅初期位置
+
+    map = new google.maps.Map(document.getElementById("map"), {
+      zoom: 14,
+      center: center,
+    });
+
+    geocoder = new google.maps.Geocoder(); 
+
+    <% @places.each do |place| %>
+      (function() {
+        const markerLatLng = { lat: <%= place.latitude %>, lng: <%= place.longitude %> };
+
+        const marker = new google.maps.Marker({
+        position: markerLatLng,
+        map: map,
+        title: "<%= j place.name %>"
+      });
+
+      const infowindow = new google.maps.InfoWindow({
+        content: `<a href="<%= place.place_path %>"><%= j place.name %></a>`
+      });
+
+      marker.addListener("click", function() {
+      infowindow.open(map, marker);
+      });
+
+      markers.push(marker);
+    })();
+    <% end %>
+
+    // フィルター機能
+    function applyFilters() {
+      const keyword = document.getElementById("keyword").value.toLowerCase();
+      const showFacility = document.getElementById("filterFacility").checked;
+      const showPark = document.getElementById("filterPark").checked;
+
+      markers.forEach(marker => {
+        const nameMatch = marker.place.name.toLowerCase().includes(keyword);
+        const categoryMatch =
+          (!showFacility && !showPark) ||
+          (showFacility && marker.place.category === "facility") ||
+          (showPark && marker.place.category === "park");
+
+        if (nameMatch && categoryMatch) {
+          marker.setMap(map);
+        } else {
+          marker.setMap(null);
+        }
+      });
+    }
+
+    // フィルターイベント
+    document.getElementById("keyword").addEventListener("input", applyFilters);
+    document.getElementById("filterFacility").addEventListener("change", applyFilters);
+    document.getElementById("filterPark").addEventListener("change", applyFilters);
+  }
+
+  // 住所から地図を移動させるだけ（マーカー作らない！）
+  function codeAddress() {
+    const addressInput = document.getElementById("address").value;
+
+    geocoder.geocode({ address: addressInput }, function (results, status) {
+      if (status === "OK") {
+        const position = results[0].geometry.location;
+        map.setCenter(position); // 住所に合わせて地図だけ動かす
+        map.setZoom(15); // ちょっと拡大
+      } else {
+        alert("住所が見つかりませんでした: " + status);
+      }
+    });
+  }
 </script>
 
+<script
+  src="https://maps.googleapis.com/maps/api/js?key=<%= ENV['GOOGLE_MAPS_API_KEY'] %>&callback=initMap"
+  async defer>
+</script>

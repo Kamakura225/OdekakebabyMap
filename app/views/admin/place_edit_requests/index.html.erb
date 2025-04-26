@@ -1,0 +1,26 @@
+<h2 class="mb-4">編集リクエスト一覧</h2>
+
+<table class="table table-bordered table-hover">
+  <thead class="table-light">
+    <tr>
+      <th>ID</th>
+      <th>対象施設</th>
+      <th>リクエストユーザー</th>
+      <th>ステータス</th>
+      <th>作成日</th>
+      <th>操作</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @place_edit_requests.each do |request| %>
+      <tr>
+        <td><%= request.id %></td>
+        <td><%= link_to request.place.name, admin_place_path(request.place) %></td>
+        <td><%= request.user.nickname %></td>
+        <td><%= request.status_i18n %></td>
+        <td><%= l(request.created_at, format: :short) %></td>
+        <td><%= link_to '詳細', admin_place_edit_request_path(request), class: "btn btn-sm btn-outline-primary" %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

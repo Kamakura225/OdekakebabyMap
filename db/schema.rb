@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2025_04_25_031806) do
+ActiveRecord::Schema.define(version: 2025_04_25_211006) do
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -85,17 +85,31 @@ ActiveRecord::Schema.define(version: 2025_04_25_031806) do
     t.integer "reaction_type"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "comment_id"
+    t.index ["comment_id"], name: "index_likes_on_comment_id"
     t.index ["likeable_type", "likeable_id"], name: "index_likes_on_likeable"
     t.index ["user_id"], name: "index_likes_on_user_id"
   end
 
-  create_table "place_features", force: :cascade do |t|
+  create_table "place_edit_requests", force: :cascade do |t|
+    t.integer "user_id", null: false
     t.integer "place_id", null: false
-    t.integer "feature_id", null: false
+    t.string "name"
+    t.string "address"
+    t.boolean "nursery"
+    t.boolean "diaper"
+    t.boolean "kids_toilet"
+    t.boolean "stroller"
+    t.boolean "playground"
+    t.boolean "shade"
+    t.boolean "bench"
+    t.boolean "elevator"
+    t.boolean "parking"
+    t.integer "status", default: 0
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["feature_id"], name: "index_place_features_on_feature_id"
-    t.index ["place_id"], name: "index_place_features_on_place_id"
+    t.index ["place_id"], name: "index_place_edit_requests_on_place_id"
+    t.index ["user_id"], name: "index_place_edit_requests_on_user_id"
   end
 
   create_table "place_tags", force: :cascade do |t|
@@ -155,9 +169,10 @@ ActiveRecord::Schema.define(version: 2025_04_25_031806) do
   add_foreign_key "bookmarks", "users"
   add_foreign_key "comments", "places"
   add_foreign_key "comments", "users"
+  add_foreign_key "likes", "comments"
   add_foreign_key "likes", "users"
-  add_foreign_key "place_features", "features"
-  add_foreign_key "place_features", "places"
+  add_foreign_key "place_edit_requests", "places"
+  add_foreign_key "place_edit_requests", "users"
   add_foreign_key "place_tags", "places"
   add_foreign_key "place_tags", "tags"
   add_foreign_key "places", "users"

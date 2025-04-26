@@ -8,7 +8,7 @@
               <div class="carousel-inner rounded">
                 <% @place.photos.each_with_index do |photo, index| %>
                   <div class="carousel-item <%= 'active' if index == 0 %>">
-                    <%= image_tag photo, class: 'd-block w-100', alt: '施設の写真' %>
+                    <%= image_tag photo, class: 'd-block w-25 rounded', alt: '施設の写真' %>
                   </div>
                 <% end %>
               </div>
@@ -26,11 +26,21 @@
       </div>
     </div>
   </div>
+</div>
   
   <!-- 施設名・カテゴリ・設備 -->
-  <div class="row mb-4">
-    <div class="col-12">
-      <h2 class="mb-3"><%= @place.name %></h2>
+<div class="row mb-4">
+  <div class="col-12">
+    <h2 class="mb-3 d-flex  align-items-center">
+      <span><%= @place.name %></span>
+      <% if user_signed_in? %>
+        <% if current_user.bookmarked_places.include?(@place) %>
+          <%= button_to 'ブックマーク解除', public_place_bookmark_path(@place), method: :delete, class: 'btn btn-outline-danger btn-sm ml-5' %>
+        <% else %>
+          <%= button_to 'ブックマーク', public_place_bookmarks_path(@place), method: :post, class: 'btn btn-outline-primary btn-sm ml-5' %>
+        <% end %>
+      <% end %>
+    </h2>
 
       <% if @average_rating.present? %>
         <div class="d-flex align-items-center mb-3">
@@ -43,16 +53,16 @@
 
       <p><strong>カテゴリ:</strong> <%= @place.category_i18n %></p>
 
-      <div class="col-12 col-md-4 mb-2">
-        <strong>授乳室:</strong>
-          <% if @place.nursery %>
-            <span class="text-success"><i class="fa-regular fa-circle me-1"></i>あり</span>
-          <% else %>
-            <span class="text-secondary"><i class="fa-solid fa-xmark me-1"></i>なし</span>
-          <% end %>
-      </div>
-
       <div class="row">
+        <div class="col-12 col-md-4 mb-2">
+          <strong>授乳室:</strong>
+            <% if @place.nursery %>
+              <span class="text-success"><i class="fa-regular fa-circle me-1"></i>あり</span>
+            <% else %>
+              <span class="text-secondary"><i class="fa-solid fa-xmark me-1"></i>なし</span>
+            <% end %>
+        </div>
+      
         <div class="col-12 col-md-4 mb-2">
           <strong>おむつ交換台:</strong>
             <% if @place.diaper %>
@@ -126,6 +136,7 @@
       </div>        
     </div>
   </div>
+</div>
 
   <% if user_signed_in? && !guest_user? && @place.approved? %>
   <% @comments.each do |comment| %>
@@ -180,13 +191,7 @@
         <% end %>
       </div>
     </div>
-<!-- ブックマーク -->
-    <% if current_user.bookmarked_places.include?(@place) %>
-      <%= button_to 'ブックマーク解除', public_place_bookmark_path(@place), method: :delete, class: 'btn btn-outline-danger' %>
-    <% else %>
-      <%= button_to 'ブックマーク', public_place_bookmarks_path(@place), method: :post, class: 'btn btn-outline-primary' %>
-    <% end %>
-<% end %>
+  <% end %>
 
 <!-- 住所・地図 -->
   <div class="row mt-4">
@@ -201,16 +206,12 @@
   </div>
 </div>
       
-<!-- 削除ボタン（オーナーのみ） -->
-  <% if user_signed_in? && current_user == @place.user %>
-    <div class="row">
-      <div class="col-12">
-        <%= button_to 'この施設を削除', public_place_path(@place),
-              method: :delete, data: { confirm: '本当に削除しますか？' },
-              class: 'btn btn-danger w-100' %>
-      </div>
-    </div>
-  <% end %>
+<!-- 編集ボタン（ログインユーザーのみ） -->
+  <% if user_signed_in? %>
+  <%= link_to "編集リクエストを送る", new_public_place_place_edit_request_path(@place), class: "btn btn-primary" %>
+<% else %>
+  <p>ログインしていないと、編集リクエストは送信できません。</p>
+<% end %>
 
 </div>
 

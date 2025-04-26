@@ -17,7 +17,22 @@
         </div>
       <% end %>
 
-      <%= form_with(model: @place, local: true, html: { multipart: true }, url: public_places_path) do |f| %>
+
+
+      <%= form_with(model: @place, url: public_places_path, local: true, html: { multipart: true }) do |f| %>  
+        <div class="mb-4">
+          <%= label_tag :address, "住所から検索", class: "form-label fw-bold" %>
+            <div class="input-group mb-2">
+              <%= text_field_tag :address, "東京駅", class: "form-control", id: "address" %>
+              <button type="button" class="btn btn-outline-secondary" onclick="codeAddress()">検索</button>
+            </div>
+          <p class="text-muted">マーカーをドラッグして位置調整できます。</p>
+          <div id="map" style="height: 500px; width: 100%;" class="border rounded mb-3"></div>
+          <%= f.hidden_field :latitude, id: "lat" %>
+          <%= f.hidden_field :longitude, id: "lng" %>
+          <%= f.hidden_field :address, id: "place_address" %>
+        </div>
+
         <div class="mb-3">
           <%= f.label :name, "施設・公園名", class: "form-label" %>
           <%= f.text_field :name, class: "form-control" %>
@@ -28,13 +43,6 @@
           <%= f.select :category, Place.categories.keys.map { |k| [I18n.t("enums.place.category.#{k}"), k] }, {}, class: "form-select" %>
         </div>
 
-        <div class="mb-4">
-          <p class="fw-bold">地図から場所を選んでください</p>
-          <div id="map" style="height: 600px; width: 100%; margin-bottom: 1rem;" class="border rounded"></div>
-          <%= f.hidden_field :latitude, id: "place_latitude" %>
-          <%= f.hidden_field :longitude, id: "place_longitude" %>
-          <%= f.hidden_field :address, id: "place_address" %>
-        </div>
         <% facility_labels = {
           nursery: "授乳室",
           diaper: "おむつ交換台",
@@ -46,6 +54,7 @@
           elevator: "エレベーター",
           parking: "駐車場"
         } %>
+        
         <div class="mb-3">
           <p class="fw-bold"> 設備情報</p>
           <div class="row">
@@ -64,17 +73,68 @@
           <%= f.label :photos, "写真をアップロード", class: "form-label" %>
           <%= f.file_field :photos, multiple: true %>
         </div>
-
         <div class="text-end">
           <%= f.submit "投稿する", class: "btn btn-success" %>
         </div>
       <% end %>
 
-    </div>
-  </div>
-</div>
-
-<%= javascript_pack_tag 'place_new_map', defer: true %>
 <!-- Google Maps API 読み込み -->
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=<%= ENV['GOOGLE_MAPS_API_KEY'] %>&callback=initMap"></script>
 
+<script>
+  let map;
+  let marker;
+  let geocoder;
+  let aft = false;
+
+  function initMap() {
+    geocoder = new google.maps.Geocoder();
+    map = new google.maps.Map(document.getElementById('map'), {
+      center: { lat: 35.6803997, lng: 139.7690174 },
+      zoom: 15,
+    });
+  }
+
+  function codeAddress() {
+    const addressInput = document.getElementById('address').value;
+    geocoder.geocode({ address: addressInput }, function (results, status) {
+      if (status === 'OK') {
+        if (aft && marker) marker.setMap(null); // 古いマーカーを削除
+
+        const position = results[0].geometry.location;
+        map.setCenter(position);
+        marker = new google.maps.Marker({
+          map: map,
+          position: position,
+          draggable: true
+        });
+
+        aft = true;
+
+        document.getElementById('lat').value = position.lat();
+        document.getElementById('lng').value = position.lng();
+        document.getElementById('place_address').value = results[0].formatted_address;
+
+        marker.addListener('dragend', function (ev) {
+          document.getElementById('lat').value = ev.latLng.lat();
+          document.getElementById('lng').value = ev.latLng.lng();
+          reverseGeocode(ev.latLng);
+        });
+      } else {
+        alert('該当する場所が見つかりませんでした：' + status);
+      }
+    });
+  }
+
+  function reverseGeocode(latlng) {
+    geocoder.geocode({ location: latlng }, (results, status) => {
+      if (status === "OK" && results[0]) {
+        document.getElementById("place_address").value = results[0].formatted_address;
+      } else {
+        console.error("住所の取得に失敗しました: " + status);
+      }
+    });
+  }
+
+  window.initMap = initMap;
+</script>
