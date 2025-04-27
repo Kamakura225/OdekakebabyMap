@@ -9,7 +9,7 @@ class PlaceEditRequest < ApplicationRecord
   validates :name, :address, presence: true
   
   def update_place
-    return unless approved?  # 承認されている場合のみ更新
+    return unless approved?  
     place.update(
       name: name,
       address: address,
@@ -23,6 +23,10 @@ class PlaceEditRequest < ApplicationRecord
       elevator: elevator,
       parking: parking
     )
+    if photos.attached?      
+      photos.each do |photo|
+        place.photos.attach(photo.blob) # リクエスト側の写真をPlaceにコピー
+      end
+    end
   end
-
 end

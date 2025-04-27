@@ -75,18 +75,19 @@
     </div>
     <ul class="list-group list-group-flush">
       <% @likes.each do |like| %>
-        <li class="list-group-item">
-          <!--施設に対するいいね　今回は未使用-->
-          <!--<% if like.likeable_type == "Place" %>-->
-            <!--（投稿先：<%= link_to like.likeable.place.name, place_path(like.likeable.place), class: "text-decoration-none" %>）-->
-            <!-- <i class="fa-solid fa-thumbs-up me-2 text-warning"></i>
-            施設：<%= link_to like.likeable.name, public_place_path(like.likeable), class: "text-decoration-none fw-semibold" %> -->
-          <% elsif like.likeable_type == "Comment" %>
+        <% if like.likeable_type == "Comment" %>
+          <li class="list-group-item">
             <i class="fa-solid fa-comment me-2 text-success"></i>
             コメント：<%= truncate(like.likeable.content, length: 30) %><br>
-            <small class="text-muted">（投稿先：<%= link_to like.likeable.place.name, public_place_path(like.likeable.place), class: "text-decoration-none" %>）</small>
-          <% end %>
-        </li>
+            <small class="text-muted">
+              （投稿先：
+              <%= link_to like.likeable.place.name, public_place_path(like.likeable.place), class: "text-decoration-none" %>
+              / コメント：
+              <%= link_to "詳細を見る", public_place_path(like.likeable.place, anchor: "comment-#{like.likeable.id}"), class: "text-decoration-none" %>
+              ）
+            </small>
+          </li>
+        <% end %>
       <% end %>
     </ul>
   </div>

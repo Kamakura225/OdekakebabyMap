@@ -7,9 +7,8 @@
       <h5 class="card-title">住所から検索</h5>
       <div class="input-group">
         <%= text_field_tag :address, "東京駅", class: "form-control", id: "address", placeholder: "例）東京駅" %>
-        <button type="button" class="btn btn-outline-primary" id="search-address-btn" disabled>検索</button>
+        <button type="button" class="btn btn-outline-primary" onclick="codeAddress()">検索</button>
       </div>
-      
     </div>
   </div>
 
@@ -64,9 +63,90 @@
     <div class="text-center mt-4 mb-4">
       <%= link_to '施設・公園を新規登録する', new_public_place_path, class: 'btn btn-success btn-lg' , data: {turbolinks: "false"}%>
     </div>
-  <% end %>  
+  <% end %>
 
 
+<script>
+  let map;
+  let markers = []; 
+  let geocoder;
 
-<%= javascript_pack_tag 'place_index_map', defer: true %>
-  
+  function initMap() {
+    const center = { lat: 35.681236, lng: 139.767125 }; 
+
+    map = new google.maps.Map(document.getElementById("map"), {
+      zoom: 14,
+      center: center,
+    });
+
+    geocoder = new google.maps.Geocoder(); 
+
+    <% @places.each do |place| %>
+      (function() {
+        const markerLatLng = { lat: <%= place.latitude %>, lng: <%= place.longitude %> };
+
+        const marker = new google.maps.Marker({
+        position: markerLatLng,
+        map: map,
+        title: "<%= j place.name %>"
+      });
+
+      const infowindow = new google.maps.InfoWindow({
+        content: `<a href="<%= place.place_path %>"><%= j place.name %></a>`
+      });
+
+      marker.addListener("click", function() {
+      infowindow.open(map, marker);
+      });
+
+      markers.push(marker);
+    })();
+    <% end %>
+
+    // フィルター機能
+    function applyFilters() {
+      const keyword = document.getElementById("keyword").value.toLowerCase();
+      const showFacility = document.getElementById("filterFacility").checked;
+      const showPark = document.getElementById("filterPark").checked;
+
+      markers.forEach(marker => {
+        const nameMatch = marker.place.name.toLowerCase().includes(keyword);
+        const categoryMatch =
+          (!showFacility && !showPark) ||
+          (showFacility && marker.place.category === "facility") ||
+          (showPark && marker.place.category === "park");
+
+        if (nameMatch && categoryMatch) {
+          marker.setMap(map);
+        } else {
+          marker.setMap(null);
+        }
+      });
+    }
+
+    // フィルターイベント
+    document.getElementById("keyword").addEventListener("input", applyFilters);
+    document.getElementById("filterFacility").addEventListener("change", applyFilters);
+    document.getElementById("filterPark").addEventListener("change", applyFilters);
+  }
+
+  // 住所から地図を移動させるだけ
+  function codeAddress() {
+    const addressInput = document.getElementById("address").value;
+
+    geocoder.geocode({ address: addressInput }, function (results, status) {
+      if (status === "OK") {
+        const position = results[0].geometry.location;
+        map.setCenter(position); 
+        map.setZoom(15); 
+      } else {
+        alert("住所が見つかりませんでした: " + status);
+      }
+    });
+  }
+</script>
+
+<script
+  src="https://maps.googleapis.com/maps/api/js?key=<%= ENV['GOOGLE_MAPS_API_KEY'] %>&callback=initMap"
+  async defer>
+</script>

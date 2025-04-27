@@ -7,9 +7,8 @@
       <h5 class="card-title">住所から検索</h5>
       <div class="input-group">
         <%= text_field_tag :address, "東京駅", class: "form-control", id: "address", placeholder: "例）東京駅" %>
-        <button type="button" class="btn btn-outline-primary" id="search-address-btn" disabled>検索</button>
+        <button type="button" class="btn btn-outline-primary" onclick="codeAddress()">検索</button>
       </div>
-      
     </div>
   </div>
 
@@ -66,7 +65,28 @@
     </div>
   <% end %>  
 
-
+<!-- ピンをクリックした時に表示するバナー -->
+<div id="place-info-banner" class="card shadow-lg fixed-bottom m-4 border-primary" style="display: none; max-width: 600px; z-index: 1000;">
+  <div class="card-body d-flex align-items-center">
+    <img id="place-photo" src="" alt="施設写真" class="me-3 rounded" style="width: 100px; height: 100px; object-fit: cover;">
+    <div>
+      <h5 id="place-name" class="mb-1 fw-bold"></h5>
+      <p id="place-details" class="mb-1 small text-muted"></p>
+      <a href="#" id="place-link" class="btn btn-sm btn-outline-primary mt-2">詳細を見る</a>
+    </div>
+  </div>
+</div>
 
 <%= javascript_pack_tag 'place_index_map', defer: true %>
-  
+  <script
+    async defer src="https://maps.googleapis.com/maps/api/js?key=<%= ENV['GOOGLE_MAPS_API_KEY'] %>&libraries=places&callback=initMap">
+  </script>      
+
+
+<script>
+  window.places = <%= raw @places.to_json(
+    only: [:id, :name, :latitude, :longitude, :category, :nursery],
+    methods: [:main_image_url, :comments_count, :likes_count, :facility_summary, :place_path]
+  ) %>;  
+</script>
+

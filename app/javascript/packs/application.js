@@ -21,7 +21,6 @@ import "../stylesheets/application";
 Rails.start()
 
 document.addEventListener('turbolinks:load', () => {
-  Rails.start()
 })
 
 

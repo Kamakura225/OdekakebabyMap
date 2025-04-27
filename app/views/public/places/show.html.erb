@@ -58,7 +58,7 @@
 
       <% if @average_rating.present? %>
         <div class="d-flex align-items-center mb-3">
-          <div class="rating me-2" data-score="<%= @average_rating %>"></div>
+          <div class="rating ml-2" data-score="<%= @average_rating %>"></div>
           <small class="text-muted">平均評価: <%= @average_rating %> / 5</small>
         </div>
       <% else %>
@@ -68,85 +68,7 @@
       <p><strong>カテゴリ:</strong> <%= @place.category_i18n %></p>
 
       <div class="row">
-        <div class="col-12 col-md-4 mb-2">
-          <strong>授乳室:</strong>
-            <% if @place.nursery %>
-              <span class="text-success"><i class="fa-regular fa-circle me-1"></i>あり</span>
-            <% else %>
-              <span class="text-secondary"><i class="fa-solid fa-xmark me-1"></i>なし</span>
-            <% end %>
-        </div>
-      
-        <div class="col-12 col-md-4 mb-2">
-          <strong>おむつ交換台:</strong>
-            <% if @place.diaper %>
-              <span class="text-success"><i class="fa-regular fa-circle me-1"></i>あり</span>
-            <% else %>
-              <span class="text-secondary"><i class="fa-solid fa-xmark me-1"></i>なし</span>
-            <% end %>
-        </div>  
-          
-      <div class="col-12 col-md-4 mb-2">
-        <strong>幼児トイレ:</strong>
-          <% if @place.kids_toilet %>
-            <span class="text-success"><i class="fa-regular fa-circle me-1"></i>あり</span>
-          <% else %>
-            <span class="text-secondary"><i class="fa-solid fa-xmark me-1"></i>なし</span>
-          <% end %>
-      </div>
-
-      <div class="col-12 col-md-4 mb-2">
-        <strong>ベビーカー対応:</strong>
-          <% if @place.stroller %>
-            <span class="text-success"><i class="fa-regular fa-circle me-1"></i>あり</span>
-          <% else %>
-            <span class="text-secondary"><i class="fa-solid fa-xmark me-1"></i>なし</span>
-          <% end %>
-      </div>
-
-      <div class="col-12 col-md-4 mb-2">
-        <strong>木陰:</strong>
-          <% if @place.shade %>
-            <span class="text-success"><i class="fa-regular fa-circle me-1"></i>あり</span>
-          <% else %>
-            <span class="text-secondary"><i class="fa-solid fa-xmark me-1"></i>なし</span>
-          <% end %>
-      </div>
-
-      <div class="col-12 col-md-4 mb-2">
-        <strong>ベンチ:</strong>
-          <% if @place.bench %>
-            <span class="text-success"><i class="fa-regular fa-circle me-1"></i>あり</span>
-          <% else %>
-            <span class="text-secondary"><i class="fa-solid fa-xmark me-1"></i>なし</span>
-          <% end %>
-      </div>
-
-      <div class="col-12 col-md-4 mb-2">
-        <strong>遊具:</strong>
-          <% if @place.playground %>
-            <span class="text-success"><i class="fa-regular fa-circle me-1"></i>あり</span>
-          <% else %>
-            <span class="text-secondary"><i class="fa-solid fa-xmark me-1"></i>なし</span>
-          <% end %>
-      </div>
-
-      <div class="col-12 col-md-4 mb-2">
-        <strong>エレベーター:</strong>
-          <% if @place.elevator %>
-            <span class="text-success"><i class="fa-regular fa-circle me-1"></i>あり</span>
-          <% else %>
-            <span class="text-secondary"><i class="fa-solid fa-xmark me-1"></i>なし</span>
-          <% end %>
-      </div>
-
-      <div class="col-12 col-md-4 mb-2">
-        <strong>駐車場:</strong>
-          <% if @place.parking %>
-            <span class="text-success"><i class="fa-regular fa-circle me-1"></i>あり</span>
-          <% else %>
-            <span class="text-secondary"><i class="fa-solid fa-xmark me-1"></i>なし</span>
-          <% end %>
+        <%= render 'public/places/facility' %>
       </div>        
     </div>
   </div>
@@ -160,7 +82,7 @@
         <!-- コメントの上部（ユーザー名、画像、投稿日時） -->
         <div class="d-flex align-items-center">
           <!-- ユーザー画像 -->
-          <div class="me-3">
+          <div class="ml-3">
             <% if @user && @user.profile_image.attached? %>
               <%= image_tag @user.profile_image.variant(resize_to_limit: [50, 50]), class: "rounded-circle border border-2" %>
             <% else %>

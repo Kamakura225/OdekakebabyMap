@@ -20,11 +20,24 @@ end
 
 
 
-tag_names = [
-    "授乳室", "おむつ交換台", "幼児トイレ", "ベビーカー対応", "遊具",
-    "木陰", "ベンチ", "エレベータ", "駐車場"
-]
-
-tag_names.each do |name| 
-    Tag.find_or_create_by!(name: name)
-end
+10.times do |i|
+  Place.create!(
+    name: "テスト施設#{i + 1}",
+    address: "東京都千代田区丸の内#{i + 1}-1-1",
+    category: i.even? ? 0 : 1,  # 偶数は0（例：施設）、奇数は1（例：公園）みたいに
+    latitude: 35.681236 + rand(-0.01..0.01),
+    longitude: 139.767125 + rand(-0.01..0.01),
+    user_id: 1,
+    nursery: [true, false].sample,
+    diaper: [true, false].sample,
+    kids_toilet: [true, false].sample,
+    stroller: [true, false].sample,
+    playground: [true, false].sample,
+    shade: [true, false].sample,
+    bench: [true, false].sample,
+    elevator: [true, false].sample,
+    parking: [true, false].sample,
+    status: 0  # 仮に0＝公開状態とかにしておく
+  )
+end  
+puts "Placeのテストデータを作成しました！"

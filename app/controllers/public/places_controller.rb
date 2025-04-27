@@ -1,30 +1,25 @@
 class Public::PlacesController < ApplicationController
   before_action :authenticate_user!
 
-  def index
-    # フィルターを適用する場合
+  def index    
     @places = Place.where(status: :approved).where.not(latitude: nil, longitude: nil)
   
     # カテゴリフィルター
-    categories = []
-    categories << "park" if params[:category_park].present?
-    categories << "facility" if params[:category_facility].present?
-    @places = @places.where(category: categories) if categories.any?
+      categories = []
+      categories << "park" if params[:category_park].present?
+      categories << "facility" if params[:category_facility].present?
+      @places = @places.where(category: categories) if categories.any?
   
     # 設備条件（booleanカラム）
-    [:nursery, :diaper, :kids_toilet, :stroller, :playground, :shade, :bench, :elevator, :parking].each do |key|
-      @places = @places.where(key => true) if params[key].present?
-    end
-  
-    # コメント、いいね、写真をインクルード（Eager Loading）
+      [:nursery, :diaper, :kids_toilet, :stroller, :playground, :shade, :bench, :elevator, :parking].each do |key|
+        @places = @places.where(key => true) if params[key].present?
+      end  
+    
     @places = @places.includes(:comments, :likes, photos_attachments: :blob)
   
     respond_to do |format|
       format.html
-      format.json { render json: @places.as_json(
-        only: [:id, :name, :latitude, :longitude, :category],
-        methods: [:place_path, :photo_urls] # `photo_urls` メソッドを追加
-      ) }
+      format.json
     end
   end
 
@@ -72,4 +67,26 @@ class Public::PlacesController < ApplicationController
       photos: [], tag_ids: []
     )
   end  
+
+  def search_places
+    conditions = {}
+
+    # カテゴリフィルター（既存のパラメータを変換）
+    categories = []
+    categories << "park" if params[:category_park].present?
+    categories << "facility" if params[:category_facility].present?
+    conditions[:category] = categories if categories.any?
+
+    # 設備条件（boolean カラム）
+    boolean_columns = Place.column_names & %w[nursery diaper kids_toilet stroller playground shade bench elevator parking]
+    boolean_columns.each do |column|
+      conditions[column.to_sym] = true if params[column].present?
+    end
+
+    # 基本条件（承認済み、座標が存在）
+    Place.where(status: :approved)
+         .where.not(latitude: nil, longitude: nil)
+         .where(conditions)
+         .includes(:comments, :likes, photos_attachments: :blob)
+  end
 end

@@ -1,21 +1,21 @@
 <h2 class="mb-4 text-center">編集リクエスト詳細</h2>
 
 <div class="mb-3">
-  <strong>施設名：</strong>
-  <%= link_to @place_edit_request.place.name, admin_place_path(@place_edit_request.place), class: "text-decoration-none" %>
-</div>
-
-<div class="mb-3">
   <strong>リクエストユーザー：</strong>
   <%= @place_edit_request.user.nickname %>
 </div>
 
+<h4 class="mt-4">施設の現在の情報</h4>
 <div class="mb-3">
-  <strong>住所：</strong>
-  <%= @place_edit_request.place.address %>
+  <strong>施設名：</strong>
+  <%= link_to @place.name, admin_place_path(@place_edit_request.place), class: "text-decoration-none" %>
 </div>
 
-<h4 class="mt-4">施設の現在の情報</h4>
+<div class="mb-3">
+  <strong>住所：</strong>
+  <%= @place.address %>
+</div>
+
 <div class="row">
   <div class="col-12 col-md-4 mb-3">
     <strong>授乳室:</strong>
