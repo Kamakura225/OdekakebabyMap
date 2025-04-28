@@ -13,7 +13,7 @@ class User < ApplicationRecord
 
   has_one_attached :profile_image
 
-  validates :nickname, presence: true,
+  validates :nickname, presence: true,unless: :guest_user?
   
   GUEST_USER_EMAIL = "guest@example.com"
   def self.guest
