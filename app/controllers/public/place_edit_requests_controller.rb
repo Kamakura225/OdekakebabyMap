@@ -27,10 +27,7 @@ class Public::PlaceEditRequestsController < ApplicationController
     if @place_edit_request.save
       redirect_to public_place_path(@place), notice: "編集リクエストを送信しました。"
     else
-      flash.now[:alert] = "編集リクエストの送信に失敗しました。"
-      @place_edit_request.errors.full_messages.each do |msg|
-        Rails.logger.error msg
-      end
+      flash.now[:alert] = "編集リクエストの送信に失敗しました。"      
       render :new
     end
   end

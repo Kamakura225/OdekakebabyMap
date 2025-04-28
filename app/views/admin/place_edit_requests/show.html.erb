@@ -5,11 +5,15 @@
   <%= @place_edit_request.user.nickname %>
 </div>
 
-<h4 class="mt-4">施設の現在の情報</h4>
-<div class="mb-3">
-  <strong>施設名：</strong>
-  <%= link_to @place.name, admin_place_path(@place_edit_request.place), class: "text-decoration-none" %>
-</div>
+<% if @place.present? %>
+  <h4 class="mt-4">施設の現在の情報</h4>
+  <div class="mb-3">
+    <strong>施設名：</strong>
+    <%= link_to @place.name, admin_place_path(@place), class: "text-decoration-none" %>
+  </div>
+<% else %>
+  <p>施設情報が見つかりません。</p>
+<% end %>
 
 <div class="mb-3">
   <strong>住所：</strong>

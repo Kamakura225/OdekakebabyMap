@@ -12,6 +12,7 @@ class Admin::PlaceEditRequestsController < ApplicationController
 
   def update
     @place_edit_request = PlaceEditRequest.find(params[:id])
+    Rails.logger.debug "Place: #{@place_edit_request.place.inspect}"
     if @place_edit_request.update(status: params[:status])
       if @place_edit_request.status == "approved"
         @place_edit_request.update_place
