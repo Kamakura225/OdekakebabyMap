@@ -56,6 +56,14 @@
 | コメント管理 | コメントの削除、いいね（グッド）の管理 |
 | 施設編集リクエスト管理 | ユーザーからの編集依頼を承認・却下 |
 
+## 使用手順について
+1．このリポジトリをクローンしてください。  
+2．bundle　install　実行  
+3．rails db:create　→　rails db:migrate →　rails db:seed  
+4. rails server  
+
+
+
 ## 開発環境
 ・OS:Linux（CentOS）  
 ・言語：HTML,CSS,JavaScript,Ruby,SQL  
@@ -64,6 +72,12 @@
 ・IDE:Cloud9  
 
 ## 使用素材
-Google　Map　API
+Google　Map　API  
 
+アイコンはフリー素材を利用しております。  
+https://icooon-mono.com/license/
+
+著作権を考慮し、架空のデータを扱う予定です。 
+なお今後、実在するデータを利用する際には、  
+事前に著作権保持者と契約を結んだ上で利用します。
 
