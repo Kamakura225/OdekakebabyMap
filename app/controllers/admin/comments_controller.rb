@@ -3,7 +3,7 @@ class Admin::CommentsController < ApplicationController
 
   def index
     
-    @comments = Comment.includes(:user, :place).order(created_at: :desc)
+    @comments = Comment.includes(:user, :place).order(created_at: :desc).page(params[:page]).per(9)
 
     case params[:sort]
     when 'good'

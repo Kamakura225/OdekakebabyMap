@@ -2,7 +2,7 @@ class Admin::PlaceEditRequestsController < ApplicationController
   before_action :authenticate_admin!
 
   def index
-    @place_edit_requests = PlaceEditRequest.includes(:user, :place).order(created_at: :desc)
+    @place_edit_requests = PlaceEditRequest.includes(:user, :place).order(created_at: :desc).page(params[:page]).per(9)
   end
 
   def show

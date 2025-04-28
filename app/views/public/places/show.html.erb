@@ -175,9 +175,9 @@
     raty(target, {
       number: 5,
       starSize: 24,
-      starOn: url("../assets/raty/star-on.png"),
-      starOff: url("../assets/raty/star-off.png"),
-      starHalf: url("../assets/raty/star-half.png"),
+      starOn: "<%= asset_path('raty/star-on.png') %>", // アセットパイプライン経由で画像パスを指定
+      starOff: "<%= asset_path('raty/star-off.png') %>", // アセットパイプライン経由で画像パスを指定
+      starHalf: "<%= asset_path('raty/star-half.png') %>", 
       half: true,
       halfShow: true,
       click: (newScore) => {
@@ -193,10 +193,10 @@
     const score = parseFloat(elem.dataset.score || 0);
     raty(elem, {
       score: score,
-      readOnly: true, // コメント表示は読取専用      
-      starOn: url("../assets/raty/star-on.png"),
-      starOff: url("../assets/raty/star-off.png"),
-      starHalf: url("../assets/raty/star-half.png"),
+      readOnly: true, 
+      starOn: "<%= asset_path('raty/star-on.png') %>", // アセットパイプライン経由で画像パスを指定
+      starOff: "<%= asset_path('raty/star-off.png') %>", // アセットパイプライン経由で画像パスを指定
+      starHalf: "<%= asset_path('raty/star-half.png') %>", 
       halfShow: true,
     });
   });

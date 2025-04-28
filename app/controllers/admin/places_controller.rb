@@ -2,7 +2,7 @@ class Admin::PlacesController < ApplicationController
   before_action :authenticate_admin!
 
   def index
-    @places = Place.all # 施設・公園の一覧
+    @places = Place.all.page(params[:page]).per(9)
   end
 
   def show
