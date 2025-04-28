@@ -79,7 +79,7 @@
     <div class="card mb-3 shadow-sm w-100">
       <div class="card-body" style="background-color: #f8f9fa;">
         
-        <!-- コメントの上部（ユーザー名、画像、投稿日時） -->
+        <!-- コメント  -->
         <div class="d-flex align-items-center">
           <!-- ユーザー画像 -->
           <div class="ml-3">
@@ -106,13 +106,13 @@
         <!-- コメント内容 -->
         <p class="text-dark"><%= comment.content %></p>
 
-        <!-- いいね（good）・あかん（bad）ボタンとカウント -->
+        <!-- （good/bad）ボタンとカウント -->
         <div class="d-flex justify-content-start">
           <div>
             <%= render 'public/likes/like_buttons', comment: comment, place: @place %>
           </div>
           
-          <!-- カウント表示 -->
+          
           
         </div>
         
