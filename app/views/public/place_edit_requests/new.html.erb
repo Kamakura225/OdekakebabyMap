@@ -1,83 +1,57 @@
-<div class="container my-5">
-  <% if @place_edit_request.errors.any? %>
-  <div class="alert alert-danger">
-    <ul>
-      <% @place_edit_request.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-    </ul>
-  </div>
-<% end %>
-  <h1 class="mb-4 text-center"><%= @place.name %> の編集リクエスト</h1>
-  <%= form_with model: @place_edit_request, url: public_place_place_edit_requests_path(@place), local: true, html: { class: "needs-validation" } do |f| %>
-    <div class="card shadow-sm">
-      <div class="card-body">
-        <div class="form-group mb-4">
-          <%= f.label :name, "施設名", class: "form-label fw-bold" %>
-          <%= f.text_field :name, class: "form-control", placeholder: "施設名を入力", value: @place.name, required: true %>
-        </div>
-        <p><strong>住所:</strong> <%= @place.address %></p>
-        <p><strong>現在のカテゴリ:</strong> <%= @place.category_i18n %></p>
-        <div class="form-group mb-5">          
-          <div class="mb-3">
-            <%= f.label :category, "カテゴリ", class: "form-label" %>
-            <%= f.select :category, Place.categories.keys.map { |k| [I18n.t("enums.place.category.#{k}"), k] }, {}, class: "form-select" %>
-          </div>
-        </div>
-        <div class="form-group mb-5">
-          <%= f.label :photos, "施設画像を追加", class: "form-label fw-bold" %>
-          <%= f.file_field :photos, multiple: true, class: "form-control-file" %>
+<h1 class="mb-4"><%= @place.name %> の編集リクエスト</h1>
 
-          <% if @place.photos.attached? %>
-            <div class="mt-4">
-              <p class="fw-bold">現在登録されている画像</p>
-              <div class="row">
-                <% @place.photos.each do |photo| %>
-                  <div class="col-6 col-md-4 mb-3">
-                    <div class="card h-100">
-                      <%= image_tag photo.variant(resize_to_limit: [400, 300]), class: "card-img-top" %>
-                    </div>
-                  </div>
-                <% end %>
+<%= form_with model: @place_edit_request, url: public_place_place_edit_requests_path(@place), local: true do |f| %>
+  <div class="card shadow-sm mb-4">
+    <div class="card-body">
+      <div class="form-group mb-3">
+        <%= f.label :name, "施設名", class: "form-label" %>
+        <%= f.text_field :name, class: "form-control", value: @place.name, placeholder: "施設名を入力" %>
+      </div>
+
+      <div class="form-group mb-3">
+        <%= f.label :address, "住所", class: "form-label" %>
+        <%= f.text_field :address, class: "form-control", value: @place.address, placeholder: "住所を入力" %>
+      </div>
+
+      <div class="form-group mt-5 mb-3">
+        <%= f.label :photos, "施設画像", class: "form-label" %>
+        <%= f.file_field :photos, multiple: true %>
+      </div>
+
+      <% facility_labels = {
+      'nursery' => '授乳室',
+      'diaper' => 'おむつ交換台',
+      'kids_toilet' => '幼児トイレ',
+      'stroller' => 'ベビーカー対応',
+      'playground' => '遊具',
+      'shade' => '木陰',
+      'bench' => 'ベンチ',
+      'elevator' => 'エレベーター',
+      'parking' => '駐車場'
+      } %>
+
+      <div class="mb-4">
+        <p class="fw-bold">設備情報</p>
+        <div class="row">
+          <% facility_labels.each do |attr, label_text| %>
+            <div class="col-6 col-md-4 mb-3">
+              <div class="form-check">
+                <%= f.check_box attr, class: "form-check-input" %>
+                <%= f.label attr, label_text, class: "form-check-label" %>
               </div>
             </div>
           <% end %>
         </div>
+      </div>
 
-        <% facility_labels = {
-          'nursery' => '授乳室',
-          'diaper' => 'おむつ交換台',
-          'kids_toilet' => '幼児トイレ',
-          'stroller' => 'ベビーカー対応',
-          'playground' => '遊具',
-          'shade' => '木陰',
-          'bench' => 'ベンチ',
-          'elevator' => 'エレベーター',
-          'parking' => '駐車場'
-        } %>
-
-        <div class="mb-5">
-          <p class="fw-bold">設備情報</p>
-          <div class="row">
-            <% facility_labels.each do |attr, label_text| %>
-              <div class="col-6 col-md-4 mb-3">
-                <div class="form-check">
-                  <%= f.check_box attr, class: "form-check-input", checked: @place.send(attr) %>
-                  <%= f.label attr, label_text, class: "form-check-label" %>
-                </div>
-              </div>
-            <% end %>
-          </div>
-        </div>
-        <div class="d-flex justify-content-center">
-          <%= f.submit "編集リクエストを送信", class: "btn btn-primary btn-lg w-50" %>
-        </div>
+      <div class="d-flex justify-content-center">
+        <%= f.submit "編集リクエストを送信", class: "btn btn-primary w-50 gradient-btn" %>
       </div>
     </div>
-  <% end %>
-
-  <div class="d-flex justify-content-center mt-4">
-    <%= link_to "詳細へ戻る", public_places_path, class: "btn btn-secondary btn-lg w-50" %>
   </div>
 
+<% end %>
+
+<div class="d-flex justify-content-center mb-5">
+  <%= link_to "キャンセル", public_places_path, class: "btn btn-secondary w-50" %>
 </div>

@@ -14,7 +14,6 @@ class Place < ApplicationRecord
   enum status: { pending: 0, approved: 1, rejected: 2 } #　未承認・承認済み・却下
 
   validates :name, :address, :latitude, :longitude, presence: true
-  validates :category, presence: true
   geocoded_by :address
   after_validation :geocode
 
