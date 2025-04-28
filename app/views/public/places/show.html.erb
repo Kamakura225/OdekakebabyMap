@@ -174,10 +174,10 @@
     const score = parseFloat(target.dataset.score || 0);
     raty(target, {
       number: 5,
-      starSize: 24,      
-      starOn: '/assets/raty/star-on.png',
-      starOff: '/assets/raty/star-off.png',
-      starHalf: '/assets/raty/star-half.png',
+      starSize: 24,
+      starOn: url("../assets/raty/star-on.png"),
+      starOff: url("../assets/raty/star-off.png"),
+      starHalf: url("../assets/raty/star-half.png"),
       half: true,
       halfShow: true,
       click: (newScore) => {
@@ -194,9 +194,9 @@
     raty(elem, {
       score: score,
       readOnly: true, // コメント表示は読取専用      
-      starOn: '/assets/raty/star-on.png',
-      starOff: '/assets/raty/star-off.png',
-      starHalf: '/assets/raty/star-half.png',
+      starOn: url("../assets/raty/star-on.png"),
+      starOff: url("../assets/raty/star-off.png"),
+      starHalf: url("../assets/raty/star-half.png"),
       halfShow: true,
     });
   });
