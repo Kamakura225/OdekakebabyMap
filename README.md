@@ -60,7 +60,7 @@
 1．このリポジトリをクローンしてください。  
 2．bundle　install　実行  
 3．rails db:create　→　rails db:migrate →　rails db:seed  
-4. rails server  
+4．rails server  
 
 
 
@@ -77,7 +77,7 @@ Google　Map　API
 アイコンはフリー素材を利用しております。  
 https://icooon-mono.com/license/
 
-著作権を考慮し、架空のデータを扱う予定です。 
+著作権を考慮し、架空のデータを扱う予定です。  
 なお今後、実在するデータを利用する際には、  
 事前に著作権保持者と契約を結んだ上で利用します。
 
