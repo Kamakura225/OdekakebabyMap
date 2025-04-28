@@ -86,37 +86,56 @@
     <% else %>
       <span class="text-danger"><i class="fa-solid fa-xmark mr-2"></i>なし</span>
     <% end %>
-  </div>
-
-  <!-- 他の設備も同様に表示 -->
+  </div>  
 </div>
 
 <h4 class="mt-4">編集リクエストでの変更内容</h4>
 <div class="row">
   <div class="col-12 col-md-4 mb-3">
-    <strong>授乳室:</strong>
-    
-    <% if @place_edit_request.nursery != @place.nursery %>
-      <% if @place_edit_request.nursery %>
-        <span class="text-warning"><i class="fa-solid fa-pencil-alt mr-2"></i>変更あり: あり</span>
-      <% else %>
-        <span class="text-warning"><i class="fa-solid fa-pencil-alt mr-2"></i>変更あり: なし</span>
-      <% end %>
+    <strong>施設名:</strong>
+    <% if @place_edit_request.name != @place.name %>
+      <span class="text-warning"><i class="fa-solid fa-pencil-alt mr-2"></i>変更あり: <%= @place_edit_request.name %></span>
     <% else %>
-      <span class="text-muted"><i class="fa-regular fa-circle mr-2"></i>変更なし</span>
+      <span class="text-muted">変更なし</span>
     <% end %>
   </div>
+  
+    <div class="col-12 col-md-4 mb-3">
+      <strong>カテゴリ:</strong>
+        <% if @place_edit_request.category != @place.category %>
+          <% if @place_edit_request.category == "facility" %>
+            <span class="text-warning"><i class="fa-solid fa-pencil-alt mr-2"></i>変更あり: 施設</span>
+          <% elsif @place_edit_request.category == "park" %>
+            <span class="text-warning"><i class="fa-solid fa-pencil-alt mr-2"></i>変更あり: 公園</span>
+          <% end %>
+        <% else %>
+          <span class="text-muted">変更なし</span>
+        <% end %>    
+    </div>
+  
+    <div class="col-12 col-md-4 mb-3">    
+      <strong>授乳室:</strong>
+        <% if @place_edit_request.nursery != @place.nursery %>
+          <% if @place_edit_request.nursery %>
+            <span class="text-warning">変更あり: <i class="fa-regular fa-circle mr-2"></i>あり</span>
+          <% else %>
+            <span class="text-warning">変更あり: <i class="fa-solid fa-xmark mr-2"></i>なし</span>
+          <% end %>
+        <% else %>
+          <span class="text-muted">変更なし</span>
+        <% end %>
+      </div>
 
   <div class="col-12 col-md-4 mb-3">
     <strong>おむつ交換台:</strong>
     <% if @place_edit_request.diaper != @place.diaper %>
       <% if @place_edit_request.diaper %>
-        <span class="text-warning"><i class="fa-solid fa-pencil-alt mr-2"></i>変更あり: あり</span>
+        <span class="text-warning">変更あり: <i class="fa-regular fa-circle mr-2"></i>あり</span>
       <% else %>
-        <span class="text-warning"><i class="fa-solid fa-pencil-alt mr-2"></i>変更あり: なし</span>
+        <span class="text-warning">変更あり: <i class="fa-solid fa-xmark mr-2"></i>なし</span>
       <% end %>
     <% else %>
-      <span class="text-muted"><i class="fa-regular fa-circle mr-2"></i>変更なし</span>
+      <span class="text-muted">変更なし</span>
     <% end %>
   </div>  
 
@@ -124,12 +143,12 @@
     <strong>幼児トイレ:</strong>
     <% if @place_edit_request.kids_toilet != @place.kids_toilet %>
       <% if @place_edit_request.kids_toilet %>
-        <span class="text-warning"><i class="fa-solid fa-pencil-alt mr-2"></i>変更あり: あり</span>
+        <span class="text-warning">変更あり: <i class="fa-regular fa-circle mr-2"></i>あり</span>
       <% else %>
-        <span class="text-warning"><i class="fa-solid fa-pencil-alt mr-2"></i>変更あり: なし</span>
+        <span class="text-warning">変更あり: <i class="fa-solid fa-xmark mr-2"></i>なし</span>
       <% end %>
     <% else %>
-      <span class="text-muted"><i class="fa-regular fa-circle mr-2"></i>変更なし</span>
+      <span class="text-muted">変更なし</span>
     <% end %>
   </div>
 
@@ -137,12 +156,12 @@
     <strong>ベビーカー対応:</strong>
     <% if @place_edit_request.stroller != @place.stroller %>
       <% if @place_edit_request.stroller %>
-        <span class="text-warning"><i class="fa-solid fa-pencil-alt mr-2"></i>変更あり: あり</span>
+        <span class="text-warning">変更あり: <i class="fa-regular fa-circle mr-2"></i>あり</span>
       <% else %>
-        <span class="text-warning"><i class="fa-solid fa-pencil-alt mr-2"></i>変更あり: なし</span>
+        <span class="text-warning">変更あり: <i class="fa-solid fa-xmark mr-2"></i>なし</span>
       <% end %>
     <% else %>
-      <span class="text-muted"><i class="fa-regular fa-circle mr-2"></i>変更なし</span>
+      <span class="text-muted">変更なし</span>
     <% end %>
   </div>
 
@@ -150,12 +169,12 @@
     <strong>遊具:</strong>
     <% if @place_edit_request.playground != @place.playground %>
       <% if @place_edit_request.playground %>
-        <span class="text-warning"><i class="fa-solid fa-pencil-alt mr-2"></i>変更あり: あり</span>
+        <span class="text-warning">変更あり: <i class="fa-regular fa-circle mr-2"></i>あり</span>
       <% else %>
-        <span class="text-warning"><i class="fa-solid fa-pencil-alt mr-2"></i>変更あり: なし</span>
+        <span class="text-warning">変更あり: <i class="fa-solid fa-xmark mr-2"></i>なし</span>
       <% end %>
     <% else %>
-      <span class="text-muted"><i class="fa-regular fa-circle mr-2"></i>変更なし</span>
+      <span class="text-muted">変更なし</span>
     <% end %>
   </div>
 
@@ -163,12 +182,12 @@
     <strong>木陰:</strong>
     <% if @place_edit_request.shade != @place.shade %>
       <% if @place_edit_request.shade %>
-        <span class="text-warning"><i class="fa-solid fa-pencil-alt mr-2"></i>変更あり: あり</span>
+        <span class="text-warning">変更あり: <i class="fa-regular fa-circle mr-2"></i>あり</span>
       <% else %>
-        <span class="text-warning"><i class="fa-solid fa-pencil-alt mr-2"></i>変更あり: なし</span>
+        <span class="text-warning">変更あり: <i class="fa-solid fa-xmark mr-2"></i>なし</span>
       <% end %>
     <% else %>
-      <span class="text-muted"><i class="fa-regular fa-circle mr-2"></i>変更なし</span>
+      <span class="text-muted">変更なし</span>
     <% end %>
   </div>
 
@@ -176,12 +195,12 @@
     <strong>ベンチ:</strong>
     <% if @place_edit_request.bench != @place.bench %>
       <% if @place_edit_request.bench %>
-        <span class="text-warning"><i class="fa-solid fa-pencil-alt mr-2"></i>変更あり: あり</span>
+        <span class="text-warning">変更あり: <i class="fa-regular fa-circle mr-2"></i>あり</span>
       <% else %>
-        <span class="text-warning"><i class="fa-solid fa-pencil-alt mr-2"></i>変更あり: なし</span>
+        <span class="text-warning">変更あり: <i class="fa-solid fa-xmark mr-2"></i>なし</span>
       <% end %>
     <% else %>
-      <span class="text-muted"><i class="fa-regular fa-circle mr-2"></i>変更なし</span>
+      <span class="text-muted">変更なし</span>
     <% end %>
   </div>
 
@@ -189,12 +208,12 @@
     <strong>エレベーター:</strong>
     <% if @place_edit_request.elevator != @place.elevator %>
       <% if @place_edit_request.elevator %>
-        <span class="text-warning"><i class="fa-solid fa-pencil-alt mr-2"></i>変更あり: あり</span>
+        <span class="text-warning">変更あり: <i class="fa-regular fa-circle mr-2"></i>あり</span>
       <% else %>
-        <span class="text-warning"><i class="fa-solid fa-pencil-alt mr-2"></i>変更あり: なし</span>
+        <span class="text-warning">変更あり: <i class="fa-solid fa-xmark mr-2"></i>なし</span>
       <% end %>
     <% else %>
-      <span class="text-muted"><i class="fa-regular fa-circle mr-2"></i>変更なし</span>
+      <span class="text-muted">変更なし</span>
     <% end %>
   </div>
 
@@ -202,17 +221,14 @@
     <strong>駐車場:</strong>
     <% if @place_edit_request.parking != @place.parking %>
       <% if @place_edit_request.parking %>
-        <span class="text-warning"><i class="fa-solid fa-pencil-alt mr-2"></i>変更あり: あり</span>
+        <span class="text-warning">変更あり: <i class="fa-regular fa-circle mr-2"></i>あり</span>
       <% else %>
-        <span class="text-warning"><i class="fa-solid fa-pencil-alt mr-2"></i>変更あり: なし</span>
+        <span class="text-warning">変更あり: <i class="fa-solid fa-xmark mr-2"></i>なし</span>
       <% end %>
     <% else %>
-      <span class="text-muted"><i class="fa-regular fa-circle mr-2"></i>変更なし</span>
+      <span class="text-muted">変更なし</span>
     <% end %>
-  </div>
-
-  
-  <!-- 他の設備も同様に変更を表示 -->
+  </div> 
 </div>
 
 <% if @place_edit_request.photos.attached? %>
@@ -226,8 +242,7 @@
 
 <div class="d-flex justify-content-center align-items-center mt-4">
   <div class="text-center">
-    <% if @place_edit_request.pending? %>
-      <!-- 承認ボタン -->
+    <% if @place_edit_request.pending? %>      
       <%= form_with url: admin_place_edit_request_path(@place_edit_request), method: :patch, local: true do |f| %>
         <div class="d-flex justify-content-center">
           <%= f.hidden_field :status, value: :approved %>
@@ -235,7 +250,6 @@
         </div>
       <% end %>
 
-      <!-- 却下ボタン -->
       <%= form_with url: admin_place_edit_request_path(@place_edit_request), method: :patch, local: true do |f| %>
         <div class="d-flex justify-content-center mt-2">
           <%= f.hidden_field :status, value: :rejected %>

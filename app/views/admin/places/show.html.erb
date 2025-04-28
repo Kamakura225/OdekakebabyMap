@@ -14,17 +14,9 @@
     <div class="card-header">
       <h2 class="mb-0">設備情報</h2>
     </div>
-    <ul class="list-group list-group-flush">
-      <li class="list-group-item">授乳室: <%= @place.nursery ? 'あり' : 'なし' %></li>
-      <li class="list-group-item">おむつ交換台: <%= @place.diaper ? 'あり' : 'なし' %></li>
-      <li class="list-group-item">子供用トイレ: <%= @place.kids_toilet ? 'あり' : 'なし' %></li>
-      <li class="list-group-item">ベビーカー対応: <%= @place.stroller ? 'あり' : 'なし' %></li>
-      <li class="list-group-item">遊具: <%= @place.playground ? 'あり' : 'なし' %></li>
-      <li class="list-group-item">木陰: <%= @place.shade ? 'あり' : 'なし' %></li>
-      <li class="list-group-item">ベンチ: <%= @place.bench ? 'あり' : 'なし' %></li>
-      <li class="list-group-item">エレベーター: <%= @place.elevator ? 'あり' : 'なし' %></li>
-      <li class="list-group-item">駐車場: <%= @place.parking ? 'あり' : 'なし' %></li>
-    </ul>
+    <div class="row">
+        <%= render 'public/places/facility' %>
+    </div>        
   </div>
 
   <div class="card mb-4">

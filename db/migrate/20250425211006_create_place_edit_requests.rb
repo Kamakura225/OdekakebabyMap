@@ -6,6 +6,7 @@ class CreatePlaceEditRequests < ActiveRecord::Migration[6.1]
       
       t.string :name
       t.string :address
+      t.integer :category
       t.boolean :nursery
       t.boolean :diaper
       t.boolean :kids_toilet

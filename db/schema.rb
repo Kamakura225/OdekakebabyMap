@@ -96,6 +96,7 @@ ActiveRecord::Schema.define(version: 2025_04_25_211006) do
     t.integer "place_id", null: false
     t.string "name"
     t.string "address"
+    t.integer "category"
     t.boolean "nursery"
     t.boolean "diaper"
     t.boolean "kids_toilet"

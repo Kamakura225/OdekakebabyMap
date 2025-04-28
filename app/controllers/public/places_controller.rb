@@ -64,29 +64,8 @@ class Public::PlacesController < ApplicationController
       :name, :address, :latitude, :longitude, :category, :status,
       :nursery, :diaper, :kids_toilet, :stroller,
       :playground, :shade, :bench, :elevator, :parking,
-      photos: [], tag_ids: []
+      photos: []
     )
   end  
-
-  def search_places
-    conditions = {}
-
-    # カテゴリフィルター（既存のパラメータを変換）
-    categories = []
-    categories << "park" if params[:category_park].present?
-    categories << "facility" if params[:category_facility].present?
-    conditions[:category] = categories if categories.any?
-
-    # 設備条件（boolean カラム）
-    boolean_columns = Place.column_names & %w[nursery diaper kids_toilet stroller playground shade bench elevator parking]
-    boolean_columns.each do |column|
-      conditions[column.to_sym] = true if params[column].present?
-    end
-
-    # 基本条件（承認済み、座標が存在）
-    Place.where(status: :approved)
-         .where.not(latitude: nil, longitude: nil)
-         .where(conditions)
-         .includes(:comments, :likes, photos_attachments: :blob)
-  end
+  
 end
