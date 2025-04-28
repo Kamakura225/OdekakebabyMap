@@ -18,6 +18,8 @@
         <%= f.file_field :photos, multiple: true %>
       </div>
 
+      <%= render 'public/places_edit_requests/placedata' %>
+
       <% facility_labels = {
       'nursery' => '授乳室',
       'diaper' => 'おむつ交換台',
