@@ -23,7 +23,9 @@ class Public::PlaceEditRequestsController < ApplicationController
     @place = Place.find(params[:place_id])
     @place_edit_request = current_user.place_edit_requests.build(place_edit_request_params)
     @place_edit_request.place = @place
-
+    unless @place
+      redirect_to admin_place_edit_requests_path, alert: "関連する施設情報が存在しません。" and return
+    end
     if @place_edit_request.save
       redirect_to public_place_path(@place), notice: "編集リクエストを送信しました。"
     else

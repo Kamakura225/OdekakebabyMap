@@ -12,6 +12,7 @@ class PlaceEditRequest < ApplicationRecord
   
   def update_place
     return unless approved?  
+    return unless place
     place.update(
       name: name,
       category: Place.categories[category],

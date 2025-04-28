@@ -13,6 +13,9 @@ class Admin::PlaceEditRequestsController < ApplicationController
   def update
     @place_edit_request = PlaceEditRequest.find(params[:id])
     @place = @place_edit_request.place
+    unless @place
+      redirect_to admin_place_edit_requests_path, alert: "関連する施設情報が存在しません。" and return
+    end
     if @place_edit_request.update(status: params[:status])
       if @place_edit_request.status == "approved"
         @place_edit_request.update_place
