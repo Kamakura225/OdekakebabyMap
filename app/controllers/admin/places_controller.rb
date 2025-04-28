@@ -2,7 +2,7 @@ class Admin::PlacesController < ApplicationController
   before_action :authenticate_admin!
 
   def index
-    @places = Place.all.page(params[:page]).per(9)
+    @places = Place.all
   end
 
   def show
