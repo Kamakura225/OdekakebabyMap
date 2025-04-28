@@ -12,6 +12,8 @@ class User < ApplicationRecord
   has_many :place_edit_requests, dependent: :destroy
 
   has_one_attached :profile_image
+
+  validates :nickname, presence: true,
   
   GUEST_USER_EMAIL = "guest@example.com"
   def self.guest
