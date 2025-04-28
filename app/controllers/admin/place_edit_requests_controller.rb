@@ -14,7 +14,7 @@ class Admin::PlaceEditRequestsController < ApplicationController
     @place_edit_request = PlaceEditRequest.find(params[:id])
     @place = @place_edit_request.place
     
-    if @place_edit_request.update(status: params[:status])
+    if @place_edit_request.update_column(status, params[:status])
       if @place_edit_request.status == "approved"
         @place_edit_request.update_place
       end
