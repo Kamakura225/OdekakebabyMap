@@ -13,50 +13,57 @@
     </div>
   </div>
 
+  <button class="btn btn-link text-primary p-0 mb-2" type="button" data-toggle="collapse" data-target="#searchFilter" aria-expanded="false" aria-controls="searchFilter">
+  🔍 絞り込み条件を表示
+  </button>
+
   <!-- フィルター -->
-  <div class="card mb-4 shadow-sm">
-    <div class="card-body">
-      <h5 class="card-title">条件で絞り込む</h5>
-      <%= form_with url: public_places_path, method: :get, local: true do %>
-        <div class="mb-3">
-          <label class="form-label fw-bold">カテゴリ</label>
-          <div class="form-check">
-            <%= check_box_tag :category_park, "park", params[:category_park].present?, class: "form-check-input", id: "category_park" %>
-            <%= label_tag :category_park, "公園", class: "form-check-label" %>
-          </div>
-          <div class="form-check">
-            <%= check_box_tag :category_facility, "facility", params[:category_facility].present?, class: "form-check-input", id: "category_facility" %>
-            <%= label_tag :category_facility, "施設", class: "form-check-label" %>
-          </div>
-        </div>
-
-        <div class="mb-3">
-          <label class="form-label fw-bold">設備</label>
-          <div class="row">
-            <% [
-              [:nursery, "授乳室"], [:diaper, "おむつ交換台"], [:kids_toilet, "幼児トイレ"],
-              [:stroller, "ベビーカーOK"], [:playground, "遊具"], [:shade, "木陰"],
-              [:bench, "ベンチ"], [:elevator, "エレベーター"], [:parking, "駐車場"]
-            ].each do |key, label| %>
-              <div class="col-6 col-md-4">
-                <div class="form-check">
-                  <%= check_box_tag key, "true", params[key].present?, class: "form-check-input", id: key %>
-                  <%= label_tag key, label, class: "form-check-label" %>
-                </div>
+  <div class="collapse" id="searchFilter">
+    <div class="card card-body">
+      <div class="card mb-4 shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title">条件で絞り込む</h5>
+          <%= form_with url: public_places_path, method: :get, local: true do %>
+            <div class="mb-3">
+              <label class="form-label fw-bold">カテゴリ</label>
+              <div class="form-check">
+                <%= check_box_tag :category_park, "park", params[:category_park].present?, class: "form-check-input", id: "category_park" %>
+                <%= label_tag :category_park, "公園", class: "form-check-label" %>
               </div>
-            <% end %>
-          </div>
-        </div>
+              <div class="form-check">
+                <%= check_box_tag :category_facility, "facility", params[:category_facility].present?, class: "form-check-input", id: "category_facility" %>
+                <%= label_tag :category_facility, "施設", class: "form-check-label" %>
+              </div>
+            </div>
 
-        <div class="text-center">
-          <%= submit_tag "検索", class: "btn btn-primary px-5" %> 　　
+            <div class="mb-3">
+              <label class="form-label fw-bold">設備</label>
+              <div class="row">
+                <% [
+                  [:nursery, "授乳室"], [:diaper, "おむつ交換台"], [:kids_toilet, "幼児トイレ"],
+                  [:stroller, "ベビーカーOK"], [:playground, "遊具"], [:shade, "木陰"],
+                  [:bench, "ベンチ"], [:elevator, "エレベーター"], [:parking, "駐車場"]
+                ].each do |key, label| %>
+                <div class="col-6 col-md-4">
+                  <div class="form-check">
+                    <%= check_box_tag key, "true", params[key].present?, class: "form-check-input", id: key %>
+                    <%= label_tag key, label, class: "form-check-label" %>
+                  </div>
+                </div>
+                <% end %>
+              </div>
+            </div>
+
+            <div class="text-center">
+              <%= submit_tag "検索", class: "btn btn-primary px-5" %> 
+            </div>
+          <% end %>
         </div>
-      <% end %>
+      </div>
     </div>
-  </div>
-
-  
+  </div>  
 </div>
+
 <!-- 地図 -->
   <div id="map" style="height: 600px;"></div>
 

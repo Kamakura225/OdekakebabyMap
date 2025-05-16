@@ -44,16 +44,25 @@
   
 <div class="row mb-4">
   <div class="col-12">
-    <h2 class="mb-3 d-flex  align-items-center">
+    <h2 class="mb-3 d-flex align-items-center">
       <span><%= @place.name %></span>
+      
       <% if user_signed_in? %>
         <% if current_user.bookmarked_places.include?(@place) %>
-          <%= button_to 'ブックマーク解除', public_place_bookmark_path(@place), method: :delete, class: 'btn btn-outline-danger btn-sm ml-5' %>
+          <%= button_to 'ブックマーク解除', public_place_bookmark_path(@place), method: :delete, class: 'btn btn-outline-danger btn-sm ml-3' %>
         <% else %>
-          <%= button_to 'ブックマーク', public_place_bookmarks_path(@place), method: :post, class: 'btn btn-outline-primary btn-sm ml-5' %>
+          <%= button_to 'ブックマーク', public_place_bookmarks_path(@place), method: :post, class: 'btn btn-outline-primary btn-sm ml-3' %>
         <% end %>
       <% end %>
+
+      <% if user_signed_in? && !guest_user? && @place.approved? %>
+        <%= link_to "編集リクエスト", new_public_place_place_edit_request_path(@place), class: "btn btn-primary btn-sm ml-3" %>
+      <% else %>
+        <p>非会員でのログインか投稿承認前なので、編集リクエストは送信できません。</p>
+      <% end %>
     </h2>
+  </div>
+</div>
 
       <% if @average_rating.present? %>
         <div class="d-flex align-items-center mb-3">
@@ -79,23 +88,20 @@
       <div class="card-body" style="background-color: #f8f9fa;">
         
         <!-- コメント  -->
-        <div class="d-flex align-items-center">
+        <div class="d-flex align-items-center mb-2">
           <!-- ユーザー画像 -->
-          <div class="ml-3">
-            <% if @user && @user.profile_image.attached? %>
-              <%= image_tag @user.profile_image.variant(resize_to_limit: [50, 50]), class: "rounded-circle border border-2" %>
+          <div class="mr-3">
+            <% if comment.user.profile_image.attached? %>
+              <%= image_tag comment.user.profile_image.variant(resize_to_limit: [50, 50]), class: "rounded-circle border border-2" %>
             <% else %>
               <%= image_tag "no_image.jpg", size: "50x50", class: "rounded-circle border border-2" %>
             <% end %>
           </div>
-          <!-- ユーザー名と投稿日時 -->
+          
+          <!-- ユーザー名と日時 -->
           <div>
-            <h6 class="text-muted d-flex align-items-center">
-              <%= comment.user.nickname %>
-            </h6>
-            <div class="text-muted small">
-              <%= l(comment.created_at, format: :short) %>
-            </div>
+            <div class="fw-bold"><%= comment.user.nickname %>の感想・評価</div>
+            <small class="text-muted"><%= l(comment.created_at, format: :short) %></small>
           </div>
         </div>
 
@@ -154,12 +160,8 @@
   </div>
 </div>
       
-<!-- 編集ボタン（ログインユーザーのみ） -->
-  <% if user_signed_in? && !guest_user? && @place.approved? %>
-    <%= link_to "編集リクエストを送る", new_public_place_place_edit_request_path(@place), class: "btn btn-primary" %>
-  <% else %>
-  <p>非会員でのログインか投稿承認前なので、編集リクエストは送信できません。</p>
-<% end %>
+
+  
 
 </div>
 

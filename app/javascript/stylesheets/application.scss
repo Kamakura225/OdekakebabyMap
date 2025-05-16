@@ -30,36 +30,36 @@
   outline: none;
 }
 
-.submit-btn {
-  background: linear-gradient(to right, #6a11cb, #2575fc);
+.reject-btn {
+  background: linear-gradient(to right, #cc3b3b, #815429);
   color: white;
   border: none;
   transition: background 0.3s ease, transform 0.3s ease;
 }
 
-.submit-btn:hover {
-  background: linear-gradient(to right, #2575fc, #6a11cb);
+.reject-btn:hover {
+  background: linear-gradient(to right, #cc3b3b, #815429);
   transform: scale(1.05);
 }
 
-.submit-btn:focus {
+.reject-btn:focus {
   outline: none;
 }
 
-.map_link-btn {
-  background: linear-gradient(to right, #6a11cb, #2575fc);
+.approve-btn {
+  background: linear-gradient(to right, #463ab6, #4e8bf3);
   color: white;
   border: none;
   transition: background 0.3s ease, transform 0.3s ease;
 }
 
-.map_lik-btn:hover {
-  background: linear-gradient(to right, #2575fc, #6a11cb);
+.approve-btn:hover {
+  background: linear-gradient(to right, #4787f5, #601cfd);
   transform: scale(1.05);
 }
 
-.map_link-btn:focus {
+.approve-btn:focus {
   outline: none;
 }
 
-/* ボタン全体を中央に配置 */
+
