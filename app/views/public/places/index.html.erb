@@ -64,6 +64,7 @@
   </div>  
 </div>
 
+
 <!-- 地図 -->
   <div id="map" style="height: 600px;"></div>
 
@@ -72,8 +73,6 @@
       <%= link_to '施設・公園を新規登録する', new_public_place_path, class: 'btn btn-success btn-lg' , data: {turbolinks: "false"}%>
     </div>
   <% end %>  
-
-
 
 <%= javascript_pack_tag 'place_index_map', defer: true %>
   

@@ -1,4 +1,3 @@
-// ブートストラップ ローダ
 (g=>{var h,a,k,p="The Google Maps JavaScript API",c="google",l="importLibrary",q="__ib__",m=document,b=window;b=b[c]||(b[c]={});var d=b.maps||(b.maps={}),r=new Set,e=new URLSearchParams,u=()=>h||(h=new Promise(async(f,n)=>{await (a=m.createElement("script"));e.set("libraries",[...r]+"");for(k in g)e.set(k.replace(/[A-Z]/g,t=>"_"+t[0].toLowerCase()),g[k]);e.set("callback",c+".maps."+q);a.src=`https://maps.${c}apis.com/maps/api/js?`+e;d[q]=f;a.onerror=()=>h=n(Error(p+" could not load."));a.nonce=m.querySelector("script[nonce]")?.nonce||"";m.head.append(a)}));d[l]?console.warn(p+" only loads once. Ignoring:",g):d[l]=(f,...n)=>r.add(f)&&u().then(()=>d[l](f,...n))})({
   key: process.env.GOOGLE_MAPS_API_KEY
 
@@ -13,7 +12,6 @@ async function initMap() {
   const { Map } = await google.maps.importLibrary("maps");
   const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
 
-  // geocoderの初期化
   geocoder = new google.maps.Geocoder();
 
   map = new Map(document.getElementById("map"), {
@@ -23,12 +21,10 @@ async function initMap() {
     mapTypeControl: false,
   });
 
-  // 住所検索ボタンのイベントリスナー
   const searchButton = document.getElementById("search-address-btn");
   searchButton.addEventListener("click", codeAddress);
   searchButton.disabled = false;
 
-  // フィルターフォームの送信イベントリスナー
   const filterForm = document.querySelector("form");
     const filterSubmitButton = filterForm.querySelector('input[type="submit"]');
     filterSubmitButton.disabled = false; // 初期化時に有効化
@@ -38,25 +34,21 @@ async function initMap() {
       await updateMarkers();
       filterSubmitButton.disabled = false; // 処理完了後に有効化
   });
-
-  // 初期マーカー読み込み
+  
   await updateMarkers();
 }
 
-// マーカーをクリアする関数
 function clearMarkers() {
   markers.forEach((marker) => {
-    marker.map = null; // マップからマーカーを削除
+    marker.map = null; 
   });
-  markers = []; // 配列をリセット
+  markers = []; 
 }
 
-// マーカーを更新する関数
 async function updateMarkers() {
-  clearMarkers(); // 既存のマーカーをクリア
+  clearMarkers(); 
 
-  try {
-    // フィルターフォームのデータを取得
+  try {    
     const form = document.querySelector("form");
     const formData = new FormData(form);
     const queryParams = new URLSearchParams(formData).toString();
@@ -70,8 +62,7 @@ async function updateMarkers() {
     if (!Array.isArray(items)) {
       throw new Error("Items is not an array");
     }
-
-    // 各施設にマーカーを追加
+    
     items.forEach((item) => {
       const latitude = item.latitude;
       const longitude = item.longitude;
@@ -122,7 +113,6 @@ async function updateMarkers() {
   }
 }
 
-// 住所検索を行う関数
 function codeAddress() {
   const addressInput = document.getElementById("address").value;
 
@@ -136,6 +126,5 @@ function codeAddress() {
   });
 }
 
-// 地図の初期化関数を呼び出す
 initMap();
 
