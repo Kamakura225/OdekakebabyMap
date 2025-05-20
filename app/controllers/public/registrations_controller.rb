@@ -4,6 +4,22 @@ class Public::RegistrationsController < Devise::RegistrationsController
   before_action :configure_sign_up_params, only: [:create]
   before_action :configure_account_update_params, only: [:update]
 
+  def create
+    existing_user = User.find_by(email: sign_up_params[:email])
+
+    if existing_user && !existing_user.is_active
+      if existing_user.update(sign_up_params.merge(is_active: true))
+        sign_in(existing_user)
+        redirect_to root_path, notice: 'アカウントを再有効化しました。'
+      else
+        flash[:error] = '登録に失敗しました。'
+        redirect_to new_user_registration_path
+      end
+    else
+      super
+    end
+  end
+
   # GET /resource/sign_up
   # def new
   #   super
@@ -60,5 +76,9 @@ class Public::RegistrationsController < Devise::RegistrationsController
   #   super(resource)
   # end
 
-  
+  private
+
+  def sign_up_params
+    params.require(:user).permit(:email, :password, :password_confirmation, :nickname)
+  end
 end

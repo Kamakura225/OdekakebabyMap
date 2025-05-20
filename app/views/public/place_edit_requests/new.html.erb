@@ -17,7 +17,8 @@
         <%= f.label :photos, "施設画像", class: "form-label" %>
         <%= f.file_field :photos, multiple: true %>
       </div>
-
+      
+      <p>🔍現在の設備情報</p>
       <%= render 'public/place_edit_requests/placedata' %>
 
       <% facility_labels = {
@@ -33,12 +34,12 @@
       } %>
 
       <div class="mb-4">
-        <p class="fw-bold">設備情報</p>
+        <p class="fw-bold">🖊設備情報の変更</p>
         <div class="row">
           <% facility_labels.each do |attr, label_text| %>
             <div class="col-6 col-md-4 mb-3">
               <div class="form-check">
-                <%= f.check_box attr, class: "form-check-input" %>
+                <%= f.check_box attr, class: "form-check-input", checked: @place.send(attr) %>
                 <%= f.label attr, label_text, class: "form-check-label" %>
               </div>
             </div>
@@ -47,7 +48,7 @@
       </div>
 
       <div class="d-flex justify-content-center">
-        <%= f.submit "編集リクエストを送信", class: "btn btn-primary w-50 gradient-btn" %>
+        <%= f.submit "編集リクエストを送信", class: "btn w-50 gradient-btn" %>
       </div>
     </div>
   </div>

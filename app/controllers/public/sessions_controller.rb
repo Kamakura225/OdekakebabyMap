@@ -38,4 +38,6 @@ class Public::SessionsController < Devise::SessionsController
   def guest_user?
     email == GUEST_USER_EMAIL
   end
+
+  
 end

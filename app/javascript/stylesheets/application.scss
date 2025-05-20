@@ -15,14 +15,15 @@
 }
 
 .gradient-btn {
-  background: linear-gradient(to right, #6a11cb, #2575fc);
+  background: linear-gradient(to right, #1709df, #2575fc);
   color: white;
   border: none;
   transition: background 0.3s ease, transform 0.3s ease;
 }
 
 .gradient-btn:hover {
-  background: linear-gradient(to right, #2575fc, #6a11cb);
+  background: linear-gradient(to right, #2575fc, #1709df);
+  color: white;
   transform: scale(1.05);
 }
 

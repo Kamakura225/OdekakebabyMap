@@ -11,7 +11,7 @@ class Public::CommentsController < ApplicationController
     else
       @comments = @place.comments.includes(:user)
       
-      flash.now[:alert] = "コメントの投稿に失敗しました。"
+      flash.now[:alert] = "コメントの投稿に失敗しました"
       render 'public/places/show'
     end
   end
@@ -23,7 +23,7 @@ class Public::CommentsController < ApplicationController
     redirect_to public_place_path(@place), notice: 'コメントが削除されました！'
   end
 
-  private
+private
 
   def set_place
     @place = Place.find(params[:place_id])

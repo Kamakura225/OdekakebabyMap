@@ -24,15 +24,15 @@ class User < ApplicationRecord
   end
 
   def active_for_authentication?
-    super && (self.is_active == true)
+    super && is_active
+  end
+
+  def inactive_message
+    is_active ? super : :inactive
   end
 
   def guest_user?
     email == 'guest@example.com'
-  end
-
-  def inactive_message
-    !withdrawal ? super : :withdrawn_account
   end
 
   def total_good_likes
