@@ -14,8 +14,17 @@ ja:
         approved: "承認済み"
         rejected: "却下"
   activerecord:
+    models:
+      place: "施設・公園"
+    attributes:
+      place:
+        name: "名称"
+        address: "住所（マーカー設置で自動入力）"
+        latitude: "緯度（マーカー設置で自動入力）"
+        longitude: "経度（マーカー設置で自動入力）"
     errors:
       messages:
+        blank:
         record_invalid: 'バリデーションに失敗しました: %{errors}'
         restrict_dependent_destroy:
           has_one: "%{record}が存在しているので削除できません"

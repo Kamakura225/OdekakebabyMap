@@ -19,7 +19,7 @@ devise_for :admin, skip: [:registrations], controllers: {
   end
 
   # ユーザー用（public）ルーティング
-  namespace :public do
+  scope module: :public do
 
     get 'ranks/top_users', to: 'ranks#top_users', as: 'top_users'
     resources :bookmarks, only: [:index]

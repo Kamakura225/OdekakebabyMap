@@ -23,7 +23,7 @@
       <div class="card mb-4 shadow-sm">
         <div class="card-body">
           <h5 class="card-title">条件で絞り込む</h5>
-          <%= form_with url: public_places_path, method: :get, local: true do %>
+          <%= form_with url: places_path, method: :get, local: true do %>
             <div class="mb-3">
               <label class="form-label fw-bold">カテゴリ</label>
               <div class="form-check">
@@ -70,7 +70,7 @@
 
   <% if user_signed_in? && !(current_user.guest_user?) %>
     <div class="text-center mt-4 mb-4">
-      <%= link_to '施設・公園を新規登録する', new_public_place_path, class: 'btn btn-success btn-lg' , data: {turbolinks: "false"}%>
+      <%= link_to '施設・公園を新規登録する', new_place_path, class: 'btn btn-success btn-lg' , data: {turbolinks: "false"}%>
     </div>
   <% end %>  
 

@@ -32,7 +32,7 @@ class Public::SessionsController < Devise::SessionsController
     end
 
     sign_in user
-    redirect_to public_places_path, notice: 'ゲストユーザーとしてログインしました。'
+    redirect_to places_path, notice: 'ゲストユーザーとしてログインしました。'
   end
 
   def guest_user?

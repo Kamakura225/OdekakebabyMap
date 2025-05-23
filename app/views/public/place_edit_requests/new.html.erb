@@ -1,6 +1,6 @@
 <h1 class="mb-4"><%= @place.name %> の編集リクエスト</h1>
 
-<%= form_with model: @place_edit_request, url: public_place_place_edit_requests_path(@place), local: true do |f| %>
+<%= form_with model: @place_edit_request, url: place_place_edit_requests_path(@place), local: true do |f| %>
   <div class="card shadow-sm mb-4">
     <div class="card-body">
       <div class="form-group mb-3">
@@ -56,5 +56,5 @@
 <% end %>
 
 <div class="d-flex justify-content-center mb-5">
-  <%= link_to "キャンセル", public_places_path, class: "btn btn-secondary w-50" %>
+  <%= link_to "キャンセル", places_path, class: "btn btn-secondary w-50" %>
 </div>

@@ -44,7 +44,7 @@
             <% if current_user.guest_user? %>
             <!-- ゲストログイン中 -->
               <li class="nav-item">
-                <%= link_to '施設一覧', public_places_path, class: "nav-link" %>
+                <%= link_to '施設一覧', places_path, class: "nav-link" %>
               </li>              
               <li class="nav-item">
                 <%= link_to 'ログアウト', destroy_user_session_path, method: :delete, class: "nav-link" %>
@@ -52,16 +52,16 @@
             <% else %>
             <!-- 通常ログイン中 -->
               <li class="nav-item">
-                <%= link_to '施設一覧', public_places_path, class: "nav-link" %>
+                <%= link_to '施設一覧', places_path, class: "nav-link" %>
               </li>
               <li class="nav-item">
-                <%= link_to 'お気に入り一覧', public_bookmarks_path, class: "nav-link" %>
+                <%= link_to 'お気に入り一覧', bookmarks_path, class: "nav-link" %>
               </li>
               <li class="nav-item">
-                <%= link_to 'マイページ', public_user_path(current_user), class: "nav-link" %>
+                <%= link_to 'マイページ', user_path(current_user), class: "nav-link" %>
               </li>            
               <li class="nav-item">
-                <%= link_to '人気ユーザーランキング', public_top_users_path, class: 'nav-link' %>
+                <%= link_to '人気ユーザーランキング', top_users_path, class: 'nav-link' %>
               </li>
               <li class="nav-item">
                 <%= link_to 'ログアウト', destroy_user_session_path, method: :delete, class: "btn btn-outline-primary ms-2" %>

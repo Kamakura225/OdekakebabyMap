@@ -12,7 +12,7 @@ class Public::PlaceEditRequestsController < ApplicationController
     @place_edit_request.place = @place
 
     if @place_edit_request.save
-      redirect_to public_place_path(@place), notice: "編集リクエストを送信しました。"
+      redirect_to place_path(@place), notice: "編集リクエストを送信しました。"
     else
       flash.now[:alert] = "編集リクエストの送信に失敗しました。"
       render :new

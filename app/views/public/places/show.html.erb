@@ -43,14 +43,14 @@
 
         <% if user_signed_in? %>
           <% if current_user.bookmarked_places.include?(@place) %>
-            <%= button_to 'ブックマーク解除', public_place_bookmark_path(@place), method: :delete, class: 'btn btn-outline-danger btn-sm mr-2 ' %>
+            <%= button_to 'ブックマーク解除', place_bookmark_path(@place), method: :delete, class: 'btn btn-outline-danger btn-sm mr-2 ' %>
           <% else %>
-            <%= button_to 'ブックマーク', public_place_bookmarks_path(@place), method: :post, class: 'btn btn-outline-primary btn-sm mr-2 ' %>
+            <%= button_to 'ブックマーク', place_bookmarks_path(@place), method: :post, class: 'btn btn-outline-primary btn-sm mr-2 ' %>
           <% end %>
         <% end %>
 
         <% if user_signed_in? && !guest_user? && @place.approved? %>
-          <%= link_to "編集リクエスト", new_public_place_place_edit_request_path(@place), class: "btn btn-primary btn-sm mr-2 " %>
+          <%= link_to "編集リクエスト", new_place_place_edit_request_path(@place), class: "btn btn-primary btn-sm mr-2 " %>
         <% else %>
           <span class="text-muted small ">リクエストできません</span>
         <% end %>
@@ -100,7 +100,7 @@
         <!-- 星評価 -->
         <div class="rating ml-5 mb-2" data-score="<%= comment.rating %>"></div>
         <!-- コメント内容 -->
-        <p class="text-dark"><%= comment.content %></p>
+        <p class="text-dark"><%= simple_format(comment.content, sanitize: true) %></p>
 
         <!-- （good/bad）ボタンとカウント -->
         <div class="d-flex justify-content-start mt-2">
@@ -116,7 +116,7 @@
   <div class="card shadow-sm w-100">
     <div class="card-body">
       <h5 class="mb-3">コメントを投稿する</h5>
-      <%= form_with(model: [:public, @place, @comment], local: true) do |f| %>
+      <%= form_with(model: [@place, @comment], local: true) do |f| %>
         <div class="mb-3">
           <%= f.label :content, "コメント", class: "form-label" %>
           <%= f.text_area :content, rows: 3, class: "form-control" %>

@@ -52,7 +52,7 @@ async function updateMarkers() {
     const form = document.querySelector("form");
     const formData = new FormData(form);
     const queryParams = new URLSearchParams(formData).toString();
-    const response = await fetch(`/public/places.json?${queryParams}`);
+    const response = await fetch(`/places.json?${queryParams}`);
 
     if (!response.ok) throw new Error("Network response was not ok");
 
@@ -87,7 +87,7 @@ async function updateMarkers() {
         <div class="information container p-0">
           <div>
             <h3 class="h4 font-weight-bold">
-              <a href="/public/places/${id}" class="text-decoration-none">${name}</a>            
+              <a href="/places/${id}" class="text-decoration-none">${name}</a>            
             </h3>
             <p class="text-muted">${item.address}</p>
           </div>

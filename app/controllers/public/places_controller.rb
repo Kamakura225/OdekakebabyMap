@@ -38,17 +38,17 @@ class Public::PlacesController < ApplicationController
 
   # ゲストユーザーがアクセスできないアクションを制限
   def new
-    redirect_to public_places_path, alert: 'ゲストユーザーは施設の登録ができません' if guest_user?
+    redirect_to places_path, alert: 'ゲストユーザーは施設の登録ができません' if guest_user?
     @place = Place.new
   end
 
   def create
-    redirect_to public_places_path, alert: 'ゲストユーザーは施設の登録ができません' if guest_user?
+    redirect_to places_path, alert: 'ゲストユーザーは施設の登録ができません' if guest_user?
     @place = current_user.places.build(place_params)
     @place.status = :pending # デフォルトは承認待ち
     
     if @place.save
-      redirect_to public_place_path(@place), notice: "施設を投稿しました（承認待ち）"
+      redirect_to place_path(@place), notice: "施設を投稿しました（承認待ち）"
     else
       flash.now[:alert] = "投稿に失敗しました。"
       render :new

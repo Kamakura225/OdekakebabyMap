@@ -7,7 +7,7 @@ class Public::CommentsController < ApplicationController
     @comment = @place.comments.new(comment_params)
     @comment.user = current_user
     if @comment.save
-      redirect_to public_place_path(@place), notice: "コメントを投稿しました"
+      redirect_to place_path(@place), notice: "コメントを投稿しました"
     else
       @comments = @place.comments.includes(:user)
       
@@ -20,7 +20,7 @@ class Public::CommentsController < ApplicationController
     @comment = Comment.find(params[:id])
     @place = @comment.place
     @comment.destroy
-    redirect_to public_place_path(@place), notice: 'コメントが削除されました！'
+    redirect_to place_path(@place), notice: 'コメントが削除されました！'
   end
 
 private

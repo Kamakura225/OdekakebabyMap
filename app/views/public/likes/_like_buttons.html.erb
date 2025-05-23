@@ -4,7 +4,7 @@
 
     <!-- GOOD -->
     <% if like&.reaction_type == "good" %>
-      <%= button_to public_place_comment_like_path(place, comment, like), method: :delete, remote: true,
+      <%= button_to place_comment_like_path(place, comment, like), method: :delete, remote: true,
                     class: "btn btn-link btn-sm d-flex align-items-center" do %>
         <i class="fa-solid fa-thumbs-up"></i> 
         <span class="ml-3" style="font-size: 0.75rem;">
@@ -12,7 +12,7 @@
         </span>
       <% end %>
     <% else %>
-      <%= button_to public_place_comment_likes_path(place, comment, reaction_type: :good), method: :post, remote: true,
+      <%= button_to place_comment_likes_path(place, comment, reaction_type: :good), method: :post, remote: true,
                     class: "btn btn-link btn-sm d-flex align-items-center" do %>
         <i class="fa-regular fa-thumbs-up"></i> 
         <span class="ml-3" style="font-size: 0.75rem;">
@@ -23,12 +23,12 @@
 
     <!-- BAD -->
     <% if like&.reaction_type == "bad" %>
-      <%= button_to public_place_comment_like_path(place, comment, like), method: :delete, remote: true,
+      <%= button_to place_comment_like_path(place, comment, like), method: :delete, remote: true,
                     class: "btn btn-link btn-sm d-flex align-items-center mt-1" do %>
         <i class="fa-solid fa-thumbs-down"></i> 
       <% end %>
     <% else %>
-      <%= button_to public_place_comment_likes_path(place, comment, reaction_type: :bad), method: :post, remote: true,
+      <%= button_to place_comment_likes_path(place, comment, reaction_type: :bad), method: :post, remote: true,
                     class: "btn btn-link btn-sm d-flex align-items-center mt-1" do %>
         <i class="fa-regular fa-thumbs-down"></i> 
       <% end %>

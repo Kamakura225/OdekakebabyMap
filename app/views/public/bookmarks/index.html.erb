@@ -6,7 +6,7 @@
       <div class="col-md-6 mb-4">
         <div class="card h-100">
           <div class="card-body">
-            <h5 class="card-title"><%= link_to place.name, public_place_path(place) %></h5>
+            <h5 class="card-title"><%= link_to place.name, place_path(place) %></h5>
             <p class="card-text"><strong>カテゴリ:</strong> <%= t("places.categories.#{place[:category]}") %></p>
             <p class="card-text"><strong>住所:</strong> <%= place.address %></p>
             <p class="card-text">
@@ -16,7 +16,7 @@
             </p>
           </div>
           <div class="card-footer text-end">
-            <%= button_to 'ブックマーク解除', public_place_bookmark_path(place, place.bookmarks.find_by(user_id: current_user.id)),
+            <%= button_to 'ブックマーク解除', place_bookmark_path(place, place.bookmarks.find_by(user_id: current_user.id)),
                   method: :delete, class: 'btn btn-outline-danger btn-sm' %>
           </div>
         </div>

@@ -8,13 +8,13 @@ class Public::BookmarksController < ApplicationController
   def create
     @place = Place.find(params[:place_id])
     @bookmark = current_user.bookmarks.create(place: @place)
-    redirect_to public_place_path(@place)
+    redirect_to place_path(@place)
   end
 
   def destroy
     @place = Place.find(params[:place_id])
     @bookmark = current_user.bookmarks.find_by(place: @place)
     @bookmark.destroy if @bookmark
-    redirect_to public_place_path(@place) 
+    redirect_to place_path(@place) 
   end 
 end
