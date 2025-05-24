@@ -69,9 +69,8 @@
 
   <p><strong>カテゴリ:</strong> <%= @place.category_i18n %></p>
 
-  <div class="row">
-    <%= render 'public/places/facility' %>
-  </div>        
+  <%= render 'public/places/facility' %>
+  
 </div>
   
 
@@ -160,7 +159,7 @@
       number: 5,
       starSize: 24,
       starOn: "<%= asset_path('raty/star-on.png') %>", // アセットパイプライン経由で画像パスを指定
-      starOff: "<%= asset_path('raty/star-off.png') %>", // アセットパイプライン経由で画像パスを指定
+      starOff: "<%= asset_path('raty/star-off.png') %>", 
       starHalf: "<%= asset_path('raty/star-half.png') %>", 
       half: true,
       halfShow: true,

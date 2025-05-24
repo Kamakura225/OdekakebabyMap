@@ -19,33 +19,10 @@
       </div>
       
       <p>🔍現在の設備情報</p>
-      <%= render 'public/place_edit_requests/placedata' %>
+      <%= render 'public/places/facility' %>
 
-      <% facility_labels = {
-      'nursery' => '授乳室',
-      'diaper' => 'おむつ交換台',
-      'kids_toilet' => '幼児トイレ',
-      'stroller' => 'ベビーカー対応',
-      'playground' => '遊具',
-      'shade' => '木陰',
-      'bench' => 'ベンチ',
-      'elevator' => 'エレベーター',
-      'parking' => '駐車場'
-      } %>
-
-      <div class="mb-4">
-        <p class="fw-bold">🖊設備情報の変更</p>
-        <div class="row">
-          <% facility_labels.each do |attr, label_text| %>
-            <div class="col-6 col-md-4 mb-3">
-              <div class="form-check">
-                <%= f.check_box attr, class: "form-check-input", checked: @place.send(attr) %>
-                <%= f.label attr, label_text, class: "form-check-label" %>
-              </div>
-            </div>
-          <% end %>
-        </div>
-      </div>
+      <p>🖊設備情報変更</p>
+      <%= render 'public/places/facility_checkboxes' %>
 
       <div class="d-flex justify-content-center">
         <%= f.submit "編集リクエストを送信", class: "btn w-50 gradient-btn" %>
