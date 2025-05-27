@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2025_04_25_211006) do
+ActiveRecord::Schema.define(version: 2025_05_27_021409) do
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -89,6 +89,17 @@ ActiveRecord::Schema.define(version: 2025_04_25_211006) do
     t.index ["comment_id"], name: "index_likes_on_comment_id"
     t.index ["likeable_type", "likeable_id"], name: "index_likes_on_likeable"
     t.index ["user_id"], name: "index_likes_on_user_id"
+  end
+
+  create_table "place_delete_requests", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "place_id", null: false
+    t.text "reason"
+    t.integer "status", default: 0
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["place_id"], name: "index_place_delete_requests_on_place_id"
+    t.index ["user_id"], name: "index_place_delete_requests_on_user_id"
   end
 
   create_table "place_edit_requests", force: :cascade do |t|
@@ -172,6 +183,8 @@ ActiveRecord::Schema.define(version: 2025_04_25_211006) do
   add_foreign_key "comments", "users"
   add_foreign_key "likes", "comments"
   add_foreign_key "likes", "users"
+  add_foreign_key "place_delete_requests", "places"
+  add_foreign_key "place_delete_requests", "users"
   add_foreign_key "place_edit_requests", "places"
   add_foreign_key "place_edit_requests", "users"
   add_foreign_key "place_tags", "places"

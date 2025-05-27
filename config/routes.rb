@@ -31,6 +31,7 @@ devise_for :admin, skip: [:registrations], controllers: {
     resources :places do
       resources :bookmarks, only: [:create, :destroy]
       resources :place_edit_requests, only: [:create, :new]
+      resources :place_delete_requests, only: [:new, :create]
       resources :comments, only: [:create, :destroy] do
         resources :likes, only: [:create, :destroy]
       end

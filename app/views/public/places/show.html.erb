@@ -54,6 +54,12 @@
         <% else %>
           <span class="text-muted small ">リクエストできません</span>
         <% end %>
+
+        <% if user_signed_in? && !guest_user? && @place.approved? %>
+          <%= link_to "削除リクエスト", new_place_place_delete_request_path(@place), class: "btn btn-danger btn-sm mr-2 " %>
+        <% else %>
+          <span class="text-muted small ">リクエストできません</span>
+        <% end %>
       </div>
     </div>
   </div>
@@ -178,7 +184,7 @@
       score: score,
       readOnly: true, 
       starOn: "<%= asset_path('raty/star-on.png') %>", // アセットパイプライン経由で画像パスを指定
-      starOff: "<%= asset_path('raty/star-off.png') %>", // アセットパイプライン経由で画像パスを指定
+      starOff: "<%= asset_path('raty/star-off.png') %>", 
       starHalf: "<%= asset_path('raty/star-half.png') %>", 
       halfShow: true,
     });
