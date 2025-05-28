@@ -1,0 +1,26 @@
+<h1>削除リクエスト詳細</h1>
+
+<div class="card mt-4">
+  <div class="card-body">
+    <h5 class="card-title"><%= @place_delete_request.place.name %></h5>
+    <p class="card-text"><strong>理由:</strong> <%= simple_format(@place_delete_request.reason) %></p>
+    <p class="card-text"><strong>ユーザー:</strong> <%= @place_delete_request.user.nickname || @place_delete_request.user.email %></p>
+    <p class="card-text"><strong>ステータス:</strong> <%= @place_delete_request.status_i18n %></p>
+  </div>
+</div>
+
+<% if @place_delete_request.pending? %>
+  <div class="mt-4 d-flex gap-3">
+    <%= form_with url: admin_place_delete_request_path(@place_delete_request), method: :patch, local: true do |f| %>
+      <%= hidden_field_tag :decision, "approve" %>
+      <%= f.submit "承認して施設削除", class: "btn btn-danger" %>
+    <% end %>
+
+    <%= form_with url: admin_place_delete_request_path(@place_delete_request), method: :patch, local: true do |f| %>
+      <%= hidden_field_tag :decision, "reject" %>
+      <%= f.submit "却下する", class: "btn btn-secondary" %>
+    <% end %>
+  </div>
+<% else %>
+  <div class="alert alert-info mt-4">このリクエストはすでに処理されています。</div>
+<% end %>

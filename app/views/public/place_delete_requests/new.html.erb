@@ -1,7 +1,7 @@
 <div class="container my-5">
   <h1 class="mb-4 text-center"><%= @place.name %> の削除リクエスト</h1>
 
-  <%= form_with model: @place_delete_request, url: public_place_place_delete_requests_path(@place), local: true do |f| %>
+  <%= form_with model: @place_delete_request, url: place_place_delete_requests_path(@place), local: true do |f| %>
     <div class="card shadow-sm">
       <div class="card-body">
         <p>この施設の削除をリクエストする理由を記入してください。</p>
@@ -19,6 +19,6 @@
   <% end %>
 
   <div class="d-flex justify-content-center mt-4">
-    <%= link_to "戻る", public_place_path(@place), class: "btn btn-secondary w-50" %>
+    <%= link_to "戻る", place_path(@place), class: "btn btn-secondary w-50" %> 
   </div>
 </div>

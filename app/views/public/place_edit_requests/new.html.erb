@@ -22,7 +22,7 @@
       <%= render 'public/places/facility' %>
 
       <p>🖊設備情報変更</p>
-      <%= render 'public/places/facility_checkboxes' %>
+      <%= render 'public/place_edit_requests/now_facility_checkboxes', f: f, place: @place %>
 
       <div class="d-flex justify-content-center">
         <%= f.submit "編集リクエストを送信", class: "btn w-50 gradient-btn" %>

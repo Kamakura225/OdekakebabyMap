@@ -7,6 +7,8 @@ class Place < ApplicationRecord
   has_many :bookmarked_users, through: :bookmarks, source: :user
   has_many :place_tags, dependent: :destroy
   has_many :tags, through: :place_tags
+  has_many :place_edit_requests, dependent: :destroy
+  has_many :place_delete_requests, dependent: :destroy
 
   has_many_attached :photos
 

@@ -8,6 +8,8 @@ class ApplicationController < ActionController::Base
     current_user&.email == GUEST_USER_EMAIL
   end
 
+  
+
   private
 
   def restrict_ip_for_admin

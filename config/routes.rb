@@ -44,6 +44,7 @@ devise_for :admin, skip: [:registrations], controllers: {
       resources :users, only: [:index, :show, :edit, :update]
       resources :comments, only: [:index, :destroy]  
       resources :place_edit_requests, only: [:index, :show, :update]
+      resources :place_delete_requests, only: [:index, :show, :update]
     end
 
   # トップページのルーティング

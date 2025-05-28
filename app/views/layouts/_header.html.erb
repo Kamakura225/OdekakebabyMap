@@ -38,6 +38,9 @@
               <%= link_to '編集リクエスト一覧', admin_place_edit_requests_path, class: "nav-link" %>
             </li>
             <li class="nav-item">
+              <%= link_to '削除リクエスト一覧', admin_place_delete_requests_path, class: "nav-link" %>
+            </li>
+            <li class="nav-item">
               <%= link_to 'ログアウト', destroy_user_session_path, method: :delete, class: "nav-link", data: { turbo: false } %>
             </li>
           <% elsif user_signed_in? %>

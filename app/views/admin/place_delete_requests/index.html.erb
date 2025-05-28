@@ -1,0 +1,28 @@
+<h1>削除リクエスト一覧</h1>
+
+<table class="table table-striped mt-4">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>施設名</th>
+      <th>ユーザー</th>
+      <th>理由</th>
+      <th>ステータス</th>
+      <th>送信日</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @place_delete_requests.each do |request| %>
+      <tr>
+        <td><%= request.id %></td>
+        <td><%= link_to request.place.name, admin_place_delete_request_path(request) %></td>
+        <td><%= request.user.nickname || request.user.email %></td>
+        <td><%= truncate(request.reason, length: 30) %></td>
+        <td><%= request.status_i18n %></td>
+        <td><%= request.created_at.strftime("%Y/%m/%d") %></td>
+        <td><%= link_to '詳細', admin_place_delete_request_path(request), class: "btn btn-outline-primary btn-sm" %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
