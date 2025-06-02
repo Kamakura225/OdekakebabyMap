@@ -3,7 +3,7 @@ class Admin::PlaceDeleteRequestsController < ApplicationController
   before_action :set_place_delete_request, only: [:show, :update]
 
   def index
-    @place_delete_requests = PlaceDeleteRequest.includes(:place, :user).order(created_at: :desc)
+    @place_delete_requests = PlaceDeleteRequest.all.includes(:place).order(created_at: :desc)
   end
 
   def show

@@ -19,7 +19,7 @@
         <td><%= link_to request.place.name, admin_place_delete_request_path(request) %></td>
         <td><%= request.user.nickname || request.user.email %></td>
         <td><%= truncate(request.reason, length: 30) %></td>
-        <td><%= request.status_i18n %></td>
+        <td><%= request.status_i18n %></td> 
         <td><%= request.created_at.strftime("%Y/%m/%d") %></td>
         <td><%= link_to '詳細', admin_place_delete_request_path(request), class: "btn btn-outline-primary btn-sm" %></td>
       </tr>
