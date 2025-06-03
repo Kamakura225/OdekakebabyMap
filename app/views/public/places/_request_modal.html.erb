@@ -1,0 +1,30 @@
+<!-- 編集・削除リクエスト モーダル -->
+<div class="modal fade" id="requestModal" tabindex="-1" role="dialog" aria-labelledby="requestModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content shadow">
+      <div class="modal-header">
+        <h5 class="modal-title" id="requestModalLabel">リクエストを選択</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="閉じる">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body text-center">
+        <p>どちらのリクエストを行いますか？</p>
+        <div class="d-flex justify-content-around mt-3">
+          <%= link_to new_place_place_edit_request_path(@place), class: "btn btn-primary d-flex flex-column align-items-center justify-content-center p-3", style: "width: 80px; height: 80px;" do %>
+            🖊
+            <span class="mt-1 ">編集</span>
+          <% end %>
+
+          <%= link_to new_place_place_delete_request_path(@place), class: "btn btn-danger d-flex flex-column align-items-center justify-content-center p-3", style: "width: 80px; height: 80px;" do %>
+            ×
+            <span class="mt-1 ">削除</span>
+          <% end %>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">閉じる</button>
+      </div>
+    </div>
+  </div>
+</div>

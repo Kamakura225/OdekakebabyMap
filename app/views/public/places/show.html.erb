@@ -50,15 +50,11 @@
         <% end %>
 
         <% if user_signed_in? && !guest_user? && @place.approved? %>
-          <%= link_to "編集リクエスト", new_place_place_edit_request_path(@place), class: "btn btn-primary btn-sm mr-2 " %>
+          <button type="button" class="btn btn-outline-info btn-sm mr-2" data-toggle="modal" data-target="#requestModal">
+            編集・削除リクエスト
+          </button>
         <% else %>
-          <span class="text-muted small ">リクエストできません</span>
-        <% end %>
-
-        <% if user_signed_in? && !guest_user? && @place.approved? %>
-          <%= link_to "削除リクエスト", new_place_place_delete_request_path(@place), class: "btn btn-danger btn-sm mr-2 " %>
-        <% else %>
-          <span class="text-muted small ">リクエストできません</span>
+          <span class="text-muted small">リクエストできません</span>
         <% end %>
       </div>
     </div>
@@ -152,6 +148,8 @@
   </div>
 </div>
 </div>
+
+<%= render 'public/places/request_modal' %>
 
 <script>
   // 投稿用
